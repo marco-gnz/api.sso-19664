@@ -102,8 +102,10 @@ Route::patch('/changepassword', [App\Http\Controllers\Auth\ChangePasswordControl
     Route::get('/mantenedores/tipo-perfeccionamientos/perfeccionamientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getPerfeccionamientos']);
     Route::get('/mantenedores/redes-hospitalarias', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getRedesHospitalarias']);
     Route::get('/mantenedores/redes-hospitalarias/establecimientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getEstablecimientos']);
+    Route::get('/mantenedores/redes-hospitalarias/establecimientos-grado-complejidad', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getEstablecimientosGradoComplejidad']);
     Route::get('/mantenedores/tipo-contratos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getTipoContratos']);
     Route::get('/mantenedores/situaciones-factura', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'situacionesFactura']);
     Route::get('/mantenedores/tipos-factura', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'tiposFactura']);
     Route::get('/mantenedores/redes-hospitalarias/auth-user', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'redesHospitalariasUserAuth']);
     Route::get('/mantenedores/tipo-documentos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'tipoDocumentos']);
+    Route::get('/mantenedores/perfeccionamiento-all', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'perfeccionamientoAll']);

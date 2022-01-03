@@ -43,13 +43,46 @@ class ProfesionalController extends Controller
         return response()->json($profesional);
     }
 
-    public function getProfesionales()
+    public function getProfesionales(Request $request)
     {
-        $profesionales = Profesional::with('etapa', 'calidad')->orderBy('id', 'asc')->get();
+        $input              = ($request->input != '') ? $request->input : '';
+        $etapas             = ($request->checkedEtapas != '') ? $request->checkedEtapas : [];
+        $perfecion          = ($request->perfeccion != '') ? $request->perfeccion : [];
+        $inicio_f_ed        = ($request->f_ed != '') ? $request->f_ed[0] : [];
+        $termino_f_ed       = ($request->f_ed != '') ? $request->f_ed[1] : [];
 
-        if ($profesionales->count() > 0) {
-            return response()->json($profesionales, 200);
-        }
+        $inicio_f_ef        = ($request->f_ef != '') ? $request->f_ef[0] : [];
+        $termino_f_ef       = ($request->f_ef != '') ? $request->f_ef[1] : [];
+
+        $inicio_f_pao       = ($request->f_pao != '') ? $request->f_pao[0] : [];
+        $termino_f_pao      = ($request->f_pao != '') ? $request->f_pao[1] : [];
+
+        $establecimiento    = ($request->establecimiento != '') ? $request->establecimiento : '';
+
+        $profesionales = Profesional::general($input)
+        ->etapa($etapas)
+        ->perfeccionamiento($perfecion)
+        ->paos($inicio_f_pao, $termino_f_pao)
+        ->destinacion($inicio_f_ed, $termino_f_ed)
+        ->formacion($inicio_f_ef, $termino_f_ef)
+        ->establecimiento($etapas, $establecimiento)
+        ->with('etapa', 'calidad')
+        ->orderBy('apellidos', 'asc')
+        ->paginate(3);
+
+        return response()->json(
+            array(
+                'pagination' => [
+                    'total'         => $profesionales->total(),
+                    'current_page'  => $profesionales->currentPage(),
+                    'per_page'      => $profesionales->perPage(),
+                    'last_page'     => $profesionales->lastPage(),
+                    'from'          => $profesionales->firstItem(),
+                    'to'            => $profesionales->lastPage()
+                ],
+                'profesionales' => $profesionales
+            )
+        );
     }
 
     public function addProfesional(StoreProfesionalRequest $request)

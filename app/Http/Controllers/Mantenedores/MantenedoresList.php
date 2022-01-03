@@ -139,6 +139,17 @@ class MantenedoresList extends Controller
         }
     }
 
+    public function getEstablecimientosGradoComplejidad(Request $request)
+    {
+        try {
+            $establecimientos = Establecimiento::with('gradoComplejidad')->where('red_hospitalaria_id', $request->red_hospitalaria)->whereNotNull('grado_complejidad_id')->orderBy('nombre', 'asc')->get();
+
+            return response()->json($establecimientos);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getTipoContratos()
     {
         try {
@@ -184,6 +195,16 @@ class MantenedoresList extends Controller
         try {
             $tipo_documentos = TipoDocumento::orderBy('nombre', 'asc')->get();
             return response()->json($tipo_documentos, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function perfeccionamientoAll()
+    {
+        try {
+            $perfeccionamientos = Perfeccionamiento::with('tipo')->orderBy('nombre', 'asc')->get();
+            return response()->json($perfeccionamientos, 200);
         } catch (\Exception $error) {
             return response()->json($error->getMessage());
         }

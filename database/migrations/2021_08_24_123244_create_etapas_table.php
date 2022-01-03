@@ -17,13 +17,14 @@ class CreateEtapasTable extends Migration
             $table->bigIncrements('id');
             $table->integer('cod_sirh')->nullable();
             $table->string('nombre', 100);
+            $table->string('sigla', 10)->nullable();
 
             $table->unsignedBigInteger('usuario_add_id')->nullable();
             $table->foreign('usuario_add_id')->references('id')->on('users');
 
             $table->unsignedBigInteger('usuario_update_id')->nullable();
             $table->foreign('usuario_update_id')->references('id')->on('users');
-            
+
             $table->timestamps();
         });
     }
