@@ -114,13 +114,13 @@ class Profesional extends Model
         //edf
         if (in_array(2, $etapas) && $esatablecimiento_id) {
             $query->whereHas('etapasDestinacion', function ($query) use ($esatablecimiento_id) {
-                $query->where('establecimiento_id', $esatablecimiento_id);
+                $query->whereIn('establecimiento_id', $esatablecimiento_id);
             });
         } else if (in_array(1, $etapas) && $esatablecimiento_id) { //pao
             $query->whereHas('especialidades', function ($query) use ($esatablecimiento_id) {
                 $query->whereHas('paos', function ($query) use ($esatablecimiento_id) {
                     $query->whereHas('devoluciones', function ($query) use ($esatablecimiento_id) {
-                        $query->where('establecimiento_id', $esatablecimiento_id);
+                        $query->whereIn('establecimiento_id', $esatablecimiento_id);
                     });
                 });
             });
