@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;'); //invalido revición de foreign key para hacer pruebas mas flexibles
 
+        $this->call(PermisosRoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(UnidadSeeder::class);
         $this->call(CalidadJuridicaSeeder::class);

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Http\Resources\UserResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/user', function (Request $request) {
-    return request()->user();
+    /* return request()->user(); */
+    /* return User::with(['roles.permissions', 'permissions'])->find(request()->user()->id); */
+    return response()->json(UserResource::make(User::with(['roles.permissions', 'permissions'])->find(request()->user()->id)));
+
 });
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

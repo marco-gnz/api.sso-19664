@@ -36,5 +36,29 @@ class UserSeeder extends Seeder
         ]);
 
         $user->createToken('test');
+
+        $user->assignRole('SUPER-ADMIN');
+
+
+        $user = new User();
+        $user->uuid = Str::uuid();
+        $user->rut = 17654876;
+        $user->dv = 'K';
+        $user->rut_completo = $user->rut.'-'.$user->dv;
+        $user->primer_nombre = 'Daniel';
+        $user->segundo_nombre = 'Ruben';
+        $user->apellido_materno = 'Arias';
+        $user->apellido_paterno = 'Bravo';
+        $user->email = 'daniel@gmail.com';
+        $user->password = bcrypt('mamasa20');
+        $user->genero_id = 1;
+        $user->save();
+
+        $user->update([
+            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_materno, 0, 1).''.substr($user->apellido_paterno, 0, 1)
+        ]);
+
+        $user->createToken('test');
+        $user->assignRole('AUDITOR');
     }
 }
