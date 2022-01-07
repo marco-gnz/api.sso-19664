@@ -19,7 +19,7 @@ use App\Http\Resources\UserResource;
 Route::get('/user', function (Request $request) {
     /* return request()->user(); */
     /* return User::with(['roles.permissions', 'permissions'])->find(request()->user()->id); */
-    return response()->json(UserResource::make(User::with(['roles.permissions', 'permissions'])->find(request()->user()->id)));
+    return response()->json(UserResource::make(User::with(['roles.permissions', 'permissions', 'redesHospitalarias'])->find(request()->user()->id)));
 
 });
 
@@ -31,6 +31,15 @@ Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'
 Route::post('/logout', [App\Http\Controllers\Auth\LogoutController::class, 'logout']);
 Route::patch('/changepassword', [App\Http\Controllers\Auth\ChangePasswordController::class, 'changePasswordAuth']);
 
+Route::get('/perfiles', [App\Http\Controllers\Perfiles\PerfilesController::class, 'getPerfiles']);
+Route::get('/perfil/get-permisos', [App\Http\Controllers\Perfiles\PerfilesController::class, 'getPermisosToPerfil']);
+Route::get('/perfil/get-permisos-extras', [App\Http\Controllers\Perfiles\PerfilesController::class, 'getPermisosExtras']);
+
+Route::get('/usuarios', [App\Http\Controllers\Usuarios\UsuariosController::class, 'getUsuarios']);
+Route::get('/usuarios/usuario/exist', [App\Http\Controllers\Usuarios\UsuariosController::class, 'existUsuario']);
+Route::post('/usuarios/usuario/add-usuario', [App\Http\Controllers\Usuarios\UsuariosController::class, 'storeUsuario']);
+Route::put('/usuarios/change-status/{uuid}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'changeStatus']);
+Route::put('/usuarios/restablecer-contrasena/{uuid}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'restablecerContrasena']);
 
     //profesional
     Route::get('/profesionales/profesional/exist', [App\Http\Controllers\Profesional\ProfesionalController::class, 'existProfesional']);

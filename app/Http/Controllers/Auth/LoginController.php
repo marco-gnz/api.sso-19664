@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -19,9 +20,16 @@ class LoginController extends Controller
     public function login(AuthenticatedRequest $request)
     {
         //attempt: el user intenta iniciar sesión
-        if(!auth()->guard()->attempt($request->only('email', 'password'))){
+        if (!auth()->guard()->attempt($request->only('email', 'password'))) {
             throw new AuthenticationException();
         }
+
+        $user = auth()->user();
+
+        $user->update([
+            'last_login_at' => Carbon::now()->toDateTimeString(),
+            'last_login_ip' => $request->ip()
+        ]);
 
         /* $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {

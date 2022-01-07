@@ -26,10 +26,13 @@ class UserResource extends JsonResource
             'apellido_paterno'      => $this->apellido_paterno,
             'sigla'                 => $this->sigla,
             'email'                 => $this->email,
+            'genero'                => $this->genero_id,
             'estado'                => $this->estado,
             'roles'                 => $this->getRoleNames(),
             'permissions'           => $this->getPermissionNames(),
-            'permissions_roles'     => $this->getPermissionsViaRoles()->pluck('name')
+            'permissions_roles'     => $this->getPermissionsViaRoles()->pluck('name'),
+            'redes_hospitalarias'   => $this->redesHospitalarias,
+            'last_login_at'         => $this->last_login_at
         ];
     }
 }

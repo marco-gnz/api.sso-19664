@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         $user->save();
 
         $user->update([
-            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_materno, 0, 1).''.substr($user->apellido_paterno, 0, 1)
+            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_paterno, 0, 1).''.substr($user->apellido_materno, 0, 1)
         ]);
 
         $user->createToken('test');
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
         $user->save();
 
         $user->update([
-            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_materno, 0, 1).''.substr($user->apellido_paterno, 0, 1)
+            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_paterno, 0, 1).''.substr($user->apellido_materno, 0, 1)
         ]);
 
         $user->createToken('test');

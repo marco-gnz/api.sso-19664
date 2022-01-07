@@ -10,4 +10,14 @@ class RedHospitalaria extends Model
     use HasFactory;
 
     protected $fillable = ['cod_sirh', 'sigla','nombre', 'descripcion'];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(Establecimiento::class);
+    }
 }

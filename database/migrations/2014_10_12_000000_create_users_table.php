@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->nullable();
-            $table->integer('rut')->unique();
+            $table->integer('rut');
             $table->string('dv', 2);
             $table->string('rut_completo')->unique();
             $table->string('primer_nombre');
@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->boolean('estado')->default(1);
 
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
 
             $table->unsignedBigInteger('genero_id')->nullable();
@@ -41,6 +41,9 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('usuario_update_id')->nullable();
             $table->foreign('usuario_update_id')->references('id')->on('users');
             $table->dateTime('fecha_update', 0)->nullable();
+
+            $table->datetime('last_login_at')->nullable();
+            $table->string('last_login_ip')->nullable();
 
             $table->timestamps();
         });
