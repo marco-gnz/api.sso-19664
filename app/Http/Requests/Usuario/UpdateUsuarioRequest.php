@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Profesional;
+namespace App\Http\Requests\Usuario;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateProfesionalRequest extends FormRequest
+class UpdateUsuarioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,20 +25,19 @@ class UpdateProfesionalRequest extends FormRequest
     public function rules()
     {
         return [
-            'rut'                   => ['required', 'min:8', 'max:8', Rule::unique('profesionals', 'rut')->ignore($this->id)],
-            'dv'                    => 'required','min:1','max:1',
-            'rut_completo'          => ['required', Rule::unique('profesionals', 'rut_completo')->ignore($this->id)],
-            'nombres'               => 'required',
-            'apellidos'             => 'required',
-            'nombre_completo'       => 'required',
-            'email'                 => ['nullable','email', Rule::unique('profesionals', 'email')->ignore($this->id)],
-            'n_contacto'            => ['nullable', Rule::unique('profesionals', 'n_contacto')->ignore($this->id)],
-            'ciudad'                => 'required',
-            'etapas_id'             => 'required',
-            'calidad_juridica_id'   => 'required',
-            'planta_id'             => 'required',
-            'genero_id'             => 'required',
-            'situacion_actual_id'   => 'nullable'
+            'rut'                           => ['required', 'min:8', 'max:8', Rule::unique('users', 'rut')->ignore($this->id)],
+            'dv'                            => 'required | min:1 | max:1',
+            'rut_completo'                  => ['required', 'min:9', 'max:10', Rule::unique('users', 'rut_completo')->ignore($this->id)],
+            'primer_nombre'                 => 'required',
+            'segundo_nombre'                => 'nullable',
+            'apellido_materno'              => 'required',
+            'apellido_paterno'              => 'required',
+            'nombre_completo'               => 'required',
+            'email'                         => ['nullable','email', Rule::unique('users', 'email')->ignore($this->id)],
+            'genero_id'                     => 'required',
+            'rol'                           => 'required',
+            'permisos_extras'               => 'nullable',
+            'red_admin'                     => 'required'
         ];
     }
 

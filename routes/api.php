@@ -40,6 +40,8 @@ Route::get('/usuarios/usuario/exist', [App\Http\Controllers\Usuarios\UsuariosCon
 Route::post('/usuarios/usuario/add-usuario', [App\Http\Controllers\Usuarios\UsuariosController::class, 'storeUsuario']);
 Route::put('/usuarios/change-status/{uuid}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'changeStatus']);
 Route::put('/usuarios/restablecer-contrasena/{uuid}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'restablecerContrasena']);
+Route::get('/usuarios/usuario/{uuid}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'getUsuario']);
+Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios\UsuariosController::class, 'updateUsuario']);
 
     //profesional
     Route::get('/profesionales/profesional/exist', [App\Http\Controllers\Profesional\ProfesionalController::class, 'existProfesional']);

@@ -31,6 +31,7 @@ class StoreUsuarioRequest extends FormRequest
             'segundo_nombre'                => 'nullable',
             'apellido_materno'              => 'required',
             'apellido_paterno'              => 'required',
+            'nombre_completo'               => 'required',
             'email'                         => 'required | email | unique:users',
             'genero_id'                     => 'required',
             'rol'                           => 'required',

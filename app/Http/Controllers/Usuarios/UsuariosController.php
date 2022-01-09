@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Usuarios;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Usuario\StoreUsuarioRequest;
+use App\Http\Requests\Usuario\UpdateUsuarioRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -42,10 +43,10 @@ class UsuariosController extends Controller
             $perfil             = ($request->perfil != '') ? $request->perfil : '';
             //crear resource
             $usuarios = User::general($input)
-            ->perfil($perfil)
-            ->with('roles', 'redesHospitalarias')
-            ->orderBy('apellido_paterno', 'asc')
-            ->paginate(10);
+                ->perfil($perfil)
+                ->with('roles', 'redesHospitalarias')
+                ->orderBy('apellido_paterno', 'asc')
+                ->paginate(10);
 
             return response()->json(
                 array(
@@ -117,7 +118,7 @@ class UsuariosController extends Controller
     public function storeUsuario(StoreUsuarioRequest $request)
     {
         try {
-            $form = ['rut', 'dv', 'rut_completo', 'primer_nombre', 'segundo_nombre', 'apellido_materno', 'apellido_paterno', 'email', 'genero_id'];
+            $form = ['rut', 'dv', 'rut_completo', 'primer_nombre', 'segundo_nombre', 'apellido_materno', 'apellido_paterno', 'nombre_completo', 'email', 'genero_id'];
 
             $usuario = User::create($request->only($form));
 
@@ -148,6 +149,65 @@ class UsuariosController extends Controller
                 return response()->json(array(true, $usuario));
             } else {
                 return response()->json(false);
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function updateUsuario(UpdateUsuarioRequest $request, $id)
+    {
+        try {
+            $usuario = User::find($id);
+
+            if ($usuario) {
+                $form = ['rut', 'dv', 'rut_completo', 'primer_nombre', 'segundo_nombre', 'apellido_materno', 'apellido_paterno', 'nombre_completo', 'email', 'genero_id'];
+
+                $update = $usuario->update($request->only($form));
+
+                $segundo_nombre = ($usuario->segundo_nombre != null || $usuario->segundo_nombre != '') ? substr($usuario->segundo_nombre, 0, 1) : '';
+                $sigla          = substr($usuario->primer_nombre, 0, 1) . '' . substr($usuario->segundo_nombre, 0, 1) . '' . substr($usuario->apellido_paterno, 0, 1) . '' . substr($usuario->apellido_materno, 0, 1);
+
+                $otros_datos    = $usuario->update([
+                    'sigla'                        => $sigla,
+                    'usuario_update_id'            => auth()->user()->id,
+                    'fecha_update'                 => Carbon::now()->toDateTimeString()
+                ]);
+
+                $store_roles = $usuario->syncRoles($request->rol);
+
+                $usuario->redesHospitalarias()->sync($request->red_admin);
+
+                if ($request->filled('permisos_extras')) {
+                    $usuario->syncPermissions($request->permisos_extras);
+                } else {
+                    $usuario->revokePermissionTo($usuario->permissions);
+                }
+
+                $with       = ['genero', 'userAdd'];
+
+                $usuario    = $usuario->fresh($with);
+
+                if ($update && $otros_datos && $store_roles) {
+                    return response()->json(array(true, $usuario));
+                } else {
+                    return response()->json(false);
+                }
+            }
+
+            return $usuario;
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function getUsuario($uuid)
+    {
+        try {
+            $usuario = User::with('roles', 'permissions', 'redesHospitalarias')->where('uuid', $uuid)->first();
+
+            if ($usuario) {
+                return response()->json($usuario);
             }
         } catch (\Exception $error) {
             return response()->json($error->getMessage());

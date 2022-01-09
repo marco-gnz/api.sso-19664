@@ -29,6 +29,7 @@ class User extends Authenticatable
         'segundo_nombre',
         'apellido_materno',
         'apellido_paterno',
+        'nombre_completo',
         'sigla',
         'email',
         'password',
@@ -90,6 +91,7 @@ class User extends Authenticatable
     {
         if ($search)
             return $query->where('rut_completo', 'like', '%' . $search . '%')
+                        ->orWhere('nombre_completo', 'like', '%' . $search . '%')
                         ->orWhere('primer_nombre', 'like', '%' . $search . '%')
                         ->orWhere('segundo_nombre', 'like', '%' . $search . '%')
                         ->orWhere('apellido_materno', 'like', '%' . $search . '%')

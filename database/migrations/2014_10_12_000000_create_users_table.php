@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('segundo_nombre')->nullable();
             $table->string('apellido_materno');
             $table->string('apellido_paterno');
+            $table->string('nombre_completo')->nullable();
             $table->string('sigla', 6)->nullable();
             $table->string('email')->unique();
             $table->boolean('estado')->default(1);
