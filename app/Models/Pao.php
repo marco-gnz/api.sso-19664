@@ -13,13 +13,13 @@ class Pao extends Model
     protected $table = "paos";
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uuid', 'periodo_inicio', 'periodo_termino', 'observacion_periodo', 'observacion', 'especialidad_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
+    protected $fillable = ['uuid', 'periodo_inicio', 'periodo_termino', 'observacion_periodo', 'estado', 'observacion', 'especialidad_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
 
     protected $guarded = ['id'];
 
     public function especialidad()
     {
-        return $this->hasOne(Especialidad::class, 'id','especialidad_id');
+        return $this->hasOne(Especialidad::class, 'id', 'especialidad_id');
     }
 
     public function devoluciones()
@@ -34,12 +34,12 @@ class Pao extends Model
 
     public function userAdd()
     {
-        return $this->hasOne(User::class, 'id','usuario_add_id');
+        return $this->hasOne(User::class, 'id', 'usuario_add_id');
     }
 
     public function userUpdate()
     {
-        return $this->hasOne(User::class, 'id','usuario_update_id');
+        return $this->hasOne(User::class, 'id', 'usuario_update_id');
     }
 
     public static function booted()
@@ -49,13 +49,14 @@ class Pao extends Model
         });
     }
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        static::deleting(function($pao) { // before delete() method call this
-             $pao->devoluciones()->delete();
-             $pao->interrupciones()->delete();
-             // do the rest of the cleanup...
+        static::deleting(function ($pao) { // before delete() method call this
+            $pao->devoluciones()->delete();
+            $pao->interrupciones()->delete();
+            // do the rest of the cleanup...
         });
     }
 }

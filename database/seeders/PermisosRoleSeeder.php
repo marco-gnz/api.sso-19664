@@ -60,6 +60,7 @@ class PermisosRoleSeeder extends Seeder
         //PAO - CALCULO-PAO-PROFESIONAL
         $ingresarCalculoPao             = Permission::create(['name' => 'ingresar-calculo-pao']);
         $eliminarCalculoPao             = Permission::create(['name' => 'eliminar-calculo-pao']);
+        $estadoCalculoPao               = Permission::create(['name' => 'estado-calculo-pao']);
 
         //PAO - DEVOLUCION-PAO-PROFESIONAL
         $ingresarDevolucionPao          = Permission::create(['name' => 'ingresar-devolucion-pao']);
@@ -133,6 +134,7 @@ class PermisosRoleSeeder extends Seeder
 
             $ingresarCalculoPao,
             $eliminarCalculoPao,
+            $estadoCalculoPao,
 
             $ingresarDevolucionPao,
             $editarDevolucionPao,

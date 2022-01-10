@@ -62,6 +62,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
 
     //profesional-calculo-pao
     Route::post('/profesionales/profesional/add-calculo-pao', [App\Http\Controllers\Pao\CalculoPaoController::class, 'storeCalculoPao']);
+    Route::put('/profesionales/profesional/update-status/{uuid}', [App\Http\Controllers\Pao\CalculoPaoController::class, 'updateStatus']);
     Route::delete('/profesionales/profesional/delete-calculo-pao/{uuid}', [App\Http\Controllers\Pao\CalculoPaoController::class, 'deletePao']);
     Route::get('/profesionales/profesional/historial', [App\Http\Controllers\Pao\CalculoPaoController::class, 'getHistorial']);
     Route::get('/profesionales/profesional/get-paos', [App\Http\Controllers\Pao\CalculoPaoController::class, 'getPaos']);

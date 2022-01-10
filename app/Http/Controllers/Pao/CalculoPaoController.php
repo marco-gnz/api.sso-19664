@@ -126,4 +126,44 @@ class CalculoPaoController extends Controller
             return response()->json($error->getMessage());
         }
     }
+
+    public function updateStatus($uuid)
+    {
+        try {
+            $pao = Pao::where('uuid', $uuid)->first();
+
+            if($pao){
+                $update = $pao->update([
+                    'estado' => !$pao->estado
+                ]);
+
+                $with = [
+                    'especialidad',
+                    'especialidad.perfeccionamiento.tipo',
+                    'devoluciones',
+                    'devoluciones.tipoContrato',
+                    'devoluciones.establecimiento',
+                    'devoluciones.establecimiento.redHospitalaria',
+                    'devoluciones.pao.especialidad',
+                    'interrupciones.causal',
+                    'devoluciones.interrupciones',
+                    'devoluciones.escritura',
+                    'interrupciones.devolucion.establecimiento',
+                    'interrupciones.devolucion.tipoContrato',
+                    'interrupciones.pao.devoluciones.establecimiento',
+                    'interrupciones.pao.devoluciones.tipoContrato'
+                ];
+
+                $pao = $pao->fresh($with);
+
+                if($pao && $update){
+                    return response()->json(array(true, $pao));
+                }else{
+                    return response()->json(false);
+                }
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
 }

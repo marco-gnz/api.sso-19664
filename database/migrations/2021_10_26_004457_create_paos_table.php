@@ -20,6 +20,7 @@ class CreatePaosTable extends Migration
             $table->date('periodo_termino')->nullable();
             $table->text('observacion_periodo')->nullable();
             $table->text('observacion')->nullable();
+            $table->boolean('estado')->default(1); //suspendido - activo
 
             $table->unsignedBigInteger('especialidad_id')->nullable();
             $table->foreign('especialidad_id')->references('id')->on('especialidads');
