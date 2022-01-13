@@ -22,6 +22,11 @@ class Profesional extends Model
         return $this->hasOne(Etapa::class, 'id', 'etapas_id');
     }
 
+    public function genero()
+    {
+        return $this->hasOne(Genero::class, 'id', 'genero_id');
+    }
+
     public function calidad()
     {
         return $this->hasOne(CalidadJuridica::class, 'id', 'calidad_juridica_id');
@@ -70,7 +75,7 @@ class Profesional extends Model
         if ($search)
             return $query->where('rut_completo', 'like', '%' . $search . '%')->orWhere('nombre_completo', 'like', '%' . $search . '%');
     }
-    public function scopeEtapa($query, $search)
+    public function scopeEtapaProfesional($query, $search)
     {
         if ($search)
             return $query->whereIn('etapas_id', $search);

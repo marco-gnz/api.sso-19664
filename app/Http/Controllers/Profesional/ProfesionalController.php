@@ -60,7 +60,7 @@ class ProfesionalController extends Controller
         $establecimiento    = ($request->establecimiento != '') ? $request->establecimiento : [];
 
         $profesionales = Profesional::general($input)
-        ->etapa($etapas)
+        ->etapaProfesional($etapas)
         ->perfeccionamiento($perfecion)
         ->paos($inicio_f_pao, $termino_f_pao)
         ->destinacion($inicio_f_ed, $termino_f_ed)
