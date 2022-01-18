@@ -10,4 +10,10 @@ class CentroFormador extends Model
     use HasFactory;
 
     protected $fillable = ['cod_sirh', 'nombre', 'descripcion', 'usuario_add_id', 'usuario_update_id'];
+
+    public function scopeGeneral($query, $search)
+    {
+        if ($search)
+            return $query->where('cod_sirh', 'like', '%' . $search . '%')->orWhere('nombre', 'like', '%' . $search . '%');
+    }
 }

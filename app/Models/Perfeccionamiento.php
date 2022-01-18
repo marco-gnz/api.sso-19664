@@ -26,4 +26,15 @@ class Perfeccionamiento extends Model
         return $this->hasOne(User::class, 'id','usuario_update_id');
     }
 
+    public function scopeTipoPerfeccionamiento($query, $tipo_id)
+    {
+        if ($tipo_id)
+            return $query->where('tipo_perfeccionamiento_id', $tipo_id);
+    }
+
+    public function scopeGeneral($query, $search)
+    {
+        if ($search)
+            return $query->where('cod_sirh', 'like', '%' . $search . '%')->orWhere('nombre', 'like', '%' . $search . '%');
+    }
 }

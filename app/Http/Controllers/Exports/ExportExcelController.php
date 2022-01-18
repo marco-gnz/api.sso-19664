@@ -118,8 +118,8 @@ class ExportExcelController extends Controller
 
             if ($e === 1) {
                 //PAO
-                return view('excel.pao', compact('profesionales', 'cantidad', 'cantidad_devo'));
-                /* return Excel::download(new ProfesionalesPao($profesionales, $cantidad, $cantidad_devo), 'PAO - Profesionales.xlsx'); */
+                /* return view('excel.pao', compact('profesionales', 'cantidad', 'cantidad_devo')); */
+                return Excel::download(new ProfesionalesPao($profesionales, $cantidad, $cantidad_devo), 'PAO - Profesionales.xlsx');
             } else if ($e == 2) {
                 //EDF
                 /* return view('excel.edf', compact('profesionales', 'cantidad_destinacion', 'cantidad_formacion')); */

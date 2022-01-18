@@ -130,3 +130,32 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/redes-hospitalarias/auth-user', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'redesHospitalariasUserAuth']);
     Route::get('/mantenedores/tipo-documentos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'tipoDocumentos']);
     Route::get('/mantenedores/perfeccionamiento-all', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'perfeccionamientoAll']);
+    Route::get('/mantenedores/grado-complejidad', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getGradoComplejidad']);
+    Route::get('/mantenedores/situaciones-actual', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getSituacionesActual']);
+
+    //routes admin mantenedores
+    Route::get('/admin/mantenedores/establecimientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'adminEstablecimientos']);
+
+    Route::post('/admin/mantenedores/red/add-red', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addRed']);
+    Route::put('/admin/mantenedores/red/edit-red/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editRed']);
+
+    Route::post('/admin/mantenedores/unidad/add-unidad', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addUnidad']);
+    Route::put('/admin/mantenedores/unidad/edit-unidad/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editUnidad']);
+
+    Route::post('/admin/mantenedores/centro/add-centro', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addCentro']);
+    Route::put('/admin/mantenedores/centro/edit-centro/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editCentro']);
+
+    Route::post('/admin/mantenedores/perfeccionamiento/add-perfeccionamiento', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addPerfeccionamiento']);
+    Route::put('/admin/mantenedores/perfeccionamiento/edit-perfeccionamiento/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editPerfeccionamiento']);
+
+    Route::get('/mantenedores/causales-admin', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCausalesAdmin']);
+    Route::post('/admin/mantenedores/causal/add-causal', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addCausal']);
+    Route::put('/admin/mantenedores/causal/estado-causal/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'statusCausal']);
+    Route::put('/admin/mantenedores/causal/edit-causal/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editCausal']);
+
+    Route::post('/admin/mantenedores/establecimiento/add-establecimiento', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addEstablecimiento']);
+    Route::put('/admin/mantenedores/establecimiento/edit-establecimiento/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editEstablecimiento']);
+
+    Route::post('/admin/mantenedores/situacion/add-situacion', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addSituacion']);
+    Route::put('/admin/mantenedores/situacion/estado-situacion/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'statusSituacion']);
+    Route::put('/admin/mantenedores/situacion/edit-situacion/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editSituacion']);
