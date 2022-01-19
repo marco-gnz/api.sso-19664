@@ -26,7 +26,7 @@
             <td>{{ $profesional->genero->nombre }}</td>
             <td>{{ $profesional->n_contacto }}</td>
             <td>{{ $profesional->etapa->nombre }}</td>
-            @if ($profesional->especialidades->count() > 0)
+            @if ($profesional->especialidades != null && $profesional->especialidades->count() > 0)
                 @foreach ($profesional->especialidades as $especialidad)
                     @if ($especialidad->paos->count() > 0)
                         @foreach ($especialidad->paos as $pao)
@@ -36,7 +36,7 @@
                     @endif
                 @endforeach
             @endif
-            @if ($profesional->especialidades->count() > 0)
+            @if ($profesional->especialidades != null && $profesional->especialidades->count() > 0)
                 @foreach ($profesional->especialidades as $especialidad)
                     @if ($especialidad->paos->count() > 0)
                         @foreach ($especialidad->paos as $pao)

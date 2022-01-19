@@ -79,8 +79,13 @@ class ExportExcelController extends Controller
                 //edf
                 $profesionales = Profesional::whereIn('id', $profesionalesArray)
                     ->where('estado', true)
-                    ->with('destinaciones.establecimiento', 'destinaciones.gradoComplejidadEstablecimiento', 'destinaciones.unidad',
-                            'especialidades.centroFormador', 'especialidades.perfeccionamiento.tipo')->get();
+                    ->with(
+                        'destinaciones.establecimiento',
+                        'destinaciones.gradoComplejidadEstablecimiento',
+                        'destinaciones.unidad',
+                        'especialidades.centroFormador',
+                        'especialidades.perfeccionamiento.tipo'
+                    )->get();
 
                 $destinaciones = EtapaDestinacion::whereIn('profesional_id', $profesionales->pluck('id'))->get();
 
@@ -95,25 +100,36 @@ class ExportExcelController extends Controller
                 }
             }
 
-
+            $profesional = null;
             $valores = array_count_values($ids);
-            arsort($valores);
+            if (count($valores) > 0) {
+                arsort($valores);
 
-            $id_mas_repetido = array_key_first($valores);
+                $id_mas_repetido = array_key_first($valores);
 
-            $profesional = Profesional::find($id_mas_repetido);
+                $profesional = Profesional::find($id_mas_repetido);
+            }
 
             if ($e == 1) {
-                foreach ($profesional->especialidades as $especialidad) {
-                    $cantidad += $especialidad->paos()->count();
-                    foreach ($especialidad->paos as $pao) {
-                        $cantidad_devo += $pao->devoluciones()->count();
+                if ($profesional) {
+                    foreach ($profesional->especialidades as $especialidad) {
+                        $cantidad += $especialidad->paos()->count();
+                        foreach ($especialidad->paos as $pao) {
+                            $cantidad_devo += $pao->devoluciones()->count();
+                        }
                     }
+                } else {
+                    $cantidad_devo = 0;
                 }
             } else if ($e == 2) {
-                $cantidad_destinacion = $profesional->destinaciones()->count();
+                if ($profesional) {
+                    $cantidad_destinacion   = $profesional->destinaciones()->count();
 
-                $cantidad_formacion = $profesional->especialidades()->where('origen', 'EDF')->count();
+                    $cantidad_formacion     = $profesional->especialidades()->where('origen', 'EDF')->count();
+                } else {
+                    $cantidad_destinacion   = 0;
+                    $cantidad_formacion     = 0;
+                }
             }
 
             if ($e === 1) {
@@ -123,7 +139,7 @@ class ExportExcelController extends Controller
             } else if ($e == 2) {
                 //EDF
                 /* return view('excel.edf', compact('profesionales', 'cantidad_destinacion', 'cantidad_formacion')); */
-                 return Excel::download(new ProfesionalesEdf($profesionales, $cantidad_destinacion, $cantidad_formacion), 'EDF - Profesionales.xlsx');
+                return Excel::download(new ProfesionalesEdf($profesionales, $cantidad_destinacion, $cantidad_formacion), 'EDF - Profesionales.xlsx');
             } else {
                 return false;
             }

@@ -68,7 +68,7 @@ class ProfesionalController extends Controller
         ->establecimiento($etapas, $establecimiento)
         ->with('etapa', 'calidad')
         ->orderBy('apellidos', 'asc')
-        ->paginate(3);
+        ->paginate(10);
 
         return response()->json(
             array(
