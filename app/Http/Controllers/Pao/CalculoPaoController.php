@@ -36,7 +36,8 @@ class CalculoPaoController extends Controller
                     'interrupciones.devolucion.establecimiento',
                     'interrupciones.devolucion.tipoContrato',
                     'interrupciones.pao.devoluciones.establecimiento',
-                    'interrupciones.pao.devoluciones.tipoContrato'
+                    'interrupciones.pao.devoluciones.tipoContrato',
+                    'userAdd'
                 ];
 
                 $paos = Pao::whereIn('especialidad_id', $especialidades->pluck('id'))->with($with)->get();
