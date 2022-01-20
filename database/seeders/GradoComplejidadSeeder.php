@@ -17,27 +17,27 @@ class GradoComplejidadSeeder extends Seeder
         GradoComplejidad::truncate(); //evita duplicar datos
 
         $grado_complejidad = new GradoComplejidad();
-        $grado_complejidad->cod_sirh = 0;
+        $grado_complejidad->cod_sirh = NULL;
         $grado_complejidad->grado = 'A';
         $grado_complejidad->save();
 
         $grado_complejidad = new GradoComplejidad();
-        $grado_complejidad->cod_sirh = 0;
+        $grado_complejidad->cod_sirh = NULL;
         $grado_complejidad->grado = 'B';
         $grado_complejidad->save();
 
         $grado_complejidad = new GradoComplejidad();
-        $grado_complejidad->cod_sirh = 0;
+        $grado_complejidad->cod_sirh = NULL;
         $grado_complejidad->grado = 'C';
         $grado_complejidad->save();
 
         $grado_complejidad = new GradoComplejidad();
-        $grado_complejidad->cod_sirh = 0;
+        $grado_complejidad->cod_sirh = NULL;
         $grado_complejidad->grado = 'D';
         $grado_complejidad->save();
 
         $grado_complejidad = new GradoComplejidad();
-        $grado_complejidad->cod_sirh = 0;
+        $grado_complejidad->cod_sirh = NULL;
         $grado_complejidad->grado = 'E';
         $grado_complejidad->save();
     }

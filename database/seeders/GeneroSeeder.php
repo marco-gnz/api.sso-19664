@@ -14,16 +14,16 @@ class GeneroSeeder extends Seeder
      */
     public function run()
     {
-        Genero::truncate(); //evita duplicar datos   
+        Genero::truncate(); //evita duplicar datos
 
         $genero = new Genero();
-        $genero->cod_sirh = 0;
+        $genero->cod_sirh = NULL;
         $genero->sigla = 'F';
         $genero->nombre = 'Femenino';
         $genero->save();
 
         $genero = new Genero();
-        $genero->cod_sirh = 0;
+        $genero->cod_sirh = NULL;
         $genero->sigla = 'M';
         $genero->nombre = 'Masculino';
         $genero->save();

@@ -14,15 +14,15 @@ class CalidadJuridicaSeeder extends Seeder
      */
     public function run()
     {
-        CalidadJuridica::truncate(); //evita duplicar datos   
+        CalidadJuridica::truncate(); //evita duplicar datos
 
         $calidad_juridica = new CalidadJuridica();
-        $calidad_juridica->cod_sirh = 0;
+        $calidad_juridica->cod_sirh = NULL;
         $calidad_juridica->nombre = 'CONTRATADOS';
         $calidad_juridica->save();
 
         $calidad_juridica = new CalidadJuridica();
-        $calidad_juridica->cod_sirh = 0;
+        $calidad_juridica->cod_sirh = NULL;
         $calidad_juridica->nombre = 'TITULARES';
         $calidad_juridica->save();
     }

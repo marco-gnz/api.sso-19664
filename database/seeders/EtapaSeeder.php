@@ -17,25 +17,25 @@ class EtapaSeeder extends Seeder
         Etapa::truncate(); //evita duplicar datos
 
         $etapa = new Etapa();
-        $etapa->cod_sirh = 0;
+        $etapa->cod_sirh = NULL;
         $etapa->nombre = 'Periodo asistencial obligatorio';
         $etapa->sigla = 'PAO';
         $etapa->save();
 
         $etapa = new Etapa();
-        $etapa->cod_sirh = 1;
+        $etapa->cod_sirh = NULL;
         $etapa->nombre = 'Destinación y formación';
         $etapa->sigla = 'EDF';
         $etapa->save();
 
         $etapa = new Etapa();
-        $etapa->cod_sirh = 2;
+        $etapa->cod_sirh = NULL;
         $etapa->nombre = 'Planta directiva';
         $etapa->sigla = 'PD';
         $etapa->save();
 
         $etapa = new Etapa();
-        $etapa->cod_sirh = 3;
+        $etapa->cod_sirh = NULL;
         $etapa->nombre = 'Planta superior';
         $etapa->sigla = 'PS';
         $etapa->save();

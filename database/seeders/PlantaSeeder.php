@@ -14,25 +14,25 @@ class PlantaSeeder extends Seeder
      */
     public function run()
     {
-        Planta::truncate(); //evita duplicar datos   
+        Planta::truncate(); //evita duplicar datos
 
         $planta = new Planta();
-        $planta->cod_sirh = '0000';
+        $planta->cod_sirh = NULL;
         $planta->nombre = 'DIRECTIVOS';
         $planta->save();
 
         $planta = new Planta();
-        $planta->cod_sirh = '0000';
+        $planta->cod_sirh = NULL;
         $planta->nombre = 'MEDICOS';
         $planta->save();
 
         $planta = new Planta();
-        $planta->cod_sirh = '0000';
+        $planta->cod_sirh = NULL;
         $planta->nombre = 'ODONTOLOGOS';
         $planta->save();
 
         $planta = new Planta();
-        $planta->cod_sirh = '0000';
+        $planta->cod_sirh = NULL;
         $planta->nombre = 'QUÍMICOS';
         $planta->save();
     }

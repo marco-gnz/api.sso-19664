@@ -17,12 +17,12 @@ class UnidadSeeder extends Seeder
         Unidad::truncate(); //evita duplicar datos
 
         $unidad = new Unidad();
-        $unidad->cod_sirh = 0;
+        $unidad->cod_sirh = NULL;
         $unidad->nombre = 'URGENCIA ADULTOS';
         $unidad->save();
 
         $unidad = new Unidad();
-        $unidad->cod_sirh = 0;
+        $unidad->cod_sirh = NULL;
         $unidad->nombre = 'SERVICIO CLÍNICO MEDICINA';
         $unidad->save();
     }

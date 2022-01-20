@@ -14,20 +14,20 @@ class CausalSeeder extends Seeder
      */
     public function run()
     {
-        Causal::truncate(); //evita duplicar datos   
+        Causal::truncate(); //evita duplicar datos
 
         $causal = new Causal();
-        $causal->cod_sirh = 0;
+        $causal->cod_sirh = NULL;
         $causal->nombre = 'LICENCIA MEDICA - ENFERMEDAD';
         $causal->save();
 
         $causal = new Causal();
-        $causal->cod_sirh = 0;
+        $causal->cod_sirh = NULL;
         $causal->nombre = 'CURSANDO SUBESPECIALIDAD';
         $causal->save();
 
         $causal = new Causal();
-        $causal->cod_sirh = 0;
+        $causal->cod_sirh = NULL;
         $causal->nombre = 'LICENCIA MEDICA - ACCIDENTE DE TRABAJO';
         $causal->save();
     }
