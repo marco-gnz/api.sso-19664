@@ -123,8 +123,8 @@ class UsuariosController extends Controller
             $usuario = User::create($request->only($form));
 
             $segundo_nombre = ($usuario->segundo_nombre != null || $usuario->segundo_nombre != '') ? substr($usuario->segundo_nombre, 0, 1) : '';
-            $sigla          = substr($usuario->primer_nombre, 0, 1) . '' . substr($usuario->segundo_nombre, 0, 1) . '' . substr($usuario->apellido_paterno, 0, 1) . '' . substr($usuario->apellido_materno, 0, 1);
-            $otros_datos = $usuario->update([
+            $sigla          = substr($usuario->primer_nombre, 0, 1) . '' . $segundo_nombre . '' . substr($usuario->apellido_paterno, 0, 1) . '' . substr($usuario->apellido_materno, 0, 1);
+            $otros_datos    = $usuario->update([
                 'password'                  => bcrypt(substr($usuario->rut, 0, 5)),
                 'sigla'                     => $sigla,
                 'usuario_add_id'            => auth()->user()->id,
@@ -166,7 +166,7 @@ class UsuariosController extends Controller
                 $update = $usuario->update($request->only($form));
 
                 $segundo_nombre = ($usuario->segundo_nombre != null || $usuario->segundo_nombre != '') ? substr($usuario->segundo_nombre, 0, 1) : '';
-                $sigla          = substr($usuario->primer_nombre, 0, 1) . '' . substr($usuario->segundo_nombre, 0, 1) . '' . substr($usuario->apellido_paterno, 0, 1) . '' . substr($usuario->apellido_materno, 0, 1);
+                $sigla          = substr($usuario->primer_nombre, 0, 1) . '' . $segundo_nombre . '' . substr($usuario->apellido_paterno, 0, 1) . '' . substr($usuario->apellido_materno, 0, 1);
 
                 $otros_datos    = $usuario->update([
                     'sigla'                        => $sigla,

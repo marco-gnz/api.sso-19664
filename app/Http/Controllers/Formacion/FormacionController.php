@@ -72,7 +72,6 @@ class FormacionController extends Controller
                     $formacion = Especialidad::create($request->all());
 
                     $update = $formacion->update([
-                        'origen'         => 'PAO',
                         'usuario_add_id' => auth()->user()->id,
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
@@ -93,16 +92,26 @@ class FormacionController extends Controller
         }
     }
 
-    public function removeFormacion(Request $request)
+    public function removeFormacion($id)
     {
         try {
-            $formacion = Especialidad::where('uuid', $request->uuid)->first();
+            $formacion = Especialidad::find($id);
 
-            $delete = $formacion->delete();
-            if ($delete) {
-                return response()->json(true);
-            } else {
-                return response()->json(false);
+            if ($formacion) {
+                if ($formacion->escrituras != null && $formacion->escrituras()->count() > 0) {
+                    return response()->json('passing_escrituras');
+                } else if ($formacion->convenios != null && $formacion->convenios()->count() > 0) {
+                    return response()->json('passing_convenios');
+                } else if ($formacion->paos != null && $formacion->paos()->count() > 0) {
+                    return response()->json('paos');
+                } else {
+                    $delete = $formacion->delete();
+                    if ($delete) {
+                        return response()->json(true);
+                    } else {
+                        return response()->json(false);
+                    }
+                }
             }
         } catch (\Exception $error) {
             return response()->json($error->getMessage());

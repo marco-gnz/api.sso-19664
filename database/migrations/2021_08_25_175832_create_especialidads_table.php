@@ -20,7 +20,7 @@ class CreateEspecialidadsTable extends Migration
             $table->date('inicio_formacion')->nullable();
             $table->date('termino_formacion')->nullable();
             $table->text('observacion')->nullable();
-            $table->enum('origen',['EDF','PAO', 'ART.8'])->nullable()->default('ART.8');
+            $table->enum('origen',['EDF','PAO', 'OTROS'])->nullable()->default('PAO');
 
             $table->unsignedBigInteger('profesional_id')->nullable();
             $table->foreign('profesional_id')->references('id')->on('profesionals');

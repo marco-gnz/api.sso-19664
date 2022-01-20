@@ -38,9 +38,19 @@ class ProfesionalController extends Controller
 
     public function getProfesional(Request $request, $uuid)
     {
-        $profesional = Profesional::where('uuid', $uuid)->first();
+        try {
+            $profesional = Profesional::with('especialidades', 'destinaciones')->where('uuid', $uuid)->first();
 
-        return response()->json($profesional);
+            if($profesional){
+                return response()->json($profesional);
+            }else{
+                return false;
+            }
+
+
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
     }
 
     public function getProfesionales(Request $request)
@@ -60,15 +70,15 @@ class ProfesionalController extends Controller
         $establecimiento    = ($request->establecimiento != '') ? $request->establecimiento : [];
 
         $profesionales = Profesional::general($input)
-        ->etapaProfesional($etapas)
-        ->perfeccionamiento($perfecion)
-        ->paos($inicio_f_pao, $termino_f_pao)
-        ->destinacion($inicio_f_ed, $termino_f_ed)
-        ->formacion($inicio_f_ef, $termino_f_ef)
-        ->establecimiento($etapas, $establecimiento)
-        ->with('etapa', 'calidad')
-        ->orderBy('apellidos', 'asc')
-        ->paginate(10);
+            ->etapaProfesional($etapas)
+            ->perfeccionamiento($perfecion)
+            ->paos($inicio_f_pao, $termino_f_pao)
+            ->destinacion($inicio_f_ed, $termino_f_ed)
+            ->formacion($inicio_f_ef, $termino_f_ef)
+            ->establecimiento($etapas, $establecimiento)
+            ->with('etapa', 'calidad')
+            ->orderBy('apellidos', 'asc')
+            ->paginate(10);
 
         return response()->json(
             array(

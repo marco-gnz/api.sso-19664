@@ -27,6 +27,7 @@ class StoreFormacionRequest extends FormRequest
             'fecha_registro'            => 'required',
             'inicio_formacion'          => 'required',
             'termino_formacion'         => 'required',
+            'origen'                    => 'required',
             'observacion'               => 'nullable | max:100',
             'profesional_id'            => 'required',
             'centro_formador_id'        => 'required',
@@ -38,6 +39,7 @@ class StoreFormacionRequest extends FormRequest
     {
         return [
             'fecha_registro.required'           => 'La :attribute es obligatorio',
+            'origen.required'                   => 'El :attribute es obligatorio',
             'inicio_formacion.required'         => 'El :attribute es obligatorio',
             'termino_formacion.required'        => 'El :attribute es obligatorio',
             'observacion.max'                   => 'La :attribute son máximo :max caracteres',
@@ -51,6 +53,7 @@ class StoreFormacionRequest extends FormRequest
     {
         return [
            'fecha_registro'                 => 'fecha de registro',
+           'origen'                         => 'motivo',
            'inicio_formacion'               => 'periodo de formación',
            'termino_formacion'              => 'periodo de formación',
             'centro_formador_id'            => 'centro formador',

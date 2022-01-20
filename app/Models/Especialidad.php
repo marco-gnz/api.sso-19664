@@ -37,6 +37,16 @@ class Especialidad extends Model
         return $this->hasMany(Pao::class);
     }
 
+    public function escrituras()
+    {
+        return $this->hasMany(Escritura::class);
+    }
+
+    public function convenios()
+    {
+        return $this->hasMany(Convenio::class);
+    }
+
     public function userAdd()
     {
         return $this->hasOne(User::class, 'id','usuario_add_id');
