@@ -31,6 +31,11 @@ class Convenio extends Model
         return $this->hasOne(User::class, 'id','usuario_add_id');
     }
 
+    public function facturas()
+    {
+        return $this->hasMany(Factura::class);
+    }
+
     public function userUpdate()
     {
         return $this->hasOne(User::class, 'id','usuario_update_id');
