@@ -78,7 +78,23 @@ class CalculoPaoController extends Controller
                     'usuario_add_id'    => auth()->user()->id,
                     'fecha_add'         => Carbon::now()->toDateTimeString()
                 ]);
-                $with = ['especialidad', 'especialidad.perfeccionamiento.tipo', 'devoluciones', 'devoluciones.tipoContrato', 'devoluciones.establecimiento', 'devoluciones.establecimiento.redHospitalaria', 'devoluciones.pao.especialidad', 'interrupciones.causal', 'devoluciones.interrupciones', 'interrupciones.devolucion.establecimiento', 'interrupciones.devolucion.tipoContrato', 'interrupciones.pao.devoluciones.establecimiento', 'interrupciones.pao.devoluciones.tipoContrato'];
+                $with = [
+                    'especialidad',
+                    'especialidad.perfeccionamiento.tipo',
+                    'devoluciones',
+                    'devoluciones.tipoContrato',
+                    'devoluciones.establecimiento',
+                    'devoluciones.establecimiento.redHospitalaria',
+                    'devoluciones.pao.especialidad',
+                    'interrupciones.causal',
+                    'devoluciones.interrupciones',
+                    'devoluciones.escritura',
+                    'interrupciones.devolucion.establecimiento',
+                    'interrupciones.devolucion.tipoContrato',
+                    'interrupciones.pao.devoluciones.establecimiento',
+                    'interrupciones.pao.devoluciones.tipoContrato',
+                    'userAdd'
+                ];
                 $calculo_pao  = $calculo_pao->fresh($with);
                 if ($calculo_pao) {
                     return response()->json(array(true, $calculo_pao));
@@ -152,7 +168,8 @@ class CalculoPaoController extends Controller
                     'interrupciones.devolucion.establecimiento',
                     'interrupciones.devolucion.tipoContrato',
                     'interrupciones.pao.devoluciones.establecimiento',
-                    'interrupciones.pao.devoluciones.tipoContrato'
+                    'interrupciones.pao.devoluciones.tipoContrato',
+                    'userAdd'
                 ];
 
                 $pao = $pao->fresh($with);
