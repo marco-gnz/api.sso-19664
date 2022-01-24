@@ -53,7 +53,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
 
     //excel-report
     Route::get('/profesionales/excel-search', [App\Http\Controllers\Exports\ExportExcelController::class, 'getProfesionales']);
-    Route::get('/profesionales/excel-report/{ids}/{etapa}', [App\Http\Controllers\Exports\ExportExcelController::class, 'export']);
+    Route::get('/profesionales/excel-report/{ids}/{etapas}', [App\Http\Controllers\Exports\ExportExcelController::class, 'exportProfesionales']);
 
     //especialidades
     Route::post('/profesionales/profesional/add-formacion', [App\Http\Controllers\Formacion\FormacionController::class, 'storeFormacion']);

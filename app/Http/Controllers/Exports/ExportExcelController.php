@@ -7,6 +7,7 @@ use App\Models\Etapa;
 use App\Models\Profesional;
 use App\Exports\ProfesionalesPao;
 use App\Exports\ProfesionalesEdf;
+use App\Exports\ProfesionalesExport;
 use App\Models\Especialidad;
 use App\Models\EtapaDestinacion;
 use Illuminate\Http\Request;
@@ -34,7 +35,9 @@ class ExportExcelController extends Controller
 
         $establecimiento    = isset($request->establecimiento) ? $request->establecimiento : [];
 
-        $etapaFirst         = Etapa::whereIn('id', $etapas)->first();
+        $estados            = ($request->estados) ? $request->estados : [];
+
+        $etapasIds          = Etapa::whereIn('id', $etapas)->pluck('id');
 
         $profesionales = Profesional::etapaProfesional($etapas)
             ->perfeccionamiento($perfecion)
@@ -42,14 +45,112 @@ class ExportExcelController extends Controller
             ->destinacion($inicio_f_ed, $termino_f_ed)
             ->formacion($inicio_f_ef, $termino_f_ef)
             ->establecimiento($etapas, $establecimiento)
-            ->with('etapa', 'calidad')
+            ->estado($estados)
             ->orderBy('apellidos', 'asc')
             ->get();
 
         if ($profesionales->count() > 0) {
-            return response()->json(array(true, $profesionales->pluck('id'), $etapaFirst->id));
+            return response()->json(array(true, $profesionales->pluck('id'), $etapasIds));
         } else {
             return response()->json(false);
+        }
+    }
+
+    public function exportProfesionales($ids, $etapas)
+    {
+        try {
+            $profesionalesArrayId       = explode(',', $ids);
+            $profesionalesArrayEtapa    = explode(',', $etapas);
+
+            $total_pao                          = 0;
+            $total_especialidades               = 0;
+            $total_destinaciones                = 0;
+            $array_users_ids_especialidades     = [];
+            $array_users_ids_destinaciones      = [];
+
+
+            $total_devoluciones = 0;
+
+            $with = [
+                'etapa',
+                'situacionActual',
+                'genero',
+                'calidad',
+                'especialidades.centroFormador',
+                'especialidades.perfeccionamiento',
+                'especialidades.paos.devoluciones.tipoContrato',
+                'especialidades.paos.devoluciones.establecimiento',
+                'especialidades.paos.devoluciones.escritura',
+                'especialidades.paos.interrupciones.causal',
+                'destinaciones.establecimiento',
+                'destinaciones.gradoComplejidadEstablecimiento',
+                'destinaciones.unidad',
+                'userAdd',
+                'userUpdate'
+            ];
+
+
+
+            $profesionales  = Profesional::whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
+
+            $especialidades = Especialidad::whereIn('profesional_id', $profesionales->pluck('id'))->get();
+            $destinaciones  = EtapaDestinacion::whereIn('profesional_id', $profesionales->pluck('id'))->get();
+
+
+            foreach ($especialidades as $especialidad) {
+                array_push($array_users_ids_especialidades, $especialidad->profesional_id);
+            }
+
+            foreach ($destinaciones as $destinacion) {
+                array_push($array_users_ids_destinaciones, $destinacion->profesional_id);
+            }
+
+            $profesional = null;
+            $total_users_especialidades = array_count_values($array_users_ids_especialidades);
+            $total_users_destinaciones  = array_count_values($array_users_ids_destinaciones);
+
+            //total rows formaciones EDF - PAO
+
+
+            //total rows devoluciones
+            if (count($total_users_especialidades) > 0) {
+                arsort($total_users_especialidades);
+
+                $id_user_repetido_especialidad = array_key_first($total_users_especialidades);
+
+                $profesional_especialidad = Profesional::find($id_user_repetido_especialidad);
+
+                if ($profesional_especialidad) {
+                    foreach ($profesional_especialidad->especialidades as $especialidad) {
+                        $total_pao += $especialidad->paos()->count();
+                        foreach ($especialidad->paos as $pao) {
+                            $total_devoluciones += $pao->devoluciones()->count();
+                        }
+                    }
+                } else {
+                    $total_devoluciones = 0;
+                }
+            }
+
+            //total rows destinaciones
+            if ($total_users_destinaciones) {
+                arsort($total_users_destinaciones);
+
+                $id_user_repetido_destinacion = array_key_first($total_users_destinaciones);
+
+                $profesional_destinacion = Profesional::find($id_user_repetido_destinacion);
+
+                if ($profesional_destinacion) {
+                    $total_destinaciones = $profesional_destinacion->destinaciones()->count();
+                } else {
+                    $total_destinaciones = 0;
+                }
+            }
+
+            /* return view('excel.profesionales', compact('profesionales', 'total_pao', 'total_devoluciones', 'total_destinaciones')); */
+            return Excel::download(new ProfesionalesExport($profesionales, $total_pao, $total_devoluciones, $total_destinaciones), 'LEY MEDICA - PROFESIONALES.xlsx');
+        } catch (\Exception $error) {
+            return $error->getMessage();
         }
     }
 

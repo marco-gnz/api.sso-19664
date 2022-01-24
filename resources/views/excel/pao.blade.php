@@ -7,6 +7,7 @@
         <th>GENERO</th>
         <th>N° CONTACTO</th>
         <th>ETAPA</th>
+        <th>SITUACION ACTUAL</th>
         @for ($i = 0; $i < $cantidad; $i++)
         <th>INICIO PAO {{$i+1}}</th>
         <th>TERMINO PAO {{$i+1}}</th>
@@ -26,6 +27,7 @@
             <td>{{ $profesional->genero->nombre }}</td>
             <td>{{ $profesional->n_contacto }}</td>
             <td>{{ $profesional->etapa->nombre }}</td>
+            <td>{{ ($profesional->situacionActual != null) ? $profesional->situacionActual->nombre : ''}}</td>
             @if ($profesional->especialidades != null && $profesional->especialidades->count() > 0)
                 @foreach ($profesional->especialidades as $especialidad)
                     @if ($especialidad->paos->count() > 0)

@@ -32,6 +32,11 @@ class Profesional extends Model
         return $this->hasOne(CalidadJuridica::class, 'id', 'calidad_juridica_id');
     }
 
+    public function situacionActual()
+    {
+        return $this->hasOne(SituacionActual::class, 'id', 'situacion_actual_id');
+    }
+
     public function especialidades()
     {
         return $this->hasMany(Especialidad::class);
@@ -130,5 +135,11 @@ class Profesional extends Model
                 });
             });
         }
+    }
+
+    public function scopeEstado($query, $search)
+    {
+        if ($search)
+            return $query->whereIn('estado', $search);
     }
 }
