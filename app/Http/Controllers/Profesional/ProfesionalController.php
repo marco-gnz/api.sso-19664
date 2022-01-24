@@ -69,6 +69,8 @@ class ProfesionalController extends Controller
 
         $establecimiento    = ($request->establecimiento != '') ? $request->establecimiento : [];
 
+        $estados            = ($request->estados != '') ? $request->estados : [];
+
         $profesionales = Profesional::general($input)
             ->etapaProfesional($etapas)
             ->perfeccionamiento($perfecion)
@@ -76,6 +78,7 @@ class ProfesionalController extends Controller
             ->destinacion($inicio_f_ed, $termino_f_ed)
             ->formacion($inicio_f_ef, $termino_f_ef)
             ->establecimiento($etapas, $establecimiento)
+            ->estado($estados)
             ->with('etapa', 'calidad')
             ->orderBy('apellidos', 'asc')
             ->paginate(10);
