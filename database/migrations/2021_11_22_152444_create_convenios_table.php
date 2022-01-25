@@ -16,7 +16,7 @@ class CreateConveniosTable extends Migration
         Schema::create('convenios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->nullable();
-            $table->json('anios_arancel');
+            $table->text('anios_arancel');
             $table->decimal('valor_arancel', 10, 0)->nullable();
             //si existe un n° de resolución enviar notificación que ya existe, si la quiere ingresar de igual forma se le concatena un número. Ej: 273-1, 273-2
             $table->integer('n_resolucion')->unique();

@@ -22,7 +22,7 @@ class CreateFacturasTable extends Migration
             $table->date('fecha_emision_factura');
             $table->date('fecha_vencimiento_factura')->nullable();
             $table->string('cargo_item')->nullable();
-            $table->json('anios_pago');
+            $table->text('anios_pago');
             $table->decimal('monto_total', 10, 0)->nullable();
             $table->text('observacion')->nullable();
 
