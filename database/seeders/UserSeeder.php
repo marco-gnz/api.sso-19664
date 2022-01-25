@@ -22,43 +22,23 @@ class UserSeeder extends Seeder
         $user->rut = 19270290;
         $user->dv = '9';
         $user->rut_completo = $user->rut.'-'.$user->dv;
-        $user->primer_nombre = 'Marco';
-        $user->segundo_nombre = 'Ignacio';
-        $user->apellido_materno = 'González';
-        $user->apellido_paterno = 'Azócar';
-        $user->email = 'marcoignacio.9637@gmail.com';
-        $user->password = bcrypt('mamasa20');
-        $user->genero_id = 1;
+        $user->primer_nombre = 'MARCO';
+        $user->segundo_nombre = 'IGNACIO';
+        $user->apellido_materno = 'AZÓCAR';
+        $user->apellido_paterno = 'GONZÁLEZ';
+        $user->nombre_completo  = $user->primer_nombre.' '.$user->segundo_nombre.' '.$user->apellido_paterno.' '.$user->apellido_materno;
+        $user->email = 'marcoi.gonzalez@redsalud.gob.cl';
+        $user->password = bcrypt(substr($user->rut, 0, 5));
+        $user->genero_id = 2;
         $user->save();
 
         $user->update([
-            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_paterno, 0, 1).''.substr($user->apellido_materno, 0, 1)
+            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_paterno, 0, 1).''.substr($user->apellido_materno, 0, 1),
+
         ]);
 
-        $user->createToken('test');
+        $user->createToken('19664');
 
         $user->assignRole('SUPER-ADMIN');
-
-
-        $user = new User();
-        $user->uuid = Str::uuid();
-        $user->rut = 17654876;
-        $user->dv = 'K';
-        $user->rut_completo = $user->rut.'-'.$user->dv;
-        $user->primer_nombre = 'Daniel';
-        $user->segundo_nombre = 'Ruben';
-        $user->apellido_materno = 'Arias';
-        $user->apellido_paterno = 'Bravo';
-        $user->email = 'daniel@gmail.com';
-        $user->password = bcrypt('mamasa20');
-        $user->genero_id = 1;
-        $user->save();
-
-        $user->update([
-            'sigla' => substr($user->primer_nombre, 0, 1).''.substr($user->segundo_nombre, 0, 1).''.substr($user->apellido_paterno, 0, 1).''.substr($user->apellido_materno, 0, 1)
-        ]);
-
-        $user->createToken('test');
-        $user->assignRole('AUDITOR');
     }
 }

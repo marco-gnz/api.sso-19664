@@ -20,7 +20,13 @@ class LoginController extends Controller
     public function login(AuthenticatedRequest $request)
     {
         //attempt: el user intenta iniciar sesión
-        if (!auth()->guard()->attempt($request->only('email', 'password'))) {
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && $user->estado != 1) {
+            return response('inhabilitado', 503);
+        }
+
+        if (!$user || !auth()->guard()->attempt($request->only('email', 'password'))) {
             throw new AuthenticationException();
         }
 
