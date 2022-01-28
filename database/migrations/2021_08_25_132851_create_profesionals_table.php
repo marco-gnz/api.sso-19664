@@ -22,9 +22,9 @@ class CreateProfesionalsTable extends Migration
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('nombre_completo');
-            $table->string('email')->unique()->nullable();
-            $table->string('n_contacto')->unique()->nullable();
-            $table->string('ciudad');
+            $table->string('email')->nullable();
+            $table->string('n_contacto')->nullable();
+            $table->string('ciudad')->nullable();
             $table->boolean('estado')->default(1);
 
             $table->unsignedBigInteger('etapas_id')->nullable();

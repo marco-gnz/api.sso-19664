@@ -34,9 +34,9 @@
                 <td>{{ $profesional->rut_completo }}</td>
                 <td>{{ $profesional->nombres }}</td>
                 <td>{{ $profesional->apellidos }}</td>
-                <td>{{ $profesional->genero->nombre }}</td>
-                <td>{{ $profesional->n_contacto }}</td>
-                <td>{{ $profesional->etapa->nombre }}</td>
+                <td>{{ ($profesional->genero != null) ? $profesional->genero->nombre : '' }}</td>
+                <td>{{ ($profesional->n_contacto != null) ? $profesional->n_contacto :'' }}</td>
+                <td>{{ ($profesional->etapa != null) ? $profesional->etapa->nombre : ''}}</td>
                 <td>{{ ($profesional->situacionActual != null) ? $profesional->situacionActual->nombre : ''}}</td>
                 @foreach ($profesional->especialidades as $especialidad)
                     @if ($especialidad->paos->count() > 0)

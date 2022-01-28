@@ -15,7 +15,7 @@ class ProfesionalSeeder extends Seeder
      */
     public function run()
     {
-        Profesional::truncate(); //evita duplicar datos   
+        /* Profesional::truncate(); //evita duplicar datos
 
         $profesional                        = new Profesional();
         $profesional->uuid                  = Str::uuid();
@@ -30,6 +30,6 @@ class ProfesionalSeeder extends Seeder
         $profesional->calidad_juridica_id   = 1;
         $profesional->planta_id             = 2;
         $profesional->genero_id             = 2;
-        $profesional->save();
+        $profesional->save(); */
     }
 }

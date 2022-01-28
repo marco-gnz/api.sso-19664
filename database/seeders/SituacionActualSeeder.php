@@ -47,5 +47,25 @@ class SituacionActualSeeder extends Seeder
         $situacionActual = new SituacionActual();
         $situacionActual->nombre = 'CICLO CONCLUIDO';
         $situacionActual->save();
+
+        $situacionActual = new SituacionActual();
+        $situacionActual->nombre = 'PAO FORMACIÓN';
+        $situacionActual->save();
+
+        $situacionActual = new SituacionActual();
+        $situacionActual->nombre = 'CICLO CONCLUIDO';
+        $situacionActual->save();
+
+        $situacionActual = new SituacionActual();
+        $situacionActual->nombre = 'PAO INTERRUMPIDO';
+        $situacionActual->save();
+
+        $situacionActual = new SituacionActual();
+        $situacionActual->nombre = 'TRASLADO PAO';
+        $situacionActual->save();
+
+        $situacionActual = new SituacionActual();
+        $situacionActual->nombre = 'RENUNCIA';
+        $situacionActual->save();
     }
 }

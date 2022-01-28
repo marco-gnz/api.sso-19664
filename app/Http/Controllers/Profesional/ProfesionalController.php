@@ -81,7 +81,7 @@ class ProfesionalController extends Controller
             ->estado($estados)
             ->with('etapa', 'calidad', 'situacionActual')
             ->orderBy('apellidos', 'asc')
-            ->paginate(10);
+            ->paginate(50);
 
         return response()->json(
             array(

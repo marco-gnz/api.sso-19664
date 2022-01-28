@@ -33,7 +33,7 @@ class UpdateProfesionalRequest extends FormRequest
             'nombre_completo'       => 'required',
             'email'                 => ['nullable','email', Rule::unique('profesionals', 'email')->ignore($this->id)],
             'n_contacto'            => ['nullable', Rule::unique('profesionals', 'n_contacto')->ignore($this->id)],
-            'ciudad'                => 'required',
+            'ciudad'                => 'nullable',
             'etapas_id'             => 'required',
             'calidad_juridica_id'   => 'required',
             'planta_id'             => 'required',
