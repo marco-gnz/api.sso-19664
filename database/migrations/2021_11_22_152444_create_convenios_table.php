@@ -16,7 +16,7 @@ class CreateConveniosTable extends Migration
         Schema::create('convenios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->uuid('uuid')->unique()->nullable();
-            $table->text('anios_arancel');
+            $table->text('anios_arancel')->nullable();
             $table->decimal('valor_arancel', 10, 0)->nullable();
             //si existe un n° de resolución enviar notificación que ya existe, si la quiere ingresar de igual forma se le concatena un número. Ej: 273-1, 273-2
             $table->integer('n_resolucion')->unique();
@@ -25,6 +25,12 @@ class CreateConveniosTable extends Migration
 
             $table->unsignedBigInteger('especialidad_id')->nullable();
             $table->foreign('especialidad_id')->references('id')->on('especialidads');
+
+            $table->unsignedBigInteger('profesional_id')->nullable();
+            $table->foreign('profesional_id')->references('id')->on('profesionals');
+
+            $table->unsignedBigInteger('tipo_convenio_id')->nullable();
+            $table->foreign('tipo_convenio_id')->references('id')->on('tipo_convenios');
 
             $table->unsignedBigInteger('usuario_add_id')->nullable();
             $table->foreign('usuario_add_id')->references('id')->on('users');

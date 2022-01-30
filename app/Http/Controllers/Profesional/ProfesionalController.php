@@ -39,7 +39,7 @@ class ProfesionalController extends Controller
     public function getProfesional(Request $request, $uuid)
     {
         try {
-            $profesional = Profesional::with('especialidades', 'destinaciones')->where('uuid', $uuid)->first();
+            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->where('uuid', $uuid)->first();
 
             if($profesional){
                 return response()->json($profesional);

@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoFacturaSeeder::class);
         $this->call(TipoDocumentoSeeder::class);
         $this->call(SituacionActualSeeder::class);
+        $this->call(TipoConvenioSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

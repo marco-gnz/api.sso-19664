@@ -18,7 +18,7 @@ class DocumentoGenericoController extends Controller
         try {
             $profesional = Profesional::where('uuid', $request->uuid)->first();
             if ($profesional) {
-                $documento_genericos = DocumentoGenerico::with('tipoDocumento', 'profesional')->where('profesional_id', $profesional->id)->get();
+                $documento_genericos = DocumentoGenerico::with('tipoDocumento', 'profesional', 'userAdd', 'userUpdate')->where('profesional_id', $profesional->id)->get();
 
                 return response()->json($documento_genericos);
             }
@@ -42,7 +42,7 @@ class DocumentoGenericoController extends Controller
                     'fecha_add'      => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with                   = ['tipoDocumento', 'profesional'];
+                $with                   = ['tipoDocumento', 'profesional', 'userAdd', 'userUpdate'];
                 $documento_generico     = $documento_generico->fresh($with);
 
                 if ($documento_generico && $update) {
@@ -71,7 +71,7 @@ class DocumentoGenericoController extends Controller
                     'fecha_update'      => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with                   = ['tipoDocumento', 'profesional'];
+                $with                   = ['tipoDocumento', 'profesional', 'userAdd', 'userUpdate'];
                 $documento_generico     = $documento_generico->fresh($with);
 
                 if ($documento_generico && $update) {

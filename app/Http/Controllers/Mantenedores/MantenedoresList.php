@@ -30,6 +30,7 @@ use App\Models\RedHospitalaria;
 use App\Models\SituacionActual;
 use App\Models\SituacionFactura;
 use App\Models\TipoContratos;
+use App\Models\TipoConvenio;
 use App\Models\TipoDocumento;
 use App\Models\TipoFactura;
 use App\Models\TipoPerfeccionamiento;
@@ -122,6 +123,16 @@ class MantenedoresList extends Controller
         try {
             $etapas = Etapa::orderBy('nombre', 'asc')->get();
             return response()->json($etapas, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function getTipoConvenio()
+    {
+        try {
+            $tipoConvenios = TipoConvenio::orderBy('nombre', 'asc')->get();
+            return response()->json($tipoConvenios, 200);
         } catch (\Exception $error) {
             return response()->json($error->getMessage());
         }

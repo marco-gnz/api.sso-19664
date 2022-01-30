@@ -36,8 +36,26 @@ class EtapaSeeder extends Seeder
 
         $etapa = new Etapa();
         $etapa->cod_sirh = NULL;
-        $etapa->nombre = 'Planta superior';
-        $etapa->sigla = 'PS';
+        $etapa->nombre = 'Planta superior nivel 1';
+        $etapa->sigla = 'PS NIV. 1';
+        $etapa->save();
+
+        $etapa = new Etapa();
+        $etapa->cod_sirh = NULL;
+        $etapa->nombre = 'Planta superior nivel 2';
+        $etapa->sigla = 'PS NIV. 2';
+        $etapa->save();
+
+        $etapa = new Etapa();
+        $etapa->cod_sirh = NULL;
+        $etapa->nombre = 'Planta superior nivel 3';
+        $etapa->sigla = 'PS NIV. 3';
+        $etapa->save();
+
+        $etapa = new Etapa();
+        $etapa->cod_sirh = NULL;
+        $etapa->nombre = 'Becario';
+        $etapa->sigla = 'Becario';
         $etapa->save();
     }
 }

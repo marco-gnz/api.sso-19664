@@ -24,12 +24,14 @@ class StoreConvenioRequest extends FormRequest
     public function rules()
     {
         return [
-            'anios_arancel'             => 'required',
+            'profesional_id'            => 'required',
+            'anios_arancel'             => 'nullable',
             'valor_arancel'             => 'required',
             'n_resolucion'              => 'required | unique:convenios',
             'fecha_resolucion'          => 'required',
             'observacion'               => 'nullable',
-            'especialidad_id'           => 'required'
+            'especialidad_id'           => 'nullable',
+            'tipo_convenio_id'          => 'required'
         ];
     }
 
@@ -41,7 +43,8 @@ class StoreConvenioRequest extends FormRequest
             'n_resolucion.required'            => 'El :attribute es obligatorio',
             'n_resolucion.unique'              => 'El :attribute ya existe',
             'fecha_resolucion.required'        => 'La :attribute es obligatoria',
-            'especialidad_id.required'         => 'La :attribute es obligatoria'
+            'especialidad_id.required'         => 'La :attribute es obligatoria',
+            'tipo_convenio_id.required'        => 'El :attribute es obligatorio'
         ];
     }
 
@@ -53,6 +56,7 @@ class StoreConvenioRequest extends FormRequest
            'n_resolucion'                  => 'n° resolución',
            'fecha_resolucion'              => 'fecha resolución',
            'especialidad_id'               => 'especialidad',
+           'tipo_convenio_id'               => 'tipo de convenio'
         ];
     }
 }

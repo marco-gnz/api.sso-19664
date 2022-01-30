@@ -32,6 +32,11 @@ class Profesional extends Model
         return $this->hasOne(CalidadJuridica::class, 'id', 'calidad_juridica_id');
     }
 
+    public function convenios()
+    {
+        return $this->hasMany(Convenio::class);
+    }
+
     public function situacionActual()
     {
         return $this->hasOne(SituacionActual::class, 'id', 'situacion_actual_id');

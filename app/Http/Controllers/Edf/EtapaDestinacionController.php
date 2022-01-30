@@ -12,11 +12,11 @@ use Carbon\Carbon;
 
 class EtapaDestinacionController extends Controller
 {
-    //validación total EDF (9 AÑOS)
+    //validación total EDF (10 AÑOS)
     private function validateTotalEdf($profesional, $request)
     {
         $max_days_validate = false;
-        $total_days_nueve_años = 3285;
+        $total_days_nueve_años = 3650;
         $total_days = 0;
 
         //request-add-destinacion
@@ -49,11 +49,11 @@ class EtapaDestinacionController extends Controller
         return array($max_days_validate, $total_days);
     }
 
-    //VALIDACIÓN MÍNIMA 3 AÑOS, VALIDACIÓN MAX 5 AÑOS
+    //VALIDACIÓN MÍNIMA 3 AÑOS, VALIDACIÓN MAX 6 AÑOS
     private function validateMaxAnosDestinacion($profesional, $request)
     {
         $max_anos       = false;
-        $total_days_max = 1825;
+        $total_days_max = 2190;
         $total_days     = 0;
 
         $inicio_destinacion     = Carbon::parse(($request->inicio_periodo != null) ? $request->inicio_periodo : '');

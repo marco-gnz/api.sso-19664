@@ -24,7 +24,7 @@ class StoreFormacionRequest extends FormRequest
     public function rules()
     {
         return [
-            'fecha_registro'            => 'required',
+            'fecha_registro'            => 'nullable',
             'inicio_formacion'          => 'required',
             'termino_formacion'         => 'required',
             'origen'                    => 'required',

@@ -132,6 +132,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/perfeccionamiento-all', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'perfeccionamientoAll']);
     Route::get('/mantenedores/grado-complejidad', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getGradoComplejidad']);
     Route::get('/mantenedores/situaciones-actual', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getSituacionesActual']);
+    Route::get('/mantenedores/tipo-convenios', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getTipoConvenio']);
 
     //routes admin mantenedores
     Route::get('/admin/mantenedores/establecimientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'adminEstablecimientos']);

@@ -18,8 +18,7 @@ class ConveniosController extends Controller
         try {
             $profesional = Profesional::where('uuid', $request->uuid)->first();
             if ($profesional) {
-                $especialidades = Especialidad::where('profesional_id', $profesional->id)->get();
-                $convenios      = Convenio::with('especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional')->whereIn('especialidad_id', $especialidades->pluck('id'))->orderBy('created_at', 'desc')->get();
+                $convenios = $profesional->convenios()->with('especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional', 'tipo', 'userAdd', 'userUpdate')->orderBy('created_at', 'desc')->get();
 
                 return response()->json($convenios);
             }
@@ -30,10 +29,11 @@ class ConveniosController extends Controller
     public function storeConvenio(StoreConvenioRequest $request)
     {
         try {
-            $request_form   = ['anios_arancel', 'valor_arancel', 'n_resolucion', 'fecha_resolucion', 'observacion', 'especialidad_id'];
+            $request_form   = ['profesional_id', 'anios_arancel', 'valor_arancel', 'n_resolucion', 'fecha_resolucion', 'observacion', 'especialidad_id', 'tipo_convenio_id'];
 
-            $especialidad = Especialidad::find($request->especialidad_id);
-            if ($especialidad) {
+            $profesional = Profesional::find($request->profesional_id);
+
+            if ($profesional) {
                 $convenio = Convenio::create($request->only($request_form));
 
                 $update = $convenio->update([
@@ -41,7 +41,7 @@ class ConveniosController extends Controller
                     'fecha_add'      => Carbon::now()
                 ]);
 
-                $with         = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional'];
+                $with         = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional', 'tipo', 'userAdd'];
                 $convenio     = $convenio->fresh($with);
 
                 if ($convenio && $update) {
@@ -58,7 +58,7 @@ class ConveniosController extends Controller
     public function updateConvenio(UpdateConvenioRequest $request, $id_convenio)
     {
         try {
-            $request_form   = ['anios_arancel', 'valor_arancel', 'n_resolucion', 'fecha_resolucion', 'observacion', 'especialidad_id'];
+            $request_form   = ['anios_arancel', 'valor_arancel', 'n_resolucion', 'fecha_resolucion', 'observacion', 'especialidad_id', 'tipo_convenio_id'];
 
             $convenio = Convenio::find($id_convenio);
 
@@ -71,7 +71,7 @@ class ConveniosController extends Controller
                     'fecha_update'      => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional'];
+                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'especialidad.profesional', 'tipo', 'userAdd', 'userUpdate'];
 
                 $convenio = $convenio->fresh($with);
 

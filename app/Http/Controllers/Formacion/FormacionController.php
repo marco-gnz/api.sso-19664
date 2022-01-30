@@ -124,7 +124,7 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $formaciones = $profesional->especialidades()->where('origen', 'PAO')->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo')->orderBy('id', 'asc')->get();
+                $formaciones = $profesional->especialidades()->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo')->orderBy('id', 'asc')->get();
 
                 return response()->json($formaciones);
             }

@@ -20,7 +20,7 @@ class EscriturasController extends Controller
 
             if ($profesional) {
                 $especialidades = Especialidad::where('profesional_id', $profesional->id)->get();
-                $escrituras     = Escritura::with('especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador')->whereIn('especialidad_id', $especialidades->pluck('id'))->orderBy('fecha_resolucion', 'desc')->get();
+                $escrituras     = Escritura::with('especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd', 'userUpdate')->whereIn('especialidad_id', $especialidades->pluck('id'))->orderBy('fecha_resolucion', 'desc')->get();
 
                 return response()->json($escrituras);
             }
@@ -36,7 +36,7 @@ class EscriturasController extends Controller
 
             if ($especialidad) {
                 $escritura = Escritura::create($request->all());
-                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador'];
+                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd'];
 
                 $escritura = $escritura->fresh($with);
 
@@ -64,7 +64,7 @@ class EscriturasController extends Controller
             if ($escritura) {
                 $update = $escritura->update($request->all());
 
-                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador'];
+                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd', 'userUpdate'];
 
                 $escritura = $escritura->fresh($with);
 
