@@ -14,7 +14,7 @@ class UnidadSeeder extends Seeder
      */
     public function run()
     {
-        Unidad::truncate(); //evita duplicar datos
+        /* Unidad::truncate(); //evita duplicar datos
 
         $unidad = new Unidad();
         $unidad->cod_sirh = NULL;
@@ -24,6 +24,6 @@ class UnidadSeeder extends Seeder
         $unidad = new Unidad();
         $unidad->cod_sirh = NULL;
         $unidad->nombre = 'SERVICIO CLÍNICO MEDICINA';
-        $unidad->save();
+        $unidad->save(); */
     }
 }

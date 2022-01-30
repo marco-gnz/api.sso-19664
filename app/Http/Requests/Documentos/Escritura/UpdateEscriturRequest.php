@@ -30,7 +30,9 @@ class UpdateEscriturRequest extends FormRequest
             'n_resolucion'              => ['required', Rule::unique('escrituras', 'n_resolucion')->ignore($this->id)],
             'fecha_resolucion'          => 'required',
             'observacion'               => 'nullable',
-            'especialidad_id'           => 'required'
+            'especialidad_id'           => 'required',
+            'n_repertorio'              => ['required', Rule::unique('escrituras', 'n_repertorio')->ignore($this->id)],
+            'anio_repertorio'           => 'required',
         ];
     }
 
@@ -41,6 +43,8 @@ class UpdateEscriturRequest extends FormRequest
             'n_resolucion.required'                 => 'La :attribute es obligatorio',
             'fecha_resolucion.required'             => 'La :attribute es obligatorio',
             'especialidad_id.required'              => 'La :attribute es obligatorio',
+            'n_repertorio.required'                 => 'El :attribute es obligatorio',
+            'anio_repertorio.required'              => 'El :attribute es obligatorio',
         ];
     }
 
@@ -50,7 +54,9 @@ class UpdateEscriturRequest extends FormRequest
             'valor_garantia'          => 'valor de garantía',
             'n_resolucion'            => 'n° de resolución',
             'fecha_resolucion'        => 'fecha de resolución',
-            'especialidad_id'         => 'especialidad'
+            'especialidad_id'         => 'especialidad',
+            'n_repertorio'            => 'n° de repertorio',
+            'anio_repertorio'         => 'año de repertorio'
         ];
     }
 }

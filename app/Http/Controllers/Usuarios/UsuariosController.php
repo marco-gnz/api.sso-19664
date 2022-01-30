@@ -101,7 +101,7 @@ class UsuariosController extends Controller
                     'password' => bcrypt(substr($usuario->rut, 0, 5))
                 ]);
 
-                $usuario = $usuario->refresh();
+                $usuario = $usuario->fresh();
 
                 //enviar email a $usuario indicando que se reestablecio su pass!
                 if ($update) {

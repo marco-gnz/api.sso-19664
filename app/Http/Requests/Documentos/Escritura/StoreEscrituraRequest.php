@@ -28,6 +28,8 @@ class StoreEscrituraRequest extends FormRequest
             'valor_garantia'            => 'required | numeric',
             'n_resolucion'              => 'required | unique:escrituras',
             'fecha_resolucion'          => 'required',
+            'n_repertorio'              => 'required | unique:escrituras',
+            'anio_repertorio'           => 'required',
             'observacion'               => 'nullable',
             'especialidad_id'           => 'required'
         ];
@@ -40,6 +42,8 @@ class StoreEscrituraRequest extends FormRequest
             'n_resolucion.required'                 => 'La :attribute es obligatorio',
             'fecha_resolucion.required'             => 'La :attribute es obligatorio',
             'especialidad_id.required'              => 'La :attribute es obligatorio',
+            'n_repertorio.required'                 => 'El :attribute es obligatorio',
+            'anio_repertorio.required'              => 'El :attribute es obligatorio',
         ];
     }
 
@@ -49,7 +53,9 @@ class StoreEscrituraRequest extends FormRequest
            'valor_garantia'          => 'valor de garantía',
            'n_resolucion'            => 'n° de resolución',
            'fecha_resolucion'        => 'fecha de resolución',
-           'especialidad_id'         => 'especialidad'
+           'especialidad_id'         => 'especialidad',
+           'n_repertorio'            => 'n° de repertorio',
+           'anio_repertorio'         => 'año de repertorio'
         ];
     }
 }

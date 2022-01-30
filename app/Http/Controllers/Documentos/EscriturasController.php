@@ -36,16 +36,17 @@ class EscriturasController extends Controller
 
             if ($especialidad) {
                 $escritura = Escritura::create($request->all());
-                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd'];
 
-                $escritura = $escritura->fresh($with);
-
-                $escritura->update([
+                $update = $escritura->update([
                     'usuario_add_id' => auth()->user()->id,
                     'fecha_add'      => Carbon::now()
                 ]);
 
-                if ($escritura) {
+                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd'];
+
+                $escritura = $escritura->fresh($with);
+
+                if ($escritura && $update) {
                     return response()->json(array(true, $escritura));
                 } else {
                     return response()->json(false);
@@ -64,14 +65,14 @@ class EscriturasController extends Controller
             if ($escritura) {
                 $update = $escritura->update($request->all());
 
-                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd', 'userUpdate'];
-
-                $escritura = $escritura->fresh($with);
-
                 $escritura->update([
                     'usuario_update_id' => auth()->user()->id,
                     'fecha_update'      => Carbon::now()->toDateTimeString()
                 ]);
+
+                $with = ['especialidad.perfeccionamiento.tipo', 'especialidad.centroFormador', 'userAdd', 'userUpdate'];
+
+                $escritura = $escritura->fresh($with);
 
                 if ($update) {
                     return response()->json(array(true, $escritura));

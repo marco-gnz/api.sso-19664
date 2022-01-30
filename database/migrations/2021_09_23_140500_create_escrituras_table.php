@@ -20,6 +20,8 @@ class CreateEscriturasTable extends Migration
             $table->decimal('valor_garantia', 10, 0)->nullable();
             $table->integer('n_resolucion')->unique();
             $table->date('fecha_resolucion');
+            $table->integer('n_repertorio')->unique();
+            $table->year('anio_repertorio');
             $table->text('observacion')->nullable();
 
             $table->unsignedBigInteger('especialidad_id')->nullable();

@@ -69,45 +69,5 @@ class EstablecimientoSeeder extends Seeder
         $establecimiento->sigla = 'HBV';
         $establecimiento->red_hospitalaria_id = 2;
         $establecimiento->save();
-
-        /* $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL FELIX BULNES';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'INSTITUTO PSIQUIATRICO';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL EL SALVADOR';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL CLINICO UC';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL BARROS LUCO TRUDEAU';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL CLINICO U.DE CHILE';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL GUILLERMO GRANT BENAVENTE';
-        $establecimiento->save();
-
-        $establecimiento = new Establecimiento();
-        $establecimiento->cod_sirh = '0000';
-        $establecimiento->nombre = 'HOSPITAL PADRE HURTADO';
-        $establecimiento->save(); */
     }
 }
