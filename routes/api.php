@@ -160,3 +160,6 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::post('/admin/mantenedores/situacion/add-situacion', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addSituacion']);
     Route::put('/admin/mantenedores/situacion/estado-situacion/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'statusSituacion']);
     Route::put('/admin/mantenedores/situacion/edit-situacion/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editSituacion']);
+
+    Route::post('/admin/mantenedores/etapa/add-etapa', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addEtapa']);
+    Route::put('/admin/mantenedores/etapa/edit-etapa/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editEtapa']);

@@ -9,5 +9,5 @@ class Etapa extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cod_sirh', 'nombre'];
+    protected $fillable = ['cod_sirh', 'sigla', 'nombre', 'usuario_add_id', 'usuario_update_id'];
 }

@@ -9,6 +9,8 @@ use App\Http\Requests\Mantenedores\Centro\StoreCentroFormador;
 use App\Http\Requests\Mantenedores\Centro\UpdateCentroFormador;
 use App\Http\Requests\Mantenedores\Establecimiento\StoreEstablecimientoRequest;
 use App\Http\Requests\Mantenedores\Establecimiento\UpdateEstablecimientoRequest;
+use App\Http\Requests\Mantenedores\Etapa\StoreEtapaRequest;
+use App\Http\Requests\Mantenedores\Etapa\UpdateEtapaRequest;
 use App\Http\Requests\Mantenedores\Perfeccionamiento\StorePerfeccionamientoRequest;
 use App\Http\Requests\Mantenedores\Perfeccionamiento\UpdatePerfeccionamientoRequest;
 use App\Http\Requests\Mantenedores\Red\StoreRedRequest;
@@ -656,6 +658,48 @@ class MantenedoresList extends Controller
 
                 if ($update && $otros) {
                     return response()->json(array(true, $situacion));
+                } else {
+                    return response()->json(false);
+                }
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function addEtapa(StoreEtapaRequest $request)
+    {
+        try {
+            $etapa = Etapa::create($request->all());
+
+            $update = $etapa->update([
+                'usuario_add_id' => auth()->user()->id,
+            ]);
+
+
+            $etapa = $etapa->fresh();
+
+            if ($etapa && $update) {
+                return response()->json(array(true, $etapa));
+            } else {
+                return response()->json(false);
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function editEtapa(UpdateEtapaRequest $request, $id)
+    {
+        try {
+            $etapa = Etapa::find($id);
+            if ($etapa) {
+                $update = $etapa->update($request->all());
+
+                $etapa = $etapa->fresh();
+
+                if ($update) {
+                    return response()->json(array(true, $etapa));
                 } else {
                     return response()->json(false);
                 }

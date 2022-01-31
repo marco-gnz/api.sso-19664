@@ -35,5 +35,25 @@ class CentroFormadorSeeder extends Seeder
         $centro_formador->cod_sirh = NULL;
         $centro_formador->nombre = 'UNIVERSIDAD DE LA FRONTERA';
         $centro_formador->save();
+
+        $centro_formador = new CentroFormador();
+        $centro_formador->cod_sirh = NULL;
+        $centro_formador->nombre = 'UNIVERSIDAD DE LOS ANDES';
+        $centro_formador->save();
+
+        $centro_formador = new CentroFormador();
+        $centro_formador->cod_sirh = NULL;
+        $centro_formador->nombre = 'UNIVERSIDAD DE SANTIAGO DE CHILE';
+        $centro_formador->save();
+
+        $centro_formador = new CentroFormador();
+        $centro_formador->cod_sirh = NULL;
+        $centro_formador->nombre = 'UNIVERSIDAD DEL DESARROLLO';
+        $centro_formador->save();
+
+        $centro_formador = new CentroFormador();
+        $centro_formador->cod_sirh = NULL;
+        $centro_formador->nombre = 'UNIVERSIDAD DE CONCEPCIÓN';
+        $centro_formador->save();
     }
 }
