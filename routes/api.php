@@ -71,7 +71,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/profesionales/profesional/historial', [App\Http\Controllers\Pao\CalculoPaoController::class, 'getHistorial']);
     Route::get('/profesionales/profesional/get-paos', [App\Http\Controllers\Pao\CalculoPaoController::class, 'getPaos']);
     Route::post('/profesionales/profesional/pao/add-devolucion', [App\Http\Controllers\Pao\Devolucion\DevolucionesController::class, 'storeDevolucion']);
-    Route::put('/profesionales/profesional/pao/edit-devolucion/{uuid}', [App\Http\Controllers\Pao\Devolucion\DevolucionesController::class, 'updateDevolucion']);
+    Route::put('/profesionales/profesional/pao/edit-devolucion/{id}', [App\Http\Controllers\Pao\Devolucion\DevolucionesController::class, 'updateDevolucion']);
     Route::delete('/profesionales/profesional/pao/remove-devlucion/{uuid}', [App\Http\Controllers\Pao\Devolucion\DevolucionesController::class, 'removeDevolucion']);
     Route::post('/profesionales/profesional/pao/add-interrupcion', [App\Http\Controllers\Pao\Interrupciones\InterrupcionesController::class, 'storeInterrupcion']);
     Route::put('/profesionales/profesional/pao/edit-interrupcion/{uuid}', [App\Http\Controllers\Pao\Interrupciones\InterrupcionesController::class, 'updateInterrupcion']);

@@ -29,8 +29,7 @@ class UpdateDevolucionRequest extends FormRequest
             'observacion'                   => 'nullable',
             'tipo_contrato'                 => 'required',
             'establecimiento_id'            => 'required',
-            'escritura_id'                  => 'nullable',
-            'profesional_id'                => 'required'
+            'escritura_id'                  => 'nullable'
         ];
     }
 

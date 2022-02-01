@@ -14,13 +14,14 @@ use Carbon\Carbon;
 
 class DevolucionesController extends Controller
 {
-    private function validateDevolucionStore($request)
+    private function validateDevolucionStore($request,$profesional_id)
     {
         $existe = false;
 
         $newformat_fecha_ini = Carbon::parse($request->inicio_devolucion)->format('Y-m-d');
         $newformat_fecha_fin = Carbon::parse($request->termino_devolucion)->format('Y-m-d');
-        $profesional_id      = $request->profesional_id;
+
+        $profesional_id = $profesional_id;
 
         $validacion1 = Devolucion::where('inicio_devolucion', '<=', $newformat_fecha_ini)
             ->where('termino_devolucion', '>=', $newformat_fecha_ini)
@@ -61,13 +62,14 @@ class DevolucionesController extends Controller
         return $existe;
     }
 
-    private function validateDevolucionUpdate($request, $devolucion_id)
+    private function validateDevolucionUpdate($request, $devolucion_id, $profesional_id)
     {
         $existe = false;
 
         $newformat_fecha_ini = Carbon::parse($request->inicio_devolucion)->format('Y-m-d');
         $newformat_fecha_fin = Carbon::parse($request->termino_devolucion)->format('Y-m-d');
-        $profesional_id      = $request->profesional_id;
+
+        $profesional_id = $profesional_id;
 
         $validacion1 = Devolucion::where('id', '!=', $devolucion_id)
             ->where('inicio_devolucion', '<=', $newformat_fecha_ini)
@@ -111,13 +113,14 @@ class DevolucionesController extends Controller
         return $existe;
     }
 
-    private function validateInterrupcionStore($request)
+    private function validateInterrupcionStore($request, $profesional_id)
     {
         $existe = false;
 
         $newformat_fecha_ini = Carbon::parse($request->inicio_devolucion)->format('Y-m-d');
         $newformat_fecha_fin = Carbon::parse($request->termino_devolucion)->format('Y-m-d');
-        $profesional_id      = $request->profesional_id;
+
+        $profesional_id = $profesional_id;
 
         $validacion1 = Interrupcion::where('inicio_interrupcion', '<=', $newformat_fecha_ini)
             ->where('termino_interrupcion', '>=', $newformat_fecha_ini)
@@ -161,14 +164,15 @@ class DevolucionesController extends Controller
     public function storeDevolucion(StoreDevolucionController $request)
     {
         try {
-            $form_request = ['inicio_devolucion', 'termino_devolucion', 'observacion', 'color', 'tipo_contrato', 'pao_id', 'establecimiento_id', 'profesional_id'];
+            $form_request = ['inicio_devolucion', 'termino_devolucion', 'observacion', 'color', 'tipo_contrato', 'pao_id', 'establecimiento_id'];
             $pao = Pao::find($request->pao_id);
             $escritura = Escritura::find($request->escritura_id);
 
             $id_escritura = ($escritura) ? $escritura->id : NULL;
             if ($pao) {
-                $existe_devolucion      = $this->validateDevolucionStore($request);
-                $existe_interrupcion    = $this->validateInterrupcionStore($request);
+                $profesional_id = $pao->especialidad->profesional_id;
+                $existe_devolucion      = $this->validateDevolucionStore($request, $profesional_id);
+                $existe_interrupcion    = $this->validateInterrupcionStore($request, $profesional_id);
                 if ($existe_devolucion) {
                     return response()->json('existe-devolucion');
                 } else if ($existe_interrupcion) {
@@ -182,7 +186,7 @@ class DevolucionesController extends Controller
                         'fecha_add'         => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad'];
+                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad', 'pao.devoluciones.tipoContrato', 'pao.interrupciones'];
 
                     $devolucion = $devolucion->fresh($with);
 
@@ -198,14 +202,15 @@ class DevolucionesController extends Controller
         }
     }
 
-    public function updateDevolucion(UpdateDevolucionRequest $request, $uuid)
+    public function updateDevolucion(UpdateDevolucionRequest $request, $id)
     {
         try {
-            $devolucion = Devolucion::where('uuid', $uuid)->first();
+            $devolucion = Devolucion::find($id);
 
             if ($devolucion) {
-                $existe_devolucion      = $this->validateDevolucionUpdate($request, $devolucion->id);
-                $existe_interrupcion    = $this->validateInterrupcionStore($request);
+                $profesional_id = $devolucion->pao->especialidad->profesional_id;
+                $existe_devolucion      = $this->validateDevolucionUpdate($request, $devolucion->id, $profesional_id);
+                $existe_interrupcion    = $this->validateInterrupcionStore($request, $profesional_id);
                 if ($existe_devolucion) {
                     return response()->json('existe-devolucion');
                 } else if ($existe_interrupcion) {
@@ -213,7 +218,7 @@ class DevolucionesController extends Controller
                 } else {
                     $update = $devolucion->update($request->all());
 
-                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad'];
+                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad', 'pao.devoluciones.tipoContrato', 'pao.interrupciones'];
 
                     $devolucion = $devolucion->fresh($with);
 

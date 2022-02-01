@@ -37,6 +37,8 @@ class CalculoPaoController extends Controller
                     'interrupciones.devolucion.tipoContrato',
                     'interrupciones.pao.devoluciones.establecimiento',
                     'interrupciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.interrupciones',
                     'userAdd'
                 ];
 

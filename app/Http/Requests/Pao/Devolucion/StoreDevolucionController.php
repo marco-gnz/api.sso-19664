@@ -30,8 +30,7 @@ class StoreDevolucionController extends FormRequest
             'color'                         => 'required',
             'tipo_contrato'                 => 'required',
             'pao_id'                        => 'required',
-            'establecimiento_id'            => 'required',
-            'profesional_id'                => 'required'
+            'establecimiento_id'            => 'required'
         ];
     }
 
