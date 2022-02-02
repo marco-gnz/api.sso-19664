@@ -90,6 +90,16 @@ class MantenedoresList extends Controller
         }
     }
 
+    public function getAllUnidades()
+    {
+        try {
+            $unidades = Unidad::orderBy('nombre', 'asc')->get();
+            return response()->json($unidades, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getCausales()
     {
         try {

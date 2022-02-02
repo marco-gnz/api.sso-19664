@@ -81,10 +81,12 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     //profesional-edf
     Route::get('/profesionales/profesional/edf/get-destinaciones', [App\Http\Controllers\Edf\EtapaDestinacionController::class, 'getDestinaciones']);
     Route::post('/profesionales/profesional/edf/add-destinacion', [App\Http\Controllers\Edf\EtapaDestinacionController::class, 'storeDestinacion']);
+    Route::put('/profesionales/profesional/edf/edit-destinacion/{id}', [App\Http\Controllers\Edf\EtapaDestinacionController::class, 'updateDestinacion']);
     Route::delete('/profesionales/profesional/edf/delete-destinacion/{uuid}', [App\Http\Controllers\Edf\EtapaDestinacionController::class, 'deleteDestinacion']);
 
     Route::get('/profesionales/profesional/edf/get-formaciones', [App\Http\Controllers\Edf\EtapaFormacionController::class, 'getFormaciones']);
     Route::post('/profesionales/profesional/edf/add-formacion', [App\Http\Controllers\Edf\EtapaFormacionController::class, 'storeFormacion']);
+    Route::put('/profesionales/profesional/edf/edit-formacion/{id}', [App\Http\Controllers\Edf\EtapaFormacionController::class, 'updateFormacion']);
     Route::delete('/profesionales/profesional/edf/delete-formacion/{uuid}', [App\Http\Controllers\Edf\EtapaFormacionController::class, 'deleteFormacion']);
 
     //convenios
@@ -133,6 +135,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/grado-complejidad', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getGradoComplejidad']);
     Route::get('/mantenedores/situaciones-actual', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getSituacionesActual']);
     Route::get('/mantenedores/tipo-convenios', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getTipoConvenio']);
+    Route::get('/mantenedores/all-unidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getAllUnidades']);
 
     //routes admin mantenedores
     Route::get('/admin/mantenedores/establecimientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'adminEstablecimientos']);
