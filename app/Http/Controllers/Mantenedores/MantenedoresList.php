@@ -47,6 +47,17 @@ class MantenedoresList extends Controller
         $this->middleware(['auth:sanctum']);
     }
 
+    public function getPerfeccionamientosAllFiltro()
+    {
+        try {
+            $perfeccionamientos = Perfeccionamiento::with('tipo')->orderBy('nombre', 'asc')->get();
+
+            return response()->json($perfeccionamientos, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getSituacionesActual()
     {
         try {
