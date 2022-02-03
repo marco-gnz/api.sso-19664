@@ -179,7 +179,17 @@ class InterrupcionesController extends Controller
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with         = ['causal', 'devolucion.tipoContrato', 'devolucion.establecimiento', 'devolucion.interrupciones', 'pao.devoluciones.establecimiento', 'pao.devoluciones.tipoContrato'];
+                    $with = [
+                        'causal',
+                        'devolucion.tipoContrato',
+                        'devolucion.establecimiento',
+                        'devolucion.interrupciones',
+                        'pao.devoluciones.establecimiento',
+                        'pao.devoluciones.tipoContrato',
+                        'userAdd',
+                        'userUpdate'
+                    ];
+
                     $interrupcion = $interrupcion->fresh($with);
 
                     if ($interrupcion) {
@@ -214,7 +224,16 @@ class InterrupcionesController extends Controller
                         'fecha_update'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with         = ['causal', 'devolucion.tipoContrato', 'devolucion.establecimiento', 'devolucion.interrupciones', 'pao.devoluciones.establecimiento', 'pao.devoluciones.tipoContrato'];
+                    $with = [
+                        'causal',
+                        'devolucion.tipoContrato',
+                        'devolucion.establecimiento',
+                        'devolucion.interrupciones',
+                        'pao.devoluciones.establecimiento',
+                        'pao.devoluciones.tipoContrato',
+                        'userAdd',
+                        'userUpdate'
+                    ];
                     $interrupcion = $interrupcion->fresh($with);
 
                     if ($update) {

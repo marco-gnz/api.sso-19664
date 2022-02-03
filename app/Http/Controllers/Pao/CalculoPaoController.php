@@ -25,20 +25,26 @@ class CalculoPaoController extends Controller
                 $with = [
                     'especialidad',
                     'especialidad.perfeccionamiento.tipo',
-                    'devoluciones',
                     'devoluciones.tipoContrato',
                     'devoluciones.establecimiento',
                     'devoluciones.establecimiento.redHospitalaria',
                     'devoluciones.pao.especialidad',
-                    'interrupciones.causal',
-                    'devoluciones.interrupciones',
-                    'devoluciones.escritura',
-                    'interrupciones.devolucion.establecimiento',
-                    'interrupciones.devolucion.tipoContrato',
-                    'interrupciones.pao.devoluciones.establecimiento',
-                    'interrupciones.pao.devoluciones.tipoContrato',
                     'devoluciones.pao.devoluciones.tipoContrato',
                     'devoluciones.pao.interrupciones',
+                    'devoluciones.interrupciones',
+                    'devoluciones.escritura',
+                    'devoluciones.userAdd',
+                    'devoluciones.userUpdate',
+
+                    'interrupciones.causal',
+                    'interrupciones.devolucion.establecimiento',
+                    'interrupciones.devolucion.tipoContrato',
+                    'interrupciones.devolucion.interrupciones',
+                    'interrupciones.pao.devoluciones.establecimiento',
+                    'interrupciones.pao.devoluciones.tipoContrato',
+                    'interrupciones.userAdd',
+                    'interrupciones.userUpdate',
+
                     'userAdd'
                 ];
 
@@ -83,11 +89,14 @@ class CalculoPaoController extends Controller
                 $with = [
                     'especialidad',
                     'especialidad.perfeccionamiento.tipo',
-                    'devoluciones',
+                    'devoluciones.userAdd',
+                    'devoluciones.userUpdate',
                     'devoluciones.tipoContrato',
                     'devoluciones.establecimiento',
                     'devoluciones.establecimiento.redHospitalaria',
                     'devoluciones.pao.especialidad',
+                    'interrupciones.userAdd',
+                    'interrupciones.userUpdate',
                     'interrupciones.causal',
                     'devoluciones.interrupciones',
                     'devoluciones.escritura',
@@ -95,6 +104,8 @@ class CalculoPaoController extends Controller
                     'interrupciones.devolucion.tipoContrato',
                     'interrupciones.pao.devoluciones.establecimiento',
                     'interrupciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.interrupciones',
                     'userAdd'
                 ];
                 $calculo_pao  = $calculo_pao->fresh($with);
@@ -151,7 +162,7 @@ class CalculoPaoController extends Controller
         try {
             $pao = Pao::where('uuid', $uuid)->first();
 
-            if($pao){
+            if ($pao) {
                 $update = $pao->update([
                     'estado' => !$pao->estado
                 ]);
@@ -159,11 +170,14 @@ class CalculoPaoController extends Controller
                 $with = [
                     'especialidad',
                     'especialidad.perfeccionamiento.tipo',
-                    'devoluciones',
+                    'devoluciones.userAdd',
+                    'devoluciones.userUpdate',
                     'devoluciones.tipoContrato',
                     'devoluciones.establecimiento',
                     'devoluciones.establecimiento.redHospitalaria',
                     'devoluciones.pao.especialidad',
+                    'interrupciones.userAdd',
+                    'interrupciones.userUpdate',
                     'interrupciones.causal',
                     'devoluciones.interrupciones',
                     'devoluciones.escritura',
@@ -171,14 +185,16 @@ class CalculoPaoController extends Controller
                     'interrupciones.devolucion.tipoContrato',
                     'interrupciones.pao.devoluciones.establecimiento',
                     'interrupciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.devoluciones.tipoContrato',
+                    'devoluciones.pao.interrupciones',
                     'userAdd'
                 ];
 
                 $pao = $pao->fresh($with);
 
-                if($pao && $update){
+                if ($pao && $update) {
                     return response()->json(array(true, $pao));
-                }else{
+                } else {
                     return response()->json(false);
                 }
             }

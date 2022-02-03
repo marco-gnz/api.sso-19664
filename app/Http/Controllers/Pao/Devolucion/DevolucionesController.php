@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 class DevolucionesController extends Controller
 {
-    private function validateDevolucionStore($request,$profesional_id)
+    private function validateDevolucionStore($request, $profesional_id)
     {
         $existe = false;
 
@@ -186,7 +186,18 @@ class DevolucionesController extends Controller
                         'fecha_add'         => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad', 'pao.devoluciones.tipoContrato', 'pao.interrupciones'];
+                    $with = [
+                        'tipoContrato',
+                        'establecimiento',
+                        'establecimiento.redHospitalaria',
+                        'escritura',
+                        'interrupciones',
+                        'pao.especialidad',
+                        'pao.devoluciones.tipoContrato',
+                        'pao.interrupciones',
+                        'userAdd',
+                        'userUpdate'
+                    ];
 
                     $devolucion = $devolucion->fresh($with);
 
@@ -218,7 +229,23 @@ class DevolucionesController extends Controller
                 } else {
                     $update = $devolucion->update($request->all());
 
-                    $with = ['tipoContrato', 'establecimiento', 'establecimiento.redHospitalaria', 'escritura', 'interrupciones', 'pao.especialidad', 'pao.devoluciones.tipoContrato', 'pao.interrupciones'];
+                    $devolucion->update([
+                        'usuario_update_id'    => auth()->user()->id,
+                        'fecha_update'         => Carbon::now()->toDateTimeString()
+                    ]);
+
+                    $with = [
+                        'tipoContrato',
+                        'establecimiento',
+                        'establecimiento.redHospitalaria',
+                        'escritura',
+                        'interrupciones',
+                        'pao.especialidad',
+                        'pao.devoluciones.tipoContrato',
+                        'pao.interrupciones',
+                        'userAdd',
+                        'userUpdate'
+                    ];
 
                     $devolucion = $devolucion->fresh($with);
 
