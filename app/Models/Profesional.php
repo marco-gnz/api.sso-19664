@@ -90,6 +90,11 @@ class Profesional extends Model
         if ($search)
             return $query->whereIn('etapas_id', $search);
     }
+    public function scopeSituacionProfesional($query, $search)
+    {
+        if ($search)
+            return $query->whereIn('situacion_actual_id', $search);
+    }
     public function scopePerfeccionamiento($query, $search)
     {
         if ($search)

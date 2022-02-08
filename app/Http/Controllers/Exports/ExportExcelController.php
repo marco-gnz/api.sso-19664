@@ -37,6 +37,8 @@ class ExportExcelController extends Controller
 
         $estados            = ($request->estados) ? $request->estados : [];
 
+        $situaciones        = ($request->situaciones != '') ? $request->situaciones : [];
+
         $etapasIds          = Etapa::whereIn('id', $etapas)->pluck('id');
 
         $profesionales = Profesional::etapaProfesional($etapas)
@@ -46,6 +48,7 @@ class ExportExcelController extends Controller
             ->formacion($inicio_f_ef, $termino_f_ef)
             ->establecimiento($etapas, $establecimiento)
             ->estado($estados)
+            ->situacionProfesional($situaciones)
             ->orderBy('apellidos', 'asc')
             ->get();
 
