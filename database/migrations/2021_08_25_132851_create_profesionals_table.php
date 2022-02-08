@@ -25,6 +25,7 @@ class CreateProfesionalsTable extends Migration
             $table->string('email')->nullable();
             $table->string('n_contacto')->nullable();
             $table->string('ciudad')->nullable();
+            $table->string('direccion_residencia')->nullable();
             $table->boolean('estado')->default(1);
 
             $table->unsignedBigInteger('etapas_id')->nullable();

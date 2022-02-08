@@ -13,7 +13,7 @@ class Profesional extends Model
     protected $table = "profesionals";
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uuid', 'rut', 'dv', 'rut_completo', 'nombres', 'apellidos', 'nombre_completo', 'email', 'n_contacto', 'ciudad', 'etapas_id', 'situacion_actual_id', 'calidad_juridica_id', 'planta_id', 'estado', 'genero_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
+    protected $fillable = ['uuid', 'rut', 'dv', 'rut_completo', 'nombres', 'apellidos', 'nombre_completo', 'email', 'n_contacto', 'ciudad', 'direccion_residencia', 'etapas_id', 'situacion_actual_id', 'calidad_juridica_id', 'planta_id', 'estado', 'genero_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
 
     protected $guarded = ['id'];
 

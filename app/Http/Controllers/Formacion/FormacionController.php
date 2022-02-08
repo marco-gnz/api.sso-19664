@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Formacion;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Formacion\StoreFormacionRequest;
+use App\Http\Requests\Formacion\UpdateFormacionRequest;
 use App\Models\Especialidad;
 use App\Models\Profesional;
 use App\Models\Perfeccionamiento;
@@ -76,7 +77,7 @@ class FormacionController extends Controller
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo'];
+                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
 
                     $formacion = $formacion->fresh($with);
 
@@ -85,6 +86,34 @@ class FormacionController extends Controller
                     } else {
                         return response()->json(false);
                     }
+                }
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function updateFormacion(UpdateFormacionRequest $request, $id)
+    {
+        try {
+            $formacion = Especialidad::find($id);
+            if ($formacion) {
+                $form = ['fecha_registro', 'origen', 'observacion', 'centro_formador_id', 'perfeccionamiento_id', 'inicio_formacion', 'termino_formacion'];
+                $update = $formacion->update($request->only($form));
+
+                $formacion->update([
+                    'usuario_update_id' => auth()->user()->id,
+                    'fecha_update'      => Carbon::now()->toDateTimeString()
+                ]);
+
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
+
+                $formacion = $formacion->fresh($with);
+
+                if ($update) {
+                    return response()->json(array(true, $formacion));
+                } else {
+                    return response()->json(false);
                 }
             }
         } catch (\Exception $error) {
@@ -124,7 +153,8 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $formaciones = $profesional->especialidades()->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo')->orderBy('id', 'asc')->get();
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
+                $formaciones = $profesional->especialidades()->with($with)->orderBy('id', 'asc')->get();
 
                 return response()->json($formaciones);
             }

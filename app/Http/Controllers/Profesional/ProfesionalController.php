@@ -39,7 +39,16 @@ class ProfesionalController extends Controller
     public function getProfesional(Request $request, $uuid)
     {
         try {
-            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->where('uuid', $uuid)->first();
+            $paos_count = 0;
+            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->withCount('destinaciones', 'especialidades')->where('uuid', $uuid)->first();
+
+            foreach ($profesional->especialidades as $especialidad) {
+                if($especialidad->paos){
+                    $paos_count += $especialidad->paos->count();
+                }
+            }
+
+            $profesional['paos_count'] = $paos_count;
 
             if($profesional){
                 return response()->json($profesional);
@@ -121,11 +130,19 @@ class ProfesionalController extends Controller
     public function updateDatosPersonales(UpdateProfesionalRequest $request, $id)
     {
         try {
-            $profesional = Profesional::find($id);
+            $paos_count = 0;
+            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->withCount('destinaciones', 'especialidades')->find($id);
 
             $update = $profesional->update($request->all());
 
             $profesional = $profesional->fresh();
+
+            foreach ($profesional->especialidades as $especialidad) {
+                if($especialidad->paos){
+                    $paos_count += $especialidad->paos->count();
+                }
+            }
+            $profesional['paos_count'] = $paos_count;
 
             if ($update) {
                 return response()->json(array(true, $profesional));

@@ -57,6 +57,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
 
     //especialidades
     Route::post('/profesionales/profesional/add-formacion', [App\Http\Controllers\Formacion\FormacionController::class, 'storeFormacion']);
+    Route::put('/profesionales/profesional/edit-formacion/{id}', [App\Http\Controllers\Formacion\FormacionController::class, 'updateFormacion']);
     Route::get('/profesionales/profesional/get-formaciones', [App\Http\Controllers\Formacion\FormacionController::class, 'getFormaciones']);
     Route::delete('/profesionales/profesional/remove-formacion/{id}', [App\Http\Controllers\Formacion\FormacionController::class, 'removeFormacion']);
     Route::get('/profesionales/profesional/get-formaciones', [App\Http\Controllers\Formacion\FormacionController::class, 'getFormacionesProfesional']);

@@ -31,6 +31,9 @@ class CreateEspecialidadsTable extends Migration
             $table->unsignedBigInteger('perfeccionamiento_id')->nullable();
             $table->foreign('perfeccionamiento_id')->references('id')->on('perfeccionamientos');
 
+            $table->unsignedBigInteger('situacion_profesional_id')->nullable();
+            $table->foreign('situacion_profesional_id')->references('id')->on('situacion_actuals');
+
             $table->unsignedBigInteger('usuario_add_id')->nullable();
             $table->foreign('usuario_add_id')->references('id')->on('users');
             $table->dateTime('fecha_add', 0)->nullable();

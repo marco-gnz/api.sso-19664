@@ -30,7 +30,8 @@ class UpdateDestinacionRequest extends FormRequest
             'observacion'                           => 'nullable',
             'establecimiento_id'                    => 'required',
             'grado_complejidad_establecimiento_id'  => 'required',
-            'unidad_id'                             => 'required'
+            'unidad_id'                             => 'required',
+            'situacion_profesional_id'              => 'required'
         ];
     }
 
@@ -40,7 +41,8 @@ class UpdateDestinacionRequest extends FormRequest
             'inicio_periodo.required'           => 'El :attribute es obligatorio',
             'termino_periodo.required'          => 'El :attribute es obligatorio',
             'establecimiento_id.required'       => 'La :attribute es obligatorio',
-            'unidad_id.required'                => 'La :attribute es obligatoria'
+            'unidad_id.required'                => 'La :attribute es obligatoria',
+            'situacion_profesional_id.required' => 'La :attribute es obligatoria'
         ];
     }
 
@@ -50,7 +52,8 @@ class UpdateDestinacionRequest extends FormRequest
             'inicio_periodo'                => 'periodo en destinación',
             'termino_periodo'               => 'periodo en destinación',
             'establecimiento_id'            => 'establecimiento',
-            'unidad_id'                     => 'unidad'
+            'unidad_id'                     => 'unidad',
+            'situacion_profesional_id'      => 'situación de profesional'
         ];
     }
 }

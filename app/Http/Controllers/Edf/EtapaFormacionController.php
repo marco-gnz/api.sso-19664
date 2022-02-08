@@ -254,7 +254,8 @@ class EtapaFormacionController extends Controller
         try {
             $profesional = Profesional::where('uuid', $request->uuid)->first();
             if ($profesional) {
-                $formaciones = Especialidad::with('centroFormador', 'perfeccionamiento.tipo')->where('profesional_id', $profesional->id)->where('origen', 'EDF')->orderBy('id', 'asc')->get();
+                $with = ['centroFormador', 'perfeccionamiento.tipo', 'situacionProfesional', 'situacionProfesional', 'userAdd', 'userUpdate'];
+                $formaciones = Especialidad::with($with)->where('profesional_id', $profesional->id)->where('origen', 'EDF')->orderBy('id', 'asc')->get();
                 return response()->json($formaciones);
             }
         } catch (\Exception $error) {
@@ -265,7 +266,7 @@ class EtapaFormacionController extends Controller
     public function storeFormacion(StoreFormacionRequest $request)
     {
         try {
-            $request_form                   = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id'];
+            $request_form                   = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
             $profesional = Profesional::find($request->profesional_id);
 
             if ($profesional) {
@@ -291,7 +292,7 @@ class EtapaFormacionController extends Controller
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo'];
+                    $with = ['centroFormador', 'perfeccionamiento.tipo', 'situacionProfesional', 'situacionProfesional', 'userAdd', 'userUpdate'];
 
                     $formacion = $formacion->fresh($with);
 
@@ -313,7 +314,7 @@ class EtapaFormacionController extends Controller
             $formacion = Especialidad::find($id);
 
             if ($formacion) {
-                $request_form = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'centro_formador_id', 'perfeccionamiento_id'];
+                $request_form = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
 
                 $profesional = $formacion->profesional;
                 $passing_max_total_edf           = $this->validateTotalEdfEdit($profesional, $request, $formacion->id);
@@ -337,7 +338,7 @@ class EtapaFormacionController extends Controller
                         'fecha_update'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo'];
+                    $with = ['centroFormador', 'perfeccionamiento.tipo', 'situacionProfesional', 'situacionProfesional', 'userAdd', 'userUpdate'];
 
                     $formacion = $formacion->fresh($with);
 

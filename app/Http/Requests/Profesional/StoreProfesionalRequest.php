@@ -33,6 +33,7 @@ class StoreProfesionalRequest extends FormRequest
             'email'                 => 'nullable | email | unique:profesionals',
             'n_contacto'            => 'nullable | unique:profesionals',
             'ciudad'                => 'nullable',
+            'direccion_residencia'  => 'nullable',
             'etapas_id'             => 'required',
             'calidad_juridica_id'   => 'required',
             'planta_id'             => 'required',

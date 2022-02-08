@@ -25,13 +25,14 @@ class StoreFormacionRequest extends FormRequest
     {
         return [
             'fecha_registro'            => 'nullable',
-            'inicio_formacion'          => 'required',
-            'termino_formacion'         => 'required',
+            'inicio_formacion'          => 'nullable',
+            'termino_formacion'         => 'nullable',
             'origen'                    => 'required',
             'observacion'               => 'nullable | max:100',
             'profesional_id'            => 'required',
             'centro_formador_id'        => 'required',
-            'perfeccionamiento_id'      => 'required'
+            'perfeccionamiento_id'      => 'required',
+            'situacion_profesional_id'  => 'nullable'
         ];
     }
 

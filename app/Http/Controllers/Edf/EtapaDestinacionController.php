@@ -257,7 +257,8 @@ class EtapaDestinacionController extends Controller
         try {
             $profesional = Profesional::where('uuid', $request->uuid)->first();
             if ($profesional) {
-                $destinaciones = EtapaDestinacion::with('profesional', 'establecimiento', 'gradoComplejidadEstablecimiento', 'unidad')->where('profesional_id', $profesional->id)->get();
+                $with = ['profesional', 'establecimiento.redHospitalaria', 'gradoComplejidadEstablecimiento', 'unidad', 'situacionProfesional', 'userAdd', 'userUpdate'];
+                $destinaciones = EtapaDestinacion::with($with)->where('profesional_id', $profesional->id)->get();
 
                 return response()->json($destinaciones);
             }
@@ -269,7 +270,7 @@ class EtapaDestinacionController extends Controller
     public function storeDestinacion(StoreDestinacionRequest $request)
     {
         try {
-            $request_form                       = ['inicio_periodo', 'termino_periodo', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id'];
+            $request_form                       = ['inicio_periodo', 'termino_periodo', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id', 'situacion_profesional_id'];
             $profesional                        = Profesional::find($request->profesional_id);
             if ($profesional) {
                 $profesional_id = $profesional->id;
@@ -294,7 +295,7 @@ class EtapaDestinacionController extends Controller
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'establecimiento', 'gradoComplejidadEstablecimiento', 'unidad'];
+                    $with = ['profesional', 'establecimiento.redHospitalaria', 'gradoComplejidadEstablecimiento', 'unidad', 'situacionProfesional', 'userAdd', 'userUpdate'];
                     $etapaDestinacion = $etapaDestinacion->fresh($with);
 
                     if ($etapaDestinacion) {
@@ -338,7 +339,7 @@ class EtapaDestinacionController extends Controller
                         'fecha_update'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with        = ['profesional', 'establecimiento', 'gradoComplejidadEstablecimiento', 'unidad'];
+                    $with = ['profesional', 'establecimiento.redHospitalaria', 'gradoComplejidadEstablecimiento', 'unidad', 'situacionProfesional', 'userAdd', 'userUpdate'];
                     $destinacion = $destinacion->fresh($with);
 
                     if ($update) {
