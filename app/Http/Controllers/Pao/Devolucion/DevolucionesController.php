@@ -7,6 +7,7 @@ use App\Http\Requests\Pao\Devolucion\StoreDevolucionController;
 use App\Http\Requests\Pao\Devolucion\UpdateDevolucionRequest;
 use App\Models\Devolucion;
 use App\Models\Escritura;
+use App\Models\Especialidad;
 use App\Models\Interrupcion;
 use App\Models\Pao;
 use Illuminate\Http\Request;
@@ -54,6 +55,42 @@ class DevolucionesController extends Controller
                     $query->where('id', $profesional_id);
                 });
             })
+            ->count();
+        if ($validacion3 > 0) {
+            $existe = true;
+        }
+
+        return $existe;
+    }
+
+    private function validateFormacionStore($request, $profesional_id)
+    {
+        $existe = false;
+
+        $newformat_fecha_ini = Carbon::parse($request->inicio_devolucion)->format('Y-m-d');
+        $newformat_fecha_fin = Carbon::parse($request->termino_devolucion)->format('Y-m-d');
+
+        $profesional_id = $profesional_id;
+
+        $validacion1 = Especialidad::where('profesional_id', $profesional_id)
+            ->where('inicio_formacion', '<=', $newformat_fecha_ini)
+            ->where('termino_formacion', '>=', $newformat_fecha_ini)
+            ->count();
+        if ($validacion1 > 0) {
+            $existe = true;
+        }
+
+        $validacion2 = Especialidad::where('profesional_id', $profesional_id)
+            ->where('inicio_formacion', '<=', $newformat_fecha_fin)
+            ->where('termino_formacion', '>=', $newformat_fecha_fin)
+            ->count();
+        if ($validacion2 > 0) {
+            $existe = true;
+        }
+
+        $validacion3 = Especialidad::where('profesional_id', $profesional_id)
+            ->where('inicio_formacion', '>=', $newformat_fecha_ini)
+            ->where('termino_formacion', '<=', $newformat_fecha_fin)
             ->count();
         if ($validacion3 > 0) {
             $existe = true;
@@ -173,10 +210,13 @@ class DevolucionesController extends Controller
                 $profesional_id = $pao->especialidad->profesional_id;
                 $existe_devolucion      = $this->validateDevolucionStore($request, $profesional_id);
                 $existe_interrupcion    = $this->validateInterrupcionStore($request, $profesional_id);
+                $existe_formacion       = $this->validateFormacionStore($request, $profesional_id);
                 if ($existe_devolucion) {
                     return response()->json('existe-devolucion');
                 } else if ($existe_interrupcion) {
                     return response()->json('existe-interrupcion');
+                }else if ($existe_formacion) {
+                    return response()->json('existe-formacion');
                 } else {
                     $devolucion = Devolucion::create($request->only($form_request));
 
@@ -222,10 +262,13 @@ class DevolucionesController extends Controller
                 $profesional_id = $devolucion->pao->especialidad->profesional_id;
                 $existe_devolucion      = $this->validateDevolucionUpdate($request, $devolucion->id, $profesional_id);
                 $existe_interrupcion    = $this->validateInterrupcionStore($request, $profesional_id);
+                $existe_formacion       = $this->validateFormacionStore($request, $profesional_id);
                 if ($existe_devolucion) {
                     return response()->json('existe-devolucion');
                 } else if ($existe_interrupcion) {
                     return response()->json('existe-interrupcion');
+                }else if ($existe_formacion) {
+                    return response()->json('existe-formacion');
                 } else {
                     $update = $devolucion->update($request->all());
 

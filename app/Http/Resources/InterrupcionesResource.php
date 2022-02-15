@@ -29,8 +29,8 @@ class InterrupcionesResource extends JsonResource
             'observacion'       => $this->observacion,
             'devolucion_id'     => $this->devolucion_id,
             'causal'            => $this->causal->nombre,
-            'created_at'        => $this->created_at,
-            'user_add'          => $this->userAdd->name
+            'fecha_add'         => $this->fecha_add,
+            'user_add'          => $this->userAdd->sigla
         ];
     }
 }

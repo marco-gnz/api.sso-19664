@@ -19,7 +19,7 @@ class FacturasController extends Controller
         try {
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
-            $facturas = $profesional->facturas()->with('profesional', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate')->get();
+            $facturas = $profesional->facturas()->with('profesional', 'tipos', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate')->get();
 
             return response()->json($facturas);
         } catch (\Exception $error) {
@@ -30,8 +30,7 @@ class FacturasController extends Controller
     public function storeFactura(StoreFacturaRequest $request)
     {
         try {
-            /* return json_encode($request->ip()); */
-            $form           = ['n_resolucion', 'fecha_resolucion', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'tipo_contrado_id', 'situacion_factura_id', 'convenio_id', 'red_hospitalaria_id', 'observacion'];
+            $form           = ['n_resolucion', 'fecha_resolucion', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'tipo_contrado_id', 'situacion_factura_id', 'tipo_factura', 'convenio_id', 'red_hospitalaria_id', 'observacion'];
             $convenio       = Convenio::find($request->convenio_id);
 
             if ($convenio) {
@@ -47,7 +46,9 @@ class FacturasController extends Controller
                     'fecha_add'                 => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with          = ['profesional', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
+                $factura->tipos()->attach($request->tipo_factura);
+
+                $with          = ['profesional', 'tipos', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
                 $factura       = $factura->fresh($with);
 
                 if ($factura && $update) {
@@ -75,7 +76,7 @@ class FacturasController extends Controller
                     'fecha_update'                 => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with          = ['profesional', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
+                $with          = ['profesional', 'tipos', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
                 $factura       = $factura->fresh($with);
 
                 if ($factura && $update) {

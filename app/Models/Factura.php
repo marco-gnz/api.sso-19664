@@ -54,6 +54,11 @@ class Factura extends Model
         return $this->hasOne(Perfeccionamiento::class, 'id', 'perfeccionamiento_id');
     }
 
+    public function tipos()
+    {
+        return $this->belongsToMany(TipoFactura::class);
+    }
+
     public function userAdd()
     {
         return $this->hasOne(User::class, 'id','usuario_add_id');

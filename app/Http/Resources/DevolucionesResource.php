@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 class DevolucionesResource extends JsonResource
 {
@@ -18,6 +19,16 @@ class DevolucionesResource extends JsonResource
         $inicio  = Carbon::parse($this->inicio_devolucion);
         $termino = Carbon::parse($this->termino_devolucion);
 
+        $dias = $inicio->diff($termino)->days;
+
+        $hora = $this->tipoContrato->horas/44;
+
+        $days = $dias*$hora;
+
+        $resta = $dias-$days;
+
+        $respue = $inicio->diff($termino->addDays(-$resta));
+
         return [
             'id'                => $this->id,
             'uuid'              => $this->uuid,
@@ -30,8 +41,9 @@ class DevolucionesResource extends JsonResource
             'tipo_contrato'     => $this->tipoContrato->nombre,
             'establecimiento'   => $this->establecimiento->nombre,
             'red'               => $this->establecimiento->redHospitalaria->sigla,
-            'created_at'        => $this->created_at,
-            'user_add'          => $this->userAdd->name
+            'fecha_add'        => $this->fecha_add,
+            'user_add'          => $this->userAdd->sigla,
+            'total'             => $respue
         ];
     }
 }
