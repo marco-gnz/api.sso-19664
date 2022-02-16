@@ -96,6 +96,7 @@ class FacturasController extends Controller
             $factura = Factura::where('uuid', $uuid)->first();
 
             if ($factura) {
+                $factura->tipos()->detach();
                 $delete = $factura->delete();
                 if ($delete) {
                     return response()->json(true);

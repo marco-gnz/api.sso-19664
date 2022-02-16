@@ -95,6 +95,12 @@ class Profesional extends Model
         if ($search)
             return $query->whereIn('situacion_actual_id', $search);
     }
+
+    public function scopeTieneEspecialidades($query, $todas)
+    {
+        if($todas === true)
+        return $query->has('especialidades', '>', 0 );
+    }
     public function scopePerfeccionamiento($query, $search)
     {
         if ($search)

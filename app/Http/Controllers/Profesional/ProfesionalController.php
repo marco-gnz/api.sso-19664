@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Profesional;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profesional\StoreProfesionalRequest;
 use App\Http\Requests\Profesional\UpdateProfesionalRequest;
+use App\Http\Resources\ProfesionalesResource;
 use App\Models\Profesional;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -82,9 +83,12 @@ class ProfesionalController extends Controller
 
         $situaciones        = ($request->situaciones != '') ? $request->situaciones : [];
 
+        $todas              = ($request->exist_perfeccionamiento === 'true') ? true : false;
+
         $profesionales = Profesional::general($input)
             ->etapaProfesional($etapas)
             ->perfeccionamiento($perfecion)
+            ->tieneEspecialidades($todas)
             ->paos($inicio_f_pao, $termino_f_pao)
             ->destinacion($inicio_f_ed, $termino_f_ed)
             ->formacion($inicio_f_ef, $termino_f_ef)
@@ -105,7 +109,7 @@ class ProfesionalController extends Controller
                     'from'          => $profesionales->firstItem(),
                     'to'            => $profesionales->lastPage()
                 ],
-                'profesionales' => $profesionales
+                'profesionales' => ProfesionalesResource::collection($profesionales)
             )
         );
     }
@@ -165,15 +169,14 @@ class ProfesionalController extends Controller
 
             if ($profesional) {
                 $update = $profesional->update([
-                    'estado' => $request->estado
+                    'estado' => !$profesional->estado
                 ]);
-
-                $with = ['etapa', 'calidad'];
+                $with = ['etapa', 'calidad', 'situacionActual'];
 
                 $profesional = $profesional->fresh($with);
 
                 if ($update) {
-                    return response()->json(array(true, $profesional));
+                    return response()->json(array(true, ProfesionalesResource::make($profesional)));
                 } else {
                     return response()->json(false);
                 }
