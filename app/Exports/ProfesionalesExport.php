@@ -20,17 +20,18 @@ class ProfesionalesExport implements WithTitle, FromView, WithEvents
 
     use Exportable;
 
-    public function __construct($profesionales, $total_pao, $total_devoluciones, $total_destinaciones)
+    public function __construct($profesionales, $total_especialidades,$total_pao, $total_devoluciones, $total_destinaciones)
     {
+        $this->total_especialidades = $total_especialidades;
         $this->profesionales        = $profesionales;
-        $this->total_pao = $total_pao;
+        $this->total_pao            = $total_pao;
         $this->total_devoluciones   = $total_devoluciones;
-        $this->total_destinaciones   = $total_destinaciones;
+        $this->total_destinaciones  = $total_destinaciones;
     }
 
     public function title(): string
     {
-        return 'LEY MEDICA';
+        return 'Profesionales';
     }
 
     public function registerEvents(): array
@@ -43,12 +44,14 @@ class ProfesionalesExport implements WithTitle, FromView, WithEvents
             $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
         });
 
+        $total = count($this->profesionales)+1;
+
         return [
-            AfterSheet::class    => function (AfterSheet $event) {
+            AfterSheet::class    => function (AfterSheet $event) use($total) {
                 $event->sheet->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 
                 $event->sheet->styleCells(
-                    'A1:AM50',
+                    "A1:AZ{$total}",
                     [
                         'borders' => [
                             'allBorders' => [
@@ -65,6 +68,7 @@ class ProfesionalesExport implements WithTitle, FromView, WithEvents
     {
         return view('excel.profesionales', [
             'profesionales'         => $this->profesionales,
+            'total_especialidades'  => $this->total_especialidades,
             'total_pao'             => $this->total_pao,
             'total_devoluciones'    => $this->total_devoluciones,
             'total_destinaciones'   => $this->total_destinaciones

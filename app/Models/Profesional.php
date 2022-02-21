@@ -42,6 +42,11 @@ class Profesional extends Model
         return $this->hasOne(SituacionActual::class, 'id', 'situacion_actual_id');
     }
 
+    public function devoluciones()
+    {
+        return $this->hasMany(Devolucion::class);
+    }
+
     public function especialidades()
     {
         return $this->hasMany(Especialidad::class);

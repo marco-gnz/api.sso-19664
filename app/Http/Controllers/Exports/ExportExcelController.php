@@ -39,9 +39,12 @@ class ExportExcelController extends Controller
 
         $situaciones        = ($request->situaciones != '') ? $request->situaciones : [];
 
+        $todas              = ($request->exist_perfeccionamiento === 'true') ? true : false;
+
         $etapasIds          = Etapa::whereIn('id', $etapas)->pluck('id');
 
         $profesionales = Profesional::etapaProfesional($etapas)
+            ->tieneEspecialidades($todas)
             ->perfeccionamiento($perfecion)
             ->paos($inicio_f_pao, $termino_f_pao)
             ->destinacion($inicio_f_ed, $termino_f_ed)
@@ -62,17 +65,24 @@ class ExportExcelController extends Controller
     public function exportProfesionales($ids, $etapas)
     {
         try {
+            $espe = Especialidad::all();
+            foreach ($espe as $especialidad) {
+                foreach ($especialidad->paos as $pao) {
+                    foreach ($pao->devoluciones as $devolucion) {
+                        $devolucion->update(['profesional_id' => $especialidad->profesional_id]);
+                    }
+                }
+            }
             $profesionalesArrayId       = explode(',', $ids);
             $profesionalesArrayEtapa    = explode(',', $etapas);
 
             $total_pao                          = 0;
             $total_especialidades               = 0;
+            $total_devoluciones                 = 0;
             $total_destinaciones                = 0;
             $array_users_ids_especialidades     = [];
             $array_users_ids_destinaciones      = [];
-
-
-            $total_devoluciones = 0;
+            $array_users_devoluciones           = [];
 
             $with = [
                 'etapa',
@@ -89,69 +99,59 @@ class ExportExcelController extends Controller
                 'destinaciones.gradoComplejidadEstablecimiento',
                 'destinaciones.unidad',
                 'userAdd',
-                'userUpdate'
+                'userUpdate',
+                'devoluciones.tipoContrato',
+                'devoluciones.establecimiento',
+                'devoluciones.escritura',
             ];
 
-
-
-            $profesionales  = Profesional::whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
+            $profesionales  = Profesional::with($with)->whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
 
             $especialidades = Especialidad::whereIn('profesional_id', $profesionales->pluck('id'))->get();
             $destinaciones  = EtapaDestinacion::whereIn('profesional_id', $profesionales->pluck('id'))->get();
 
-
-            foreach ($especialidades as $especialidad) {
-                array_push($array_users_ids_especialidades, $especialidad->profesional_id);
-            }
-
-            foreach ($destinaciones as $destinacion) {
-                array_push($array_users_ids_destinaciones, $destinacion->profesional_id);
-            }
-
-            $profesional = null;
-            $total_users_especialidades = array_count_values($array_users_ids_especialidades);
-            $total_users_destinaciones  = array_count_values($array_users_ids_destinaciones);
-
-            //total rows formaciones EDF - PAO
-
-
-            //total rows devoluciones
-            if (count($total_users_especialidades) > 0) {
-                arsort($total_users_especialidades);
-
-                $id_user_repetido_especialidad = array_key_first($total_users_especialidades);
-
-                $profesional_especialidad = Profesional::find($id_user_repetido_especialidad);
-
-                if ($profesional_especialidad) {
-                    foreach ($profesional_especialidad->especialidades as $especialidad) {
-                        $total_pao += $especialidad->paos()->count();
-                        foreach ($especialidad->paos as $pao) {
-                            $total_devoluciones += $pao->devoluciones()->count();
+            if ($especialidades->count() > 0) {
+                foreach ($especialidades as $especialidad) {
+                    array_push($array_users_ids_especialidades, $especialidad->profesional_id);
+                    foreach ($especialidad->paos as $pao) {
+                        if ($pao->devoluciones->count() > 0) {
+                            foreach ($pao->devoluciones as $devo) {
+                                array_push($array_users_devoluciones, $especialidad->profesional_id);
+                            }
                         }
                     }
-                } else {
-                    $total_devoluciones = 0;
                 }
+                if (count($array_users_devoluciones) > 0) {
+                    $total_user_devoluciones = array_count_values($array_users_devoluciones);
+                    arsort($total_user_devoluciones);
+                    $devolucion_return  = [array_key_first($total_user_devoluciones), $total_user_devoluciones[array_key_first($total_user_devoluciones)]];
+                    $total_devoluciones = $devolucion_return[1];
+                }
+
+
+                $total_users_especialidades = array_count_values($array_users_ids_especialidades);
+                arsort($total_users_especialidades);
+                //$especialidad_return[0] = id_profesional
+                //$especialidad_return[1] = n veces que se repite
+                $especialidad_return    = [array_key_first($total_users_especialidades), $total_users_especialidades[array_key_first($total_users_especialidades)]];
+
+                $total_especialidades   = $especialidad_return[1];
             }
 
-            //total rows destinaciones
-            if ($total_users_destinaciones) {
+            if ($destinaciones->count() > 0) {
+                foreach ($destinaciones as $destinacion) {
+                    array_push($array_users_ids_destinaciones, $destinacion->profesional_id);
+                }
+                $total_users_destinaciones  = array_count_values($array_users_ids_destinaciones);
                 arsort($total_users_destinaciones);
 
-                $id_user_repetido_destinacion = array_key_first($total_users_destinaciones);
+                $destinaciones_return    = [array_key_first($total_users_destinaciones), $total_users_destinaciones[array_key_first($total_users_destinaciones)]];
 
-                $profesional_destinacion = Profesional::find($id_user_repetido_destinacion);
-
-                if ($profesional_destinacion) {
-                    $total_destinaciones = $profesional_destinacion->destinaciones()->count();
-                } else {
-                    $total_destinaciones = 0;
-                }
+                $total_destinaciones     = $destinaciones_return[1];
             }
 
-            /* return view('excel.profesionales', compact('profesionales', 'total_pao', 'total_devoluciones', 'total_destinaciones')); */
-            return Excel::download(new ProfesionalesExport($profesionales, $total_pao, $total_devoluciones, $total_destinaciones), 'LEY MEDICA - PROFESIONALES.xlsx');
+            /* return view('excel.profesionales', compact('profesionales', 'total_especialidades', 'total_pao', 'total_devoluciones', 'total_destinaciones')); */
+            return Excel::download(new ProfesionalesExport($profesionales, $total_especialidades, $total_pao, $total_devoluciones, $total_destinaciones), 'S19 - PROFESIONALES.xlsx');
         } catch (\Exception $error) {
             return $error->getMessage();
         }

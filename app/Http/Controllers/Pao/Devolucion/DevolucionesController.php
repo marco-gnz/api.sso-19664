@@ -221,6 +221,7 @@ class DevolucionesController extends Controller
                     $devolucion = Devolucion::create($request->only($form_request));
 
                     $update = $devolucion->update([
+                        'profesional_id'    => $profesional_id,
                         'escritura_id'      => $id_escritura,
                         'usuario_add_id'    => auth()->user()->id,
                         'fecha_add'         => Carbon::now()->toDateTimeString()
