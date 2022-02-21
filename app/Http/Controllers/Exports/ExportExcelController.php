@@ -65,14 +65,6 @@ class ExportExcelController extends Controller
     public function exportProfesionales($ids, $etapas)
     {
         try {
-            $espe = Especialidad::all();
-            foreach ($espe as $especialidad) {
-                foreach ($especialidad->paos as $pao) {
-                    foreach ($pao->devoluciones as $devolucion) {
-                        $devolucion->update(['profesional_id' => $especialidad->profesional_id]);
-                    }
-                }
-            }
             $profesionalesArrayId       = explode(',', $ids);
             $profesionalesArrayEtapa    = explode(',', $etapas);
 
