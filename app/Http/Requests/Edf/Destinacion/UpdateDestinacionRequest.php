@@ -31,7 +31,9 @@ class UpdateDestinacionRequest extends FormRequest
             'establecimiento_id'                    => 'required',
             'grado_complejidad_establecimiento_id'  => 'required',
             'unidad_id'                             => 'required',
-            'situacion_profesional_id'              => 'required'
+            'situacion_profesional_id'              => 'required',
+            'aumentar'                              => 'nullable',
+            'aumentar_observacion'                  => 'nullable'
         ];
     }
 

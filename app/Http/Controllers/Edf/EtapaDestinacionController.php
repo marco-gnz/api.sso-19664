@@ -17,7 +17,7 @@ class EtapaDestinacionController extends Controller
     private function validateTotalEdf($profesional, $request)
     {
         $max_days_validate = false;
-        $total_days_nueve_años = 3650;
+        $total_days_nueve_años = 3650 + 122;
         $total_days = 0;
 
         //request-add-destinacion
@@ -56,6 +56,10 @@ class EtapaDestinacionController extends Controller
         $max_anos       = false;
         $total_days_max = 2190;
         $total_days     = 0;
+
+        if ($request->aumentar === true) {
+            $total_days_max = $total_days_max + 122;
+        }
 
         $inicio_destinacion     = Carbon::parse(($request->inicio_periodo != null) ? $request->inicio_periodo : '');
         $termino_destinacion    = Carbon::parse(($request->termino_periodo != null) ? $request->termino_periodo : '');
@@ -154,7 +158,7 @@ class EtapaDestinacionController extends Controller
     private function validateTotalEdfEdit($request, $destinacion_id, $profesional_id)
     {
         $max_days_validate = false;
-        $total_days_nueve_años = 3650;
+        $total_days_nueve_años = 3650 + 122;
         $total_days = 0;
 
         //request-add-destinacion
@@ -230,6 +234,10 @@ class EtapaDestinacionController extends Controller
         $total_days_max = 2190;
         $total_days     = 0;
 
+        if ($request->aumentar === true) {
+            $total_days_max = $total_days_max + 122;
+        }
+
         $inicio_destinacion     = Carbon::parse(($request->inicio_periodo != null) ? $request->inicio_periodo : '');
         $termino_destinacion    = Carbon::parse(($request->termino_periodo != null) ? $request->termino_periodo : '');
         $diff_days_destinacion  = $inicio_destinacion->diffInDays($termino_destinacion);
@@ -270,14 +278,20 @@ class EtapaDestinacionController extends Controller
     public function storeDestinacion(StoreDestinacionRequest $request)
     {
         try {
-            $request_form                       = ['inicio_periodo', 'termino_periodo', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id', 'situacion_profesional_id'];
+            $request_form                       = ['inicio_periodo', 'termino_periodo', 'aumentar', 'aumentar_observacion', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id', 'situacion_profesional_id'];
             $profesional                        = Profesional::find($request->profesional_id);
             if ($profesional) {
                 $profesional_id = $profesional->id;
-                $passing_max_total_edf          = $this->validateTotalEdf($profesional, $request);
                 $validacion_fechas_formacion    = $this->validateFormacion($request, $profesional_id);
                 $validacion_fechas_destinacion  = $this->validateDestinacion($request);
-                $max_total_destinacion          = $this->validateMaxAnosDestinacion($profesional, $request);
+
+                if ($request->aumentar) {
+                    $passing_max_total_edf[0]          = false;
+                    $max_total_destinacion[0]          = false;
+                } else {
+                    $passing_max_total_edf             = $this->validateTotalEdf($profesional, $request);
+                    $max_total_destinacion             = $this->validateMaxAnosDestinacion($profesional, $request);
+                }
 
                 if ($passing_max_total_edf[0]) {
                     return response()->json(array('max-days', $passing_max_total_edf[1]));
@@ -318,20 +332,26 @@ class EtapaDestinacionController extends Controller
                 $profesional_id = $destinacion->profesional_id;
                 $destinacion_id = $destinacion->id;
 
-                $passing_max_total_edf_edit          = $this->validateTotalEdfEdit($request, $destinacion_id, $profesional_id);
                 $validacion_fechas_formacion         = $this->validateFormacion($request, $profesional_id);
                 $validacion_fechas_destinacion       = $this->validateDestinacionEdit($request, $destinacion_id, $profesional_id);
-                $max_total_destinacion               = $this->validateMaxAnosDestinacionEdit($request, $profesional_id, $destinacion_id);
 
-                if($passing_max_total_edf_edit[0]){
+                if($request->aumentar){
+                    $passing_max_total_edf_edit[0]      = false;
+                    $max_total_destinacion[0]           = false;
+                }else{
+                    $passing_max_total_edf_edit          = $this->validateTotalEdfEdit($request, $destinacion_id, $profesional_id);
+                    $max_total_destinacion               = $this->validateMaxAnosDestinacionEdit($request, $profesional_id, $destinacion_id);
+                }
+
+                if ($passing_max_total_edf_edit[0]) {
                     return response()->json(array('max-days', $passing_max_total_edf_edit[1]));
-                }else if ($validacion_fechas_formacion) {
+                } else if ($validacion_fechas_formacion) {
                     return response()->json('fechas-entrelazadas-formacion');
-                }else if ($validacion_fechas_destinacion) {
+                } else if ($validacion_fechas_destinacion) {
                     return response()->json('fechas-entrelazadas-destinacion');
-                }else if ($max_total_destinacion[0]) {
+                } else if ($max_total_destinacion[0]) {
                     return response()->json(array('max-destinacion', $max_total_destinacion[1]));
-                } else{
+                } else {
                     $update      = $destinacion->update($request->all());
 
                     $destinacion->update([

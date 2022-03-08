@@ -32,7 +32,9 @@ class StoreFormacionRequest extends FormRequest
             'profesional_id'            => 'required',
             'centro_formador_id'        => 'required',
             'perfeccionamiento_id'      => 'required',
-            'situacion_profesional_id'  => 'nullable'
+            'situacion_profesional_id'  => 'nullable',
+            'aumentar'                  => 'nullable',
+            'aumentar_observacion'      => 'nullable'
         ];
     }
 

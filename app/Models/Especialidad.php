@@ -13,18 +13,18 @@ class Especialidad extends Model
     protected $table = "especialidads";
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uuid', 'fecha_registro','inicio_formacion', 'termino_formacion', 'observacion', 'origen', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id','usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
+    protected $fillable = ['uuid', 'fecha_registro', 'inicio_formacion', 'termino_formacion', 'aumentar', 'aumentar_observacion', 'observacion', 'origen', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
 
     protected $guarded = ['id'];
 
     public function profesional()
     {
-        return $this->hasOne(Profesional::class, 'id','profesional_id');
+        return $this->hasOne(Profesional::class, 'id', 'profesional_id');
     }
 
     public function centroFormador()
     {
-        return $this->hasOne(CentroFormador::class, 'id','centro_formador_id');
+        return $this->hasOne(CentroFormador::class, 'id', 'centro_formador_id');
     }
 
     public function situacionProfesional()
@@ -34,7 +34,7 @@ class Especialidad extends Model
 
     public function perfeccionamiento()
     {
-        return $this->hasOne(Perfeccionamiento::class, 'id','perfeccionamiento_id');
+        return $this->hasOne(Perfeccionamiento::class, 'id', 'perfeccionamiento_id');
     }
 
     public function paos()
@@ -54,12 +54,12 @@ class Especialidad extends Model
 
     public function userAdd()
     {
-        return $this->hasOne(User::class, 'id','usuario_add_id');
+        return $this->hasOne(User::class, 'id', 'usuario_add_id');
     }
 
     public function userUpdate()
     {
-        return $this->hasOne(User::class, 'id','usuario_update_id');
+        return $this->hasOne(User::class, 'id', 'usuario_update_id');
     }
 
     public static function booted()

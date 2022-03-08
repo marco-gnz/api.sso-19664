@@ -16,7 +16,7 @@ class EtapaFormacionController extends Controller
     private function validateTotalEdf($profesional, $request)
     {
         $max_days_validate = false;
-        $total_days_nueve_años = 3285;
+        $total_days_nueve_años = 3650 + 122;
         $total_days = 0;
 
         //request-add-destinacion
@@ -152,7 +152,7 @@ class EtapaFormacionController extends Controller
     private function validateTotalEdfEdit($profesional, $request, $formacion_id)
     {
         $max_days_validate = false;
-        $total_days_nueve_años = 3285;
+        $total_days_nueve_años = 3650 + 122;
         $total_days = 0;
 
         //request-add-destinacion
@@ -266,14 +266,20 @@ class EtapaFormacionController extends Controller
     public function storeFormacion(StoreFormacionRequest $request)
     {
         try {
-            $request_form                   = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
+            $request_form                   = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'aumentar', 'aumentar_observacion', 'observacion', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
             $profesional = Profesional::find($request->profesional_id);
 
             if ($profesional) {
-                $passing_max_total_edf          = $this->validateTotalEdf($profesional, $request);
-                $validacion_fechas_formacion    = $this->validateFormacion($request);
-                $validacion_fechas_destinacion  = $this->validateDestinacion($request, $profesional->id);
-                $max_total_formacion            = $this->validateMaxAnosFormacion($profesional, $request);
+                $validacion_fechas_formacion        = $this->validateFormacion($request);
+                $validacion_fechas_destinacion      = $this->validateDestinacion($request, $profesional->id);
+
+                if ($request->aumentar) {
+                    $passing_max_total_edf[0]       = false;
+                    $max_total_formacion[0]         = false;
+                } else {
+                    $passing_max_total_edf          = $this->validateTotalEdf($profesional, $request);
+                    $max_total_formacion            = $this->validateMaxAnosFormacion($profesional, $request);
+                }
 
                 if ($passing_max_total_edf[0]) {
                     return response()->json(array('max-days', $passing_max_total_edf[1]));
@@ -314,13 +320,20 @@ class EtapaFormacionController extends Controller
             $formacion = Especialidad::find($id);
 
             if ($formacion) {
-                $request_form = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'observacion', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
+                $request_form = ['fecha_registro', 'inicio_formacion', 'termino_formacion', 'aumentar', 'aumentar_observacion', 'observacion', 'centro_formador_id', 'perfeccionamiento_id', 'situacion_profesional_id'];
 
                 $profesional = $formacion->profesional;
-                $passing_max_total_edf           = $this->validateTotalEdfEdit($profesional, $request, $formacion->id);
                 $validacion_fechas_formacion     = $this->validateFormacionEdit($request, $profesional->id, $formacion->id);
                 $validacion_fechas_destinacion   = $this->validateDestinacion($request, $profesional->id);
-                $max_total_formacion             = $this->validateMaxAnosFormacionEdit($request, $profesional->id, $formacion->id);
+
+                if ($request->aumentar) {
+                    $passing_max_total_edf[0]    = false;
+                    $max_total_formacion[0]      = false;
+                } else {
+                    $passing_max_total_edf       = $this->validateTotalEdfEdit($profesional, $request, $formacion->id);
+                    $max_total_formacion         = $this->validateMaxAnosFormacionEdit($request, $profesional->id, $formacion->id);
+                }
+
 
                 if ($passing_max_total_edf[0]) {
                     return response()->json(array('max-days', $passing_max_total_edf[1]));

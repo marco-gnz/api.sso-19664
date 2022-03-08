@@ -13,7 +13,7 @@ class EtapaDestinacion extends Model
     protected $table = "etapa_destinacions";
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uuid', 'inicio_periodo', 'termino_periodo', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id', 'situacion_profesional_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
+    protected $fillable = ['uuid', 'inicio_periodo', 'termino_periodo', 'aumentar', 'aumentar_observacion', 'observacion', 'profesional_id', 'establecimiento_id', 'grado_complejidad_establecimiento_id', 'unidad_id', 'situacion_profesional_id', 'usuario_add_id', 'aumentar', 'fecha_add', 'usuario_update_id', 'fecha_update'];
 
     public function profesional()
     {
