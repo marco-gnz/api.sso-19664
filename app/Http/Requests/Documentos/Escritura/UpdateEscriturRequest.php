@@ -27,11 +27,11 @@ class UpdateEscriturRequest extends FormRequest
         return [
             'escritura_firmada'         => 'nullable',
             'valor_garantia'            => 'required | numeric',
-            'n_resolucion'              => ['required', Rule::unique('escrituras', 'n_resolucion')->ignore($this->id)],
+            'n_resolucion'              => 'required',
             'fecha_resolucion'          => 'required',
             'observacion'               => 'nullable',
             'especialidad_id'           => 'required',
-            'n_repertorio'              => ['required', Rule::unique('escrituras', 'n_repertorio')->ignore($this->id)],
+            'n_repertorio'              => 'required',
             'anio_repertorio'           => 'required',
         ];
     }

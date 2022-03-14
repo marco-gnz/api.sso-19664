@@ -24,9 +24,9 @@ class StoreFacturaRequest extends FormRequest
     public function rules()
     {
         return [
-            'n_resolucion'              => 'required | unique:facturas',
+            'n_resolucion'              => 'required',
             'fecha_resolucion'          => 'required',
-            'n_factura'                 => 'required | unique:facturas',
+            'n_factura'                 => 'required',
             'fecha_emision_factura'     => 'required',
             'fecha_vencimiento_factura' => 'nullable',
             'cargo_item'                => 'nullable',

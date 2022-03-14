@@ -26,9 +26,9 @@ class StoreEscrituraRequest extends FormRequest
         return [
             'escritura_firmada'         => 'nullable',
             'valor_garantia'            => 'required | numeric',
-            'n_resolucion'              => 'required | unique:escrituras',
+            'n_resolucion'              => 'required',
             'fecha_resolucion'          => 'required',
-            'n_repertorio'              => 'required | unique:escrituras',
+            'n_repertorio'              => 'required',
             'anio_repertorio'           => 'required',
             'observacion'               => 'nullable',
             'especialidad_id'           => 'required'
@@ -50,12 +50,12 @@ class StoreEscrituraRequest extends FormRequest
     public function attributes()
     {
         return [
-           'valor_garantia'          => 'valor de garantía',
-           'n_resolucion'            => 'n° de resolución',
-           'fecha_resolucion'        => 'fecha de resolución',
-           'especialidad_id'         => 'especialidad',
-           'n_repertorio'            => 'n° de repertorio',
-           'anio_repertorio'         => 'año de repertorio'
+            'valor_garantia'          => 'valor de garantía',
+            'n_resolucion'            => 'n° de resolución',
+            'fecha_resolucion'        => 'fecha de resolución',
+            'especialidad_id'         => 'especialidad',
+            'n_repertorio'            => 'n° de repertorio',
+            'anio_repertorio'         => 'año de repertorio'
         ];
     }
 }

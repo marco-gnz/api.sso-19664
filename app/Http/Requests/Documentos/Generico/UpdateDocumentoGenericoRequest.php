@@ -25,7 +25,7 @@ class UpdateDocumentoGenericoRequest extends FormRequest
     public function rules()
     {
         return [
-            'n_documento'               => ['required', Rule::unique('documento_genericos', 'n_documento')->ignore($this->id)],
+            'n_documento'               => 'required',
             'fecha_documento'           => 'required',
             'observacion'               => 'nullable',
             'tipo_documento_id'         => 'required'

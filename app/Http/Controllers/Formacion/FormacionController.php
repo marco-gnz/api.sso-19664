@@ -53,7 +53,7 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $especialidades = $profesional->especialidades()->where('origen', 'PAO')->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo')->orderBy('id', 'asc')->get();
+                $especialidades = $profesional->especialidades()->where('origen', 'PAO')->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'situacionProfesional', 'userAdd', 'userUpdate')->orderBy('id', 'asc')->get();
                 return response()->json($especialidades);
             }
         } catch (\Exception $error) {
@@ -70,14 +70,25 @@ class FormacionController extends Controller
             } else {
                 $profesional = Profesional::find($request->profesional_id);
                 if ($profesional) {
-                    $formacion = Especialidad::create($request->all());
+                    $form = [
+                        'profesional_id',
+                        'fecha_registro',
+                        'origen',
+                        'situacion_profesional_id',
+                        'inicio_formacion',
+                        'termino_formacion',
+                        'observacion',
+                        'centro_formador_id',
+                        'perfeccionamiento_id'
+                    ];
+                    $formacion = Especialidad::create($request->only($form));
 
                     $update = $formacion->update([
                         'usuario_add_id' => auth()->user()->id,
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
+                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
 
                     $formacion = $formacion->fresh($with);
 
@@ -98,7 +109,16 @@ class FormacionController extends Controller
         try {
             $formacion = Especialidad::find($id);
             if ($formacion) {
-                $form = ['fecha_registro', 'origen', 'observacion', 'centro_formador_id', 'perfeccionamiento_id', 'inicio_formacion', 'termino_formacion'];
+                $form = [
+                    'fecha_registro',
+                    'origen',
+                    'situacion_profesional_id',
+                    'inicio_formacion',
+                    'termino_formacion',
+                    'observacion',
+                    'centro_formador_id',
+                    'perfeccionamiento_id'
+                ];
                 $update = $formacion->update($request->only($form));
 
                 $formacion->update([
@@ -106,7 +126,7 @@ class FormacionController extends Controller
                     'fecha_update'      => Carbon::now()->toDateTimeString()
                 ]);
 
-                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
 
                 $formacion = $formacion->fresh($with);
 
@@ -153,7 +173,7 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos'];
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
                 $formaciones = $profesional->especialidades()->with($with)->orderBy('id', 'asc')->get();
 
                 return response()->json($formaciones);

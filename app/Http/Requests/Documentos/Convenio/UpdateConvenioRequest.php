@@ -27,7 +27,7 @@ class UpdateConvenioRequest extends FormRequest
         return [
             'anios_arancel'             => 'nullable',
             'valor_arancel'             => 'required',
-            'n_resolucion'              => ['required', Rule::unique('convenios', 'n_resolucion')->ignore($this->id)],
+            'n_resolucion'              => 'required',
             'fecha_resolucion'          => 'required',
             'observacion'               => 'nullable',
             'especialidad_id'           => 'nullable',

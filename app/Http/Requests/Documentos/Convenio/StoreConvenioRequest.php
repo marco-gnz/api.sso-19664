@@ -27,7 +27,7 @@ class StoreConvenioRequest extends FormRequest
             'profesional_id'            => 'required',
             'anios_arancel'             => 'nullable',
             'valor_arancel'             => 'required',
-            'n_resolucion'              => 'required | unique:convenios',
+            'n_resolucion'              => 'required',
             'fecha_resolucion'          => 'required',
             'observacion'               => 'nullable',
             'especialidad_id'           => 'nullable',

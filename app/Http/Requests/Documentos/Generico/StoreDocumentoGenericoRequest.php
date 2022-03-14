@@ -24,7 +24,7 @@ class StoreDocumentoGenericoRequest extends FormRequest
     public function rules()
     {
         return [
-            'n_documento'               => 'required | unique:documento_genericos',
+            'n_documento'               => 'required',
             'fecha_documento'           => 'required',
             'observacion'               => 'nullable',
             'tipo_documento_id'         => 'required',

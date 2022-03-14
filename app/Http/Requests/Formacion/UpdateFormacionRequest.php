@@ -31,6 +31,7 @@ class UpdateFormacionRequest extends FormRequest
             'observacion'               => 'nullable | max:100',
             'centro_formador_id'        => 'required',
             'perfeccionamiento_id'      => 'required',
+            'situacion_profesional_id'  => 'nullable'
         ];
     }
 
