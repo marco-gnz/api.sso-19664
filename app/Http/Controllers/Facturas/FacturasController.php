@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Facturas;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Factura\StoreFacturaRequest;
 use App\Http\Requests\Factura\UpdateFacturaRequest;
+use App\Http\Requests\Factura\UpdateHallFacturaRequest;
 use App\Models\Convenio;
 use App\Models\Factura;
 use App\Models\Profesional;
@@ -30,23 +31,30 @@ class FacturasController extends Controller
     public function storeFactura(StoreFacturaRequest $request)
     {
         try {
-            $form           = ['n_resolucion', 'fecha_resolucion', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'tipo_contrado_id', 'situacion_factura_id', 'tipo_factura', 'convenio_id', 'red_hospitalaria_id', 'observacion'];
-            $convenio       = Convenio::find($request->convenio_id);
+            $perfeccionamiento_id = NULL;
+            $form           = ['n_resolucion', 'fecha_resolucion', 'n_resolucion_convenio', 'centro_formador_id', 'fecha_convenio', 'envio_finanza', 'fecha_pago', 'anio_academico', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'tipo_contrado_id', 'situacion_factura_id', 'tipo_factura', 'convenio_id', 'red_hospitalaria_id', 'observacion'];
 
-            if ($convenio) {
+            $profesional = Profesional::where('uuid', $request->profesional_uuid)->first();
+            if ($profesional) {
+                $convenio = Convenio::find($request->convenio_id);
+
+                if ($convenio) {
+                    $perfeccionamiento_id = $convenio->especialidad != null ? $convenio->especialidad->perfeccionamiento->id : NULL;
+                }
+
                 $factura    = Factura::create($request->all());
 
                 $update = $factura->update([
-                    'profesional_id'            => $convenio->especialidad->profesional->id,
-                    'centro_formador_id'        => $convenio->especialidad->centroFormador->id,
-                    'perfeccionamiento_id'      => $convenio->especialidad->perfeccionamiento->id,
+                    'profesional_id'            => $profesional->id,
+                    'perfeccionamiento_id'      => $perfeccionamiento_id,
                     'ip_user_add'               => $request->ip(),
-                    'profesional_id'            => $convenio->especialidad->profesional->id,
                     'usuario_add_id'            => auth()->user()->id,
                     'fecha_add'                 => Carbon::now()->toDateTimeString()
                 ]);
 
-                $factura->tipos()->attach($request->tipo_factura);
+                if ($request->tipo_factura) {
+                    $factura->tipos()->attach($request->tipo_factura);
+                }
 
                 $with          = ['profesional', 'tipos', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
                 $factura       = $factura->fresh($with);
@@ -56,6 +64,51 @@ class FacturasController extends Controller
                 } else {
                     return response()->json(false);
                 }
+            } else {
+                return response()->json('no-profesional');
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function editFactura(UpdateHallFacturaRequest $request, $uuid)
+    {
+        try {
+            $perfeccionamiento_id = NULL;
+            $form    = ['n_resolucion', 'fecha_resolucion', 'n_resolucion_convenio', 'fecha_convenio', 'centro_formador_id', 'envio_finanza', 'fecha_pago', 'anio_academico', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'tipo_contrado_id', 'situacion_factura_id', 'tipo_factura', 'convenio_id', 'red_hospitalaria_id', 'observacion'];
+            $factura = Factura::where('uuid', $uuid)->first();
+
+            if ($factura) {
+                $convenio = Convenio::find($request->convenio_id);
+
+                if ($convenio) {
+                    $perfeccionamiento_id = $convenio->especialidad != null ? $convenio->especialidad->perfeccionamiento->id : NULL;
+                }
+
+                $update = $factura->update($request->only($form));
+
+                $factura->update([
+                    'perfeccionamiento_id'         => $perfeccionamiento_id,
+                    'ip_user_update'               => $request->ip(),
+                    'usuario_update_id'            => auth()->user()->id,
+                    'fecha_update'                 => Carbon::now()->toDateTimeString()
+                ]);
+
+                if ($request->tipo_factura) {
+                    $factura->tipos()->sync($request->tipo_factura);
+                }
+
+                $with          = ['profesional', 'tipos', 'tipoContratoProfesional', 'situacionActual', 'convenio', 'centroFormador', 'redHospitalaria', 'perfeccionamiento.tipo', 'userAdd', 'userUpdate'];
+                $factura       = $factura->fresh($with);
+
+                if ($factura && $update) {
+                    return response()->json(array(true, $factura));
+                } else {
+                    return response()->json(false);
+                }
+            } else {
+                return response()->json('no-factura');
             }
         } catch (\Exception $error) {
             return response()->json($error->getMessage());

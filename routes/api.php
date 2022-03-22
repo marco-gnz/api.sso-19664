@@ -106,7 +106,8 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/profesionales/profesional/documentos/factura/get-facturas', [App\Http\Controllers\Facturas\FacturasController::class, 'getFacturas']);
     Route::post('/profesionales/profesional/documentos/factura/add-factura', [App\Http\Controllers\Facturas\FacturasController::class, 'storeFactura']);
     Route::delete('/profesionales/profesional/documentos/factura/delete-factura/{uuid}', [App\Http\Controllers\Facturas\FacturasController::class, 'deleteFactura']);
-    Route::put('/profesionales/profesional/documentos/factura/edit-factura/{uuid}', [App\Http\Controllers\Facturas\FacturasController::class, 'editSituacion']);
+    Route::put('/profesionales/profesional/documentos/factura/edit-factura/{uuid}', [App\Http\Controllers\Facturas\FacturasController::class, 'editFactura']);
+    Route::put('/profesionales/profesional/documentos/factura/edit-factura/situacion/{uuid}', [App\Http\Controllers\Facturas\FacturasController::class, 'editSituacion']);
 
     //genericos
     Route::get('/profesionales/profesional/documentos/generico/get-docs-generico', [App\Http\Controllers\Documentos\DocumentoGenericoController::class, 'getDocumentosGenericos']);
@@ -115,6 +116,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::delete('/profesionales/profesional/documentos/generico/delete-doc-generico/{uuid}', [App\Http\Controllers\Documentos\DocumentoGenericoController::class, 'deleteDocumentoGenerico']);
 
     //mantenedores-list
+    Route::get('/mantenedores/anios', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getAnios']);
     Route::get('/mantenedores/plantas', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getPlantas']);
     Route::get('/mantenedores/unidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getUnidades']);
     Route::get('/mantenedores/calidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCalidades']);

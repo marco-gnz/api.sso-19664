@@ -7,6 +7,7 @@ use App\Http\Requests\Profesional\StoreProfesionalRequest;
 use App\Http\Requests\Profesional\UpdateProfesionalRequest;
 use App\Http\Resources\ProfesionalesResource;
 use App\Models\Profesional;
+use App\Models\ProfesionalEstablecimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -41,7 +42,7 @@ class ProfesionalController extends Controller
     {
         try {
             $paos_count = 0;
-            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->withCount('destinaciones', 'especialidades')->where('uuid', $uuid)->first();
+            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa', 'establecimiento')->withCount('destinaciones', 'especialidades')->where('uuid', $uuid)->first();
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){
@@ -138,11 +139,11 @@ class ProfesionalController extends Controller
     {
         try {
             $paos_count = 0;
-            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa')->withCount('destinaciones', 'especialidades')->find($id);
+
+            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento'];
+            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades')->find($id);
 
             $update = $profesional->update($request->all());
-
-            $profesional = $profesional->fresh();
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){
@@ -150,6 +151,8 @@ class ProfesionalController extends Controller
                 }
             }
             $profesional['paos_count'] = $paos_count;
+
+            $profesional = $profesional->fresh($with);
 
             if ($update) {
                 return response()->json(array(true, $profesional));

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Factura;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreFacturaRequest extends FormRequest
+class UpdateHallFacturaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class StoreFacturaRequest extends FormRequest
     public function rules()
     {
         return [
-            'profesional_uuid'          => 'required',
             'n_resolucion'              => 'nullable',
             'fecha_resolucion'          => 'nullable',
             'n_resolucion_convenio'     => 'nullable',

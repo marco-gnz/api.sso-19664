@@ -47,6 +47,25 @@ class MantenedoresList extends Controller
         $this->middleware(['auth:sanctum']);
     }
 
+    public function getAnios()
+    {
+        try {
+            $primera_fecha  = Carbon::parse('2000-01-01');
+            $primer_ano     = $primera_fecha->year;
+
+            $ultima_fecha  = Carbon::now()->addYear(5);
+            $ultimo_ano    = $ultima_fecha->year;
+
+            $anios = array();
+            for ($i = $primer_ano; $i <= $ultimo_ano; $i++) {
+                array_push($anios, $i);
+            }
+            return response()->json($anios);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getPerfeccionamientosAllFiltro()
     {
         try {

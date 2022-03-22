@@ -67,6 +67,11 @@ class Profesional extends Model
         return $this->hasMany(EtapaDestinacion::class);
     }
 
+    public function establecimiento()
+    {
+        return $this->hasOne(Establecimiento::class, 'id', 'establecimiento_id');
+    }
+
     public function userAdd()
     {
         return $this->hasOne(User::class, 'id', 'usuario_add_id');
@@ -103,8 +108,8 @@ class Profesional extends Model
 
     public function scopeTieneEspecialidades($query, $todas)
     {
-        if($todas === true)
-        return $query->has('especialidades', '>', 0 );
+        if ($todas === true)
+            return $query->has('especialidades', '>', 0);
     }
     public function scopePerfeccionamiento($query, $search)
     {

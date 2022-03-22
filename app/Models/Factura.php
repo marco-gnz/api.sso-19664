@@ -12,8 +12,38 @@ class Factura extends Model
 
     protected $table        = "facturas";
     protected $primaryKey   = 'id';
-    protected $fillable     = ['uuid', 'n_resolucion', 'fecha_resolucion', 'n_factura', 'fecha_emision_factura', 'fecha_vencimiento_factura', 'cargo_item', 'anios_pago', 'monto_total', 'observacion', 'profesional_id', 'tipo_contrado_id', 'situacion_factura_id', 'convenio_id', 'centro_formador_id', 'red_hospitalaria_id', 'perfeccionamiento_id', 'ip_user_add', 'usuario_add_id', 'fecha_add', 'ip_user_update', 'usuario_update_id', 'fecha_update'];
     protected $guarded      = ['id'];
+    protected $fillable     =
+    [
+        'uuid',
+        'n_resolucion',
+        'fecha_resolucion',
+        'n_resolucion_convenio',
+        'fecha_convenio',
+        'envio_finanza',
+        'fecha_pago',
+        'anio_academico',
+        'n_factura',
+        'fecha_emision_factura',
+        'fecha_vencimiento_factura',
+        'cargo_item',
+        'anios_pago',
+        'monto_total',
+        'observacion',
+        'profesional_id',
+        'tipo_contrado_id',
+        'situacion_factura_id',
+        'convenio_id',
+        'centro_formador_id',
+        'red_hospitalaria_id',
+        'perfeccionamiento_id',
+        'ip_user_add',
+        'usuario_add_id',
+        'fecha_add',
+        'ip_user_update',
+        'usuario_update_id',
+        'fecha_update'
+    ];
 
     protected $casts = [
         'anios_pago' => 'array'
@@ -61,12 +91,12 @@ class Factura extends Model
 
     public function userAdd()
     {
-        return $this->hasOne(User::class, 'id','usuario_add_id');
+        return $this->hasOne(User::class, 'id', 'usuario_add_id');
     }
 
     public function userUpdate()
     {
-        return $this->hasOne(User::class, 'id','usuario_update_id');
+        return $this->hasOne(User::class, 'id', 'usuario_update_id');
     }
 
     public static function booted()
