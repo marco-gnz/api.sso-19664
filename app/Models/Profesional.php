@@ -67,6 +67,11 @@ class Profesional extends Model
         return $this->hasMany(EtapaDestinacion::class);
     }
 
+    public function establecimientos()
+    {
+        return $this->belongsToMany(Establecimiento::class);
+    }
+
     public function establecimiento()
     {
         return $this->hasOne(Establecimiento::class, 'id', 'establecimiento_id');

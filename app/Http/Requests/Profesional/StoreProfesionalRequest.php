@@ -24,7 +24,7 @@ class StoreProfesionalRequest extends FormRequest
     public function rules()
     {
         return [
-            'rut'                   => 'required | min:8 | max:10 | unique:profesionals',
+            'rut'                   => 'required | min:7 | max:10 | unique:profesionals',
             'dv'                    => 'required | min:1 | max:1',
             'rut_completo'          => 'required',
             'nombres'               => 'required',
@@ -38,7 +38,8 @@ class StoreProfesionalRequest extends FormRequest
             'calidad_juridica_id'   => 'required',
             'planta_id'             => 'required',
             'genero_id'             => 'required',
-            'situacion_actual_id'   => 'nullable'
+            'situacion_actual_id'   => 'nullable',
+            'establecimientos'      => 'nullable'
         ];
     }
 
@@ -46,13 +47,13 @@ class StoreProfesionalRequest extends FormRequest
     {
         return [
             'rut.required'          => 'El :attribute es obligatorio',
-            'rut.min'               => 'El :attribute son mínimo 8 caracteres',
-            'rut.max'               => 'El :attribute son máximo 10 caracteres',
+            'rut.min'               => 'El :attribute son mínimo :min caracteres',
+            'rut.max'               => 'El :attribute son máximo :max caracteres',
             'rut.unique'            => 'El :attribute ya existe en los registros',
 
             'dv.required'           => 'El :attribute es obligatorio',
-            'dv.min'                => 'El :attribute es solo 1 caracter',
-            'dv.max'                => 'El :attribute es máximo 1 caracter',
+            'dv.min'                => 'El :attribute es solo :min caracter',
+            'dv.max'                => 'El :attribute es máximo :max caracter',
 
             'nombres.required'      => 'El :attribute es obligatorio',
 

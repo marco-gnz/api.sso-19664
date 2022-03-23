@@ -42,7 +42,8 @@ class ProfesionalController extends Controller
     {
         try {
             $paos_count = 0;
-            $profesional = Profesional::with('especialidades', 'destinaciones', 'etapa', 'establecimiento')->withCount('destinaciones', 'especialidades')->where('uuid', $uuid)->first();
+            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos'];
+            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos')->where('uuid', $uuid)->first();
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){
@@ -125,6 +126,10 @@ class ProfesionalController extends Controller
                 'fecha_add'       => Carbon::now()->toDateTimeString()
             ]);
 
+            if($request->establecimientos){
+                $profesional->establecimientos()->attach($request->establecimientos);
+            }
+
             if ($profesional) {
                 return response()->json(array(true, $profesional));
             } else {
@@ -140,10 +145,14 @@ class ProfesionalController extends Controller
         try {
             $paos_count = 0;
 
-            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento'];
-            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades')->find($id);
+            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos'];
+            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos')->find($id);
 
             $update = $profesional->update($request->all());
+
+
+
+            $profesional->establecimientos()->sync($request->establecimientos);
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){

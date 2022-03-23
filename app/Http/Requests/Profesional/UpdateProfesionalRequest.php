@@ -25,7 +25,7 @@ class UpdateProfesionalRequest extends FormRequest
     public function rules()
     {
         return [
-            'rut'                   => ['required', 'min:8', 'max:8', Rule::unique('profesionals', 'rut')->ignore($this->id)],
+            'rut'                   => ['required', 'min:7', 'max:8', Rule::unique('profesionals', 'rut')->ignore($this->id)],
             'dv'                    => 'required','min:1','max:1',
             'rut_completo'          => ['required', Rule::unique('profesionals', 'rut_completo')->ignore($this->id)],
             'nombres'               => 'required',

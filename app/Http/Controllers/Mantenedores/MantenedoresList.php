@@ -170,6 +170,16 @@ class MantenedoresList extends Controller
         }
     }
 
+    public function getAllEstablecimientos()
+    {
+        try {
+            $establecimientos = Establecimiento::orderBy('nombre', 'asc')->get();
+            return response()->json($establecimientos, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getTipoConvenio()
     {
         try {
