@@ -94,9 +94,9 @@ class ProfesionalController extends Controller
             ->paos($inicio_f_pao, $termino_f_pao)
             ->destinacion($inicio_f_ed, $termino_f_ed)
             ->formacion($inicio_f_ef, $termino_f_ef)
-            ->establecimiento($etapas, $establecimiento)
             ->estado($estados)
             ->situacionProfesional($situaciones)
+            ->establecimi($establecimiento)
             ->with('etapa', 'calidad', 'situacionActual')
             ->orderBy('apellidos', 'asc')
             ->paginate(50);

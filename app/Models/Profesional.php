@@ -67,14 +67,14 @@ class Profesional extends Model
         return $this->hasMany(EtapaDestinacion::class);
     }
 
-    public function establecimientos()
-    {
-        return $this->belongsToMany(Establecimiento::class);
-    }
-
     public function establecimiento()
     {
         return $this->hasOne(Establecimiento::class, 'id', 'establecimiento_id');
+    }
+
+    public function establecimientos()
+    {
+        return $this->belongsToMany(Establecimiento::class);
     }
 
     public function userAdd()
@@ -150,22 +150,16 @@ class Profesional extends Model
             });
     }
 
-    public function scopeEstablecimiento($query, $etapas, $esatablecimiento_id)
+    public function scopeEstablecimi($query, $establecimiento)
     {
-        //edf
-        if (in_array(2, $etapas) && $esatablecimiento_id) {
-            $query->whereHas('etapasDestinacion', function ($query) use ($esatablecimiento_id) {
-                $query->whereIn('establecimiento_id', $esatablecimiento_id);
+        if($establecimiento)
+            $query->whereHas('establecimientos', function ($query) use ($establecimiento){
+                $query->whereIn('establecimiento_profesional.establecimiento_id', $establecimiento);
+            })->orWhereHas('destinaciones', function ($query) use ($establecimiento){
+                $query->whereIn('establecimiento_id', $establecimiento);
+            })->orWhereHas('devoluciones', function ($query) use ($establecimiento){
+                $query->whereIn('establecimiento_id', $establecimiento);
             });
-        } else if (in_array(1, $etapas) && $esatablecimiento_id) { //pao
-            $query->whereHas('especialidades', function ($query) use ($esatablecimiento_id) {
-                $query->whereHas('paos', function ($query) use ($esatablecimiento_id) {
-                    $query->whereHas('devoluciones', function ($query) use ($esatablecimiento_id) {
-                        $query->whereIn('establecimiento_id', $esatablecimiento_id);
-                    });
-                });
-            });
-        }
     }
 
     public function scopeEstado($query, $search)

@@ -173,7 +173,8 @@ class MantenedoresList extends Controller
     public function getAllEstablecimientos()
     {
         try {
-            $establecimientos = Establecimiento::orderBy('nombre', 'asc')->get();
+            $ids = [134, 138, 139, 140, 142, 143, 147, 151, 159, 164, 165];
+            $establecimientos = Establecimiento::with('redHospitalaria')->whereNotIn('id', $ids)->orderBy('nombre', 'asc')->get();
             return response()->json($establecimientos, 200);
         } catch (\Exception $error) {
             return response()->json($error->getMessage());
