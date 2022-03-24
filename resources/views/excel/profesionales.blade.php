@@ -4,8 +4,10 @@
             <th style="background: lightblue; font-weight: bold;">RUT</th>
             <th style="background: lightblue; font-weight: bold;">NOMBRE</th>
             <th style="background: lightblue; font-weight: bold;">GENERO</th>
+            <th style="background: lightblue; font-weight: bold;">PLANTA</th>
             <th style="background: lightblue; font-weight: bold;">ETAPA</th>
             <th style="background: lightblue; font-weight: bold;">SITUACION ACTUAL</th>
+            <th style="background: lightblue; font-weight: bold;">ESTABLECIMIENTOS</th>
             @for ($i = 0; $i < $total_especialidades; $i++)
             <th style="background: mediumseagreen;   font-weight: bold;">CENTRO FORMACION</th>
             <th style="background: mediumseagreen; font-weight: bold;">TIPO FORMACION</th>
@@ -34,8 +36,10 @@
                 <td>{{ $profesional->rut_completo }}</td>
                 <td>{{ $profesional->apellidos }} {{ $profesional->nombres }}</td>
                 <td>{{ ($profesional->genero != null) ? $profesional->genero->nombre : '' }}</td>
+                <td>{{ ($profesional->planta != null) ? $profesional->planta->nombre : '' }}</td>
                 <td>{{ ($profesional->etapa != null) ? $profesional->etapa->sigla : ''}}</td>
                 <td>{{ ($profesional->situacionActual != null) ? $profesional->situacionActual->nombre : ''}}</td>
+                <td>{{ ($profesional->establecimientos != null) ? $profesional->establecimientos->pluck('nombre')->implode(' - ') : ''}}</td>
                 @if ($profesional->especialidades->count() > 0)
                     @php
                     $totalE = 0
@@ -78,7 +82,7 @@
                     <td>{{ ($devo->inicio_devolucion != null) ? Carbon\Carbon::parse($devo->inicio_devolucion)->isoFormat('DD-MM-YYYY') : '' }}</td>
                     <td>{{ ($devo->termino_devolucion != null) ? Carbon\Carbon::parse($devo->termino_devolucion)->isoFormat('DD-MM-YYYY') : '' }}</td>
                     <td>{{ ($devo->tipoContrato != null) ? $devo->tipoContrato->nombre : '' }}</td>
-                    <td>{{ ($devo->establecimiento != null) ? $devo->establecimiento->sigla: '' }}</td>
+                    <td>{{ ($devo->establecimiento != null) ? $devo->establecimiento->nombre : '' }}</td>
                 @endforeach
                     @for ($i = 0; $i < $total_devoluciones-$total; $i++)
                     <td></td>
@@ -104,7 +108,7 @@
                         @endphp
                         <td>{{ ($destinacion->inicio_periodo != null) ? Carbon\Carbon::parse($destinacion->inicio_periodo)->isoFormat('DD-MM-YYYY') : '' }}</td>
                         <td>{{ ($destinacion->termino_periodo != null) ? Carbon\Carbon::parse($destinacion->termino_periodo)->isoFormat('DD-MM-YYYY') : '' }}</td>
-                        <td>{{ ($destinacion->establecimiento != null) ? $destinacion->establecimiento->sigla : '' }}</td>
+                        <td>{{ ($destinacion->establecimiento != null) ? $destinacion->establecimiento->nombre : '' }}</td>
                         <td>{{ ($destinacion->gradoComplejidadEstablecimiento != null) ? $destinacion->gradoComplejidadEstablecimiento->grado : '' }}</td>
                         <td>{{ ($destinacion->unidad != null) ? $destinacion->unidad->nombre : '' }}</td>
                     @endforeach

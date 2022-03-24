@@ -27,6 +27,11 @@ class Profesional extends Model
         return $this->hasOne(Genero::class, 'id', 'genero_id');
     }
 
+    public function planta()
+    {
+        return $this->hasOne(Planta::class, 'id', 'planta_id');
+    }
+
     public function calidad()
     {
         return $this->hasOne(CalidadJuridica::class, 'id', 'calidad_juridica_id');

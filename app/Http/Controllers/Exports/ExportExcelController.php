@@ -49,7 +49,7 @@ class ExportExcelController extends Controller
             ->paos($inicio_f_pao, $termino_f_pao)
             ->destinacion($inicio_f_ed, $termino_f_ed)
             ->formacion($inicio_f_ef, $termino_f_ef)
-            ->establecimiento($etapas, $establecimiento)
+            ->establecimi($establecimiento)
             ->estado($estados)
             ->situacionProfesional($situaciones)
             ->orderBy('apellidos', 'asc')
