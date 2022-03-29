@@ -34,7 +34,8 @@ class StoreFormacionRequest extends FormRequest
             'perfeccionamiento_id'      => 'required',
             'situacion_profesional_id'  => 'nullable',
             'aumentar'                  => 'nullable',
-            'aumentar_observacion'      => 'nullable'
+            'aumentar_observacion'      => 'nullable',
+            'campo_clinico_id'          => 'nullable'
         ];
     }
 

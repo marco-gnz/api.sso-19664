@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Mantenedores;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Mantenedores\CampoClinico\StoreCampoClinicoRequest;
+use App\Http\Requests\Mantenedores\CampoClinico\UpdateCampoClinicoRequest;
 use App\Http\Requests\Mantenedores\Causal\StoreCausalRequest;
 use App\Http\Requests\Mantenedores\Causal\UpdateCausalRequest;
 use App\Http\Requests\Mantenedores\Centro\StoreCentroFormador;
@@ -20,6 +22,7 @@ use App\Http\Requests\Mantenedores\Situacion\UpdateSituacionRequest;
 use App\Http\Requests\Mantenedores\Unidad\StoreUnidadRequest;
 use App\Http\Requests\Mantenedores\Unidad\UpdateUnidadRequest;
 use App\Models\CalidadJuridica;
+use App\Models\CampoClinico;
 use App\Models\Causal;
 use App\Models\CentroFormador;
 use App\Models\Establecimiento;
@@ -751,6 +754,88 @@ class MantenedoresList extends Controller
 
                 if ($update) {
                     return response()->json(array(true, $etapa));
+                } else {
+                    return response()->json(false);
+                }
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function getCampoClinico()
+    {
+        try {
+            $camposClinicos = CampoClinico::orderBy('nombre', 'asc')->get();
+
+            return response()->json($camposClinicos, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function getCampoClinicoHabilitados()
+    {
+        try {
+            $camposClinicos = CampoClinico::where('estado', true)->orderBy('nombre', 'asc')->get();
+
+            return response()->json($camposClinicos, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function addCampoClinico(StoreCampoClinicoRequest $request)
+    {
+        try {
+            $form = ['cod_sirh', 'nombre'];
+            $campoClinico = CampoClinico::create($request->only($form));
+
+            if ($campoClinico) {
+                return response()->json(array(true, $campoClinico));
+            } else {
+                return response()->json(false);
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function editCampoClinico(UpdateCampoClinicoRequest $request, $id)
+    {
+        try {
+            $campoClinico = CampoClinico::find($id);
+            if ($campoClinico) {
+                $form = ['cod_sirh', 'nombre'];
+                $update = $campoClinico->update($request->only($form));
+
+                $campoClinico = $campoClinico->fresh();
+
+                if ($campoClinico && $update) {
+                    return response()->json(array(true, $campoClinico));
+                } else {
+                    return response()->json(false);
+                }
+            }
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function statusCampoClinico($id)
+    {
+        try {
+            $campoClinico = CampoClinico::find($id);
+
+            if ($campoClinico) {
+                $update = $campoClinico->update([
+                    'estado' => !$campoClinico->estado
+                ]);
+
+                $campoClinico = $campoClinico->fresh();
+
+                if ($update) {
+                    return response()->json(array(true, $campoClinico));
                 } else {
                     return response()->json(false);
                 }

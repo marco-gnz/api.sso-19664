@@ -141,6 +141,8 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/all-unidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getAllUnidades']);
     Route::get('/mantenedores/perfeccionamiento-all/filter', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getPerfeccionamientosAllFiltro']);
     Route::get('/mantenedores/establecimientos/all', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getAllEstablecimientos']);
+    Route::get('/mantenedores/campos-clinicos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCampoClinico']);
+    Route::get('/mantenedores/campos-clinicos/habilitados', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCampoClinicoHabilitados']);
 
     //routes admin mantenedores
     Route::get('/admin/mantenedores/establecimientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'adminEstablecimientos']);
@@ -171,3 +173,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
 
     Route::post('/admin/mantenedores/etapa/add-etapa', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addEtapa']);
     Route::put('/admin/mantenedores/etapa/edit-etapa/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editEtapa']);
+
+    Route::post('/admin/mantenedores/campo-clinico/add-campo-clinico', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'addCampoClinico']);
+    Route::put('/admin/mantenedores/campo-clinico/estado-campo-clinico/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'statusCampoClinico']);
+    Route::put('/admin/mantenedores/campo-clinico/edit-campo-clinico/{id}', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'editCampoClinico']);

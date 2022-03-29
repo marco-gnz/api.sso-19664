@@ -17,31 +17,72 @@ class FormacionController extends Controller
     {
         $existe = false;
 
-        $newformat_fecha_ini = Carbon::parse($request->inicio_formacion)->format('Y-m-d');
-        $newformat_fecha_fin = Carbon::parse($request->termino_formacion)->format('Y-m-d');
+        if ($request->inicio_formacion || $request->termino_formacion) {
+            $newformat_fecha_ini = Carbon::parse($request->inicio_formacion)->format('Y-m-d');
+            $newformat_fecha_fin = Carbon::parse($request->termino_formacion)->format('Y-m-d');
 
-        $validacion1 = Especialidad::where('profesional_id', $request->profesional_id)
-            ->where('inicio_formacion', '<=', $newformat_fecha_ini)
-            ->where('termino_formacion', '>=', $newformat_fecha_ini)
-            ->count();
-        if ($validacion1 > 0) {
-            $existe = true;
+            $validacion1 = Especialidad::where('profesional_id', $request->profesional_id)
+                ->where('inicio_formacion', '<=', $newformat_fecha_ini)
+                ->where('termino_formacion', '>=', $newformat_fecha_ini)
+                ->count();
+            if ($validacion1 > 0) {
+                $existe = true;
+            }
+
+            $validacion2 = Especialidad::where('profesional_id', $request->profesional_id)
+                ->where('inicio_formacion', '<=', $newformat_fecha_fin)
+                ->where('termino_formacion', '>=', $newformat_fecha_fin)
+                ->count();
+            if ($validacion2 > 0) {
+                $existe = true;
+            }
+
+            $validacion3 = Especialidad::where('profesional_id', $request->profesional_id)
+                ->where('inicio_formacion', '>=', $newformat_fecha_ini)
+                ->where('termino_formacion', '<=', $newformat_fecha_fin)
+                ->count();
+            if ($validacion3 > 0) {
+                $existe = true;
+            }
         }
 
-        $validacion2 = Especialidad::where('profesional_id', $request->profesional_id)
-            ->where('inicio_formacion', '<=', $newformat_fecha_fin)
-            ->where('termino_formacion', '>=', $newformat_fecha_fin)
-            ->count();
-        if ($validacion2 > 0) {
-            $existe = true;
-        }
+        return $existe;
+    }
 
-        $validacion3 = Especialidad::where('profesional_id', $request->profesional_id)
-            ->where('inicio_formacion', '>=', $newformat_fecha_ini)
-            ->where('termino_formacion', '<=', $newformat_fecha_fin)
-            ->count();
-        if ($validacion3 > 0) {
-            $existe = true;
+    private function validateFormacionUpdate($request, $formacion_id, $profesional_id)
+    {
+        $existe = false;
+
+        if ($request->inicio_formacion || $request->termino_formacion) {
+            $newformat_fecha_ini = Carbon::parse($request->inicio_formacion)->format('Y-m-d');
+            $newformat_fecha_fin = Carbon::parse($request->termino_formacion)->format('Y-m-d');
+
+            $validacion1 = Especialidad::where('id', '!=', $formacion_id)
+                ->where('profesional_id', $profesional_id)
+                ->where('inicio_formacion', '<=', $newformat_fecha_ini)
+                ->where('termino_formacion', '>=', $newformat_fecha_ini)
+                ->count();
+            if ($validacion1 > 0) {
+                $existe = true;
+            }
+
+            $validacion2 = Especialidad::where('id', '!=', $formacion_id)
+                ->where('profesional_id', $profesional_id)
+                ->where('inicio_formacion', '<=', $newformat_fecha_fin)
+                ->where('termino_formacion', '>=', $newformat_fecha_fin)
+                ->count();
+            if ($validacion2 > 0) {
+                $existe = true;
+            }
+
+            $validacion3 = Especialidad::where('id', '!=', $formacion_id)
+                ->where('profesional_id', $profesional_id)
+                ->where('inicio_formacion', '>=', $newformat_fecha_ini)
+                ->where('termino_formacion', '<=', $newformat_fecha_fin)
+                ->count();
+            if ($validacion3 > 0) {
+                $existe = true;
+            }
         }
 
         return $existe;
@@ -53,7 +94,8 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $especialidades = $profesional->especialidades()->where('origen', 'PAO')->with('profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'situacionProfesional', 'userAdd', 'userUpdate')->orderBy('id', 'asc')->get();
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'situacionProfesional', 'campoClinico', 'userAdd', 'userUpdate'];
+                $especialidades = $profesional->especialidades()->where('origen', 'PAO')->with($with)->orderBy('id', 'asc')->get();
                 return response()->json($especialidades);
             }
         } catch (\Exception $error) {
@@ -79,7 +121,8 @@ class FormacionController extends Controller
                         'termino_formacion',
                         'observacion',
                         'centro_formador_id',
-                        'perfeccionamiento_id'
+                        'perfeccionamiento_id',
+                        'campo_clinico_id'
                     ];
                     $formacion = Especialidad::create($request->only($form));
 
@@ -88,7 +131,7 @@ class FormacionController extends Controller
                         'fecha_add'      => Carbon::now()->toDateTimeString()
                     ]);
 
-                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
+                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'campoClinico', 'userAdd', 'userUpdate'];
 
                     $formacion = $formacion->fresh($with);
 
@@ -109,31 +152,39 @@ class FormacionController extends Controller
         try {
             $formacion = Especialidad::find($id);
             if ($formacion) {
-                $form = [
-                    'fecha_registro',
-                    'origen',
-                    'situacion_profesional_id',
-                    'inicio_formacion',
-                    'termino_formacion',
-                    'observacion',
-                    'centro_formador_id',
-                    'perfeccionamiento_id'
-                ];
-                $update = $formacion->update($request->only($form));
+                $validacionFechas = $this->validateFormacionUpdate($request, $formacion->id, $formacion->profesional->id);
 
-                $formacion->update([
-                    'usuario_update_id' => auth()->user()->id,
-                    'fecha_update'      => Carbon::now()->toDateTimeString()
-                ]);
-
-                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
-
-                $formacion = $formacion->fresh($with);
-
-                if ($update) {
-                    return response()->json(array(true, $formacion));
+                if ($validacionFechas) {
+                    return response()->json('fechas-entrelazadas');
                 } else {
-                    return response()->json(false);
+
+                    $form = [
+                        'fecha_registro',
+                        'origen',
+                        'situacion_profesional_id',
+                        'inicio_formacion',
+                        'termino_formacion',
+                        'observacion',
+                        'centro_formador_id',
+                        'perfeccionamiento_id',
+                        'campo_clinico_id'
+                    ];
+                    $update = $formacion->update($request->only($form));
+
+                    $formacion->update([
+                        'usuario_update_id' => auth()->user()->id,
+                        'fecha_update'      => Carbon::now()->toDateTimeString()
+                    ]);
+
+                    $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'campoClinico', 'userAdd', 'userUpdate'];
+
+                    $formacion = $formacion->fresh($with);
+
+                    if ($update) {
+                        return response()->json(array(true, $formacion));
+                    } else {
+                        return response()->json(false);
+                    }
                 }
             }
         } catch (\Exception $error) {
@@ -173,7 +224,7 @@ class FormacionController extends Controller
             $profesional = Profesional::where('uuid', $request->uuid)->first();
 
             if ($profesional) {
-                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'userAdd', 'userUpdate'];
+                $with = ['profesional', 'centroFormador', 'perfeccionamiento', 'perfeccionamiento.tipo', 'paos', 'situacionProfesional', 'campoClinico', 'userAdd', 'userUpdate'];
                 $formaciones = $profesional->especialidades()->with($with)->orderBy('id', 'asc')->get();
 
                 return response()->json($formaciones);
