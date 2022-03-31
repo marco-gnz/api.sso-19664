@@ -124,6 +124,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/generos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getGeneros']);
     Route::get('/mantenedores/etapas', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getEtapas']);
     Route::get('/mantenedores/centros-formadores', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCentrosFormadores']);
+    Route::get('/mantenedores/centros-formadores/formaciones', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCentrosFormadoresFormaciones']);
     Route::get('/mantenedores/tipo-perfeccionamientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getTipoPerfeccionamientos']);
     Route::get('/mantenedores/tipo-perfeccionamientos/perfeccionamientos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getPerfeccionamientos']);
     Route::get('/mantenedores/redes-hospitalarias', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getRedesHospitalarias']);

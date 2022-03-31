@@ -184,6 +184,16 @@ class MantenedoresList extends Controller
         }
     }
 
+    public function getCentrosFormadoresFormaciones()
+    {
+        try {
+            $centrosFormadores = CentroFormador::orderBy('nombre', 'asc')->get();
+            return response()->json($centrosFormadores, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getTipoConvenio()
     {
         try {
