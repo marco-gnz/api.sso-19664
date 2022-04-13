@@ -51,7 +51,7 @@ class ProfesionalesExport implements WithTitle, FromView, WithEvents
                 $event->sheet->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 
                 $event->sheet->styleCells(
-                    "A1:AZ{$total}",
+                    "A1:BL{$total}",
                     [
                         'borders' => [
                             'allBorders' => [

@@ -8,6 +8,7 @@ use App\Models\Profesional;
 use App\Exports\ProfesionalesPao;
 use App\Exports\ProfesionalesEdf;
 use App\Exports\ProfesionalesExport;
+use App\Http\Resources\ProfesionalesExportResource;
 use App\Models\Especialidad;
 use App\Models\EtapaDestinacion;
 use Illuminate\Http\Request;
@@ -82,7 +83,7 @@ class ExportExcelController extends Controller
                 'genero',
                 'calidad',
                 'especialidades.centroFormador',
-                'especialidades.perfeccionamiento',
+                'especialidades.perfeccionamiento.tipo',
                 'especialidades.paos.devoluciones.tipoContrato',
                 'especialidades.paos.devoluciones.establecimiento',
                 'especialidades.paos.devoluciones.escritura',
@@ -97,10 +98,10 @@ class ExportExcelController extends Controller
                 'devoluciones.escritura',
             ];
 
-            $profesionales  = Profesional::with($with)->whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
+            $profesionalesQuery  = Profesional::with($with)->whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
 
-            $especialidades = Especialidad::whereIn('profesional_id', $profesionales->pluck('id'))->get();
-            $destinaciones  = EtapaDestinacion::whereIn('profesional_id', $profesionales->pluck('id'))->get();
+            $especialidades = Especialidad::whereIn('profesional_id', $profesionalesQuery->pluck('id'))->get();
+            $destinaciones  = EtapaDestinacion::whereIn('profesional_id', $profesionalesQuery->pluck('id'))->get();
 
             if ($especialidades->count() > 0) {
                 foreach ($especialidades as $especialidad) {
@@ -140,10 +141,26 @@ class ExportExcelController extends Controller
                 $destinaciones_return    = [array_key_first($total_users_destinaciones), $total_users_destinaciones[array_key_first($total_users_destinaciones)]];
 
                 $total_destinaciones     = $destinaciones_return[1];
+
+                /*  $profesionalesExport = ProfesionalesExportResource::collection($profesionales);
+
+                json_encode($profesionalesExport); */
+
+                /* return $profesionalesExport; */
             }
 
-            /* return view('excel.profesionales', compact('profesionales', 'total_especialidades', 'total_pao', 'total_devoluciones', 'total_destinaciones')); */
-            return Excel::download(new ProfesionalesExport($profesionales, $total_especialidades, $total_pao, $total_devoluciones, $total_destinaciones), 'S19 - PROFESIONALES.xlsx');
+            $profesionales = json_decode(json_encode(ProfesionalesExportResource::collection($profesionalesQuery)), true);
+
+
+
+            /* return view('excel.profesionales')
+                ->with('profesionales', $profesionales_array)
+                ->with('total_especialidades', $total_especialidades)
+                ->with('total_pao', $total_pao)
+                ->with('total_devoluciones', $total_devoluciones)
+                ->with('total_destinaciones', $total_destinaciones); */
+
+            return Excel::download(new ProfesionalesExport(ProfesionalesExportResource::collection($profesionales), $total_especialidades, $total_pao, $total_devoluciones, $total_destinaciones), 'S19 - PROFESIONALES.xlsx');
         } catch (\Exception $error) {
             return $error->getMessage();
         }
