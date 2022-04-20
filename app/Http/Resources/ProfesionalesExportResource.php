@@ -109,7 +109,6 @@ class ProfesionalesExportResource extends JsonResource
         if (count($fechas_termino_pao) > 0) {
             $last_date = max($fechas_termino_pao);
             $last_date_format = Carbon::parse($last_date);
-            bcdiv($total_falta, '1', 0);
             $fecha_termino_pao = $last_date_format->addDay($total_falta);
         }
 
@@ -124,9 +123,6 @@ class ProfesionalesExportResource extends JsonResource
             'especialidades'                        => $this->especialidades,
             'devoluciones'                          => $this->devoluciones,
             'destinaciones'                         => $this->destinaciones,
-            /* 'total_a_realizar'                      => $this->especialidades->count() > 0 && $this->destinaciones->count() == 0 ? $years_especialidad.' '.$tex_anio_especialidad.', '.$months_especialidad.' '.$tex_mes_especialidad.' y '.$days_especialidad.' '.$tex_dia_especialidad : '',
-                'total_devolucion'                      => $this->devoluciones->count() > 0 ? $years.' '.$tex_anio_devolucion.', '.$months.' '.$tex_mes_devolucion.' y '.$days.' '.$tex_dia_devolucion : '',
-                'le_faltan'                             => $this->devoluciones->count() > 0 ? $years_falta.' '.$tex_anio_falta.', '.$months_falta.' '.$tex_mes_falta.' y '.$days_falta.' '.$tex_dia_falta : '', */
             'termina'                               => $fecha_termino_pao != null ? $fecha_termino_pao->isoFormat('DD-MM-YYYY') : '',
 
             'total_a_realizar'                      => $this->especialidades->count() > 0 && $this->destinaciones->count() == 0 ? '.'.$years_especialidad.'/'.$months_especialidad.'/'.$days_especialidad : '',
