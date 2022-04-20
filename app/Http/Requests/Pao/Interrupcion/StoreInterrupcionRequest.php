@@ -28,7 +28,7 @@ class StoreInterrupcionRequest extends FormRequest
             'termino_interrupcion'          => 'required',
             'observacion'                   => 'nullable',
             'pao_id'                        => 'required',
-            'devolucion_id'                 => 'required',
+            'devolucion_id'                 => 'nullable',
             'causal_id'                     => 'required',
             'profesional_id'                => 'required'
         ];

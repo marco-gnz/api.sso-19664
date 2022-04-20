@@ -208,7 +208,7 @@ class InterrupcionesController extends Controller
     {
         try {
             $interrupcion = Interrupcion::where('uuid', $uuid)->first();
-            $request_form = ['inicio_interrupcion', 'termino_interrupcion', 'observacion', 'causal_id'];
+            $request_form = ['inicio_interrupcion', 'termino_interrupcion', 'devolucion_id', 'observacion', 'causal_id'];
             $existe_interrupcion = $this->validateInterrupcionUpdate($request, $interrupcion->id, $interrupcion->pao->especialidad->profesional->id);
             $existe_devolucion   = $this->validateDevolucionStore($request);
             if ($interrupcion) {

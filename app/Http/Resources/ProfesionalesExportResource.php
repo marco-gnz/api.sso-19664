@@ -113,18 +113,6 @@ class ProfesionalesExportResource extends JsonResource
             $fecha_termino_pao = $last_date_format->addDay($total_falta);
         }
 
-        $tex_anio_especialidad  = $years_especialidad   > 1 ? 'años'    : 'año';
-        $tex_mes_especialidad   = $months_especialidad  > 1 ? 'meses'   : 'mes';
-        $tex_dia_especialidad   = $days_especialidad    > 1 ? 'días'    : 'día';
-
-        $tex_anio_devolucion    = $years   > 1 ? 'años'    : 'año';
-        $tex_mes_devolucion     = $months  > 1 ? 'meses'   : 'mes';
-        $tex_dia_devolucion     = $days    > 1 ? 'días'    : 'día';
-
-        $tex_anio_falta         = $years_falta   > 1 ? 'años'    : 'año';
-        $tex_mes_falta          = $months_falta  > 1 ? 'meses'   : 'mes';
-        $tex_dia_falta          = $days_falta    > 1 ? 'días'    : 'día';
-
         return [
             'rut_completo'                          => $this->rut_completo,
             'nombre_completo'                       => $this->apellidos . ' ' . $this->nombres,
@@ -136,10 +124,14 @@ class ProfesionalesExportResource extends JsonResource
             'especialidades'                        => $this->especialidades,
             'devoluciones'                          => $this->devoluciones,
             'destinaciones'                         => $this->destinaciones,
-            'total_a_realizar'                      => $this->especialidades->count() > 0 && $this->destinaciones->count() == 0 ? $years_especialidad.' '.$tex_anio_especialidad.', '.$months_especialidad.' '.$tex_mes_especialidad.' y '.$days_especialidad.' '.$tex_dia_especialidad : '',
-            'total_devolucion'                      => $this->devoluciones->count() > 0 ? $years.' '.$tex_anio_devolucion.', '.$months.' '.$tex_mes_devolucion.' y '.$days.' '.$tex_dia_devolucion : '',
-            'le_faltan'                             => $this->devoluciones->count() > 0 ? $years_falta.' '.$tex_anio_falta.', '.$months_falta.' '.$tex_mes_falta.' y '.$days_falta.' '.$tex_dia_falta : '',
+            /* 'total_a_realizar'                      => $this->especialidades->count() > 0 && $this->destinaciones->count() == 0 ? $years_especialidad.' '.$tex_anio_especialidad.', '.$months_especialidad.' '.$tex_mes_especialidad.' y '.$days_especialidad.' '.$tex_dia_especialidad : '',
+                'total_devolucion'                      => $this->devoluciones->count() > 0 ? $years.' '.$tex_anio_devolucion.', '.$months.' '.$tex_mes_devolucion.' y '.$days.' '.$tex_dia_devolucion : '',
+                'le_faltan'                             => $this->devoluciones->count() > 0 ? $years_falta.' '.$tex_anio_falta.', '.$months_falta.' '.$tex_mes_falta.' y '.$days_falta.' '.$tex_dia_falta : '', */
             'termina'                               => $fecha_termino_pao != null ? $fecha_termino_pao->isoFormat('DD-MM-YYYY') : '',
+
+            'total_a_realizar'                      => $this->especialidades->count() > 0 && $this->destinaciones->count() == 0 ? '.'.$years_especialidad.'/'.$months_especialidad.'/'.$days_especialidad : '',
+            'total_devolucion'                      => $this->devoluciones->count() > 0 ? '.'.$years.'/'.$months.'/'.$days : '',
+            'le_faltan'                             => $this->devoluciones->count() > 0 ? '.'.$years_falta.'/'.$months_falta.'/'.$days_falta : '',
         ];
     }
 }

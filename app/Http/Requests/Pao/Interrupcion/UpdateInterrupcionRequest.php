@@ -28,7 +28,7 @@ class UpdateInterrupcionRequest extends FormRequest
             'termino_interrupcion'          => 'required',
             'observacion'                   => 'nullable',
             'causal_id'                     => 'required',
-            'devolucion_id'                 => 'required'
+            'devolucion_id'                 => 'nullable'
         ];
     }
 
