@@ -13,7 +13,7 @@ class Especialidad extends Model
     protected $table = "especialidads";
     protected $primaryKey = 'id';
 
-    protected $fillable = ['uuid', 'fecha_registro', 'inicio_formacion', 'termino_formacion', 'aumentar', 'aumentar_observacion', 'observacion', 'origen', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'campo_clinico_id', 'situacion_profesional_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
+    protected $fillable = ['uuid', 'fecha_registro', 'inicio_formacion', 'termino_formacion', 'contabilizar_periodo', 'aumentar', 'aumentar_observacion', 'observacion', 'origen', 'profesional_id', 'centro_formador_id', 'perfeccionamiento_id', 'campo_clinico_id', 'situacion_profesional_id', 'usuario_add_id', 'fecha_add', 'usuario_update_id', 'fecha_update'];
 
     protected $guarded = ['id'];
 

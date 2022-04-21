@@ -27,6 +27,7 @@ class StoreFormacionRequest extends FormRequest
             'fecha_registro'            => 'nullable',
             'inicio_formacion'          => 'nullable',
             'termino_formacion'         => 'nullable',
+            'contabilizar_periodo'      => 'nullable',
             'origen'                    => 'required',
             'observacion'               => 'nullable | max:100',
             'profesional_id'            => 'required',

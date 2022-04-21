@@ -27,6 +27,7 @@ class UpdateFormacionRequest extends FormRequest
             'fecha_registro'            => 'nullable',
             'inicio_formacion'          => 'nullable',
             'termino_formacion'         => 'nullable',
+            'contabilizar_periodo'      => 'nullable',
             'origen'                    => 'required',
             'observacion'               => 'nullable | max:100',
             'centro_formador_id'        => 'required',
