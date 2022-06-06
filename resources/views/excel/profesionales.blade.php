@@ -4,6 +4,10 @@
             <th style="background: lightblue; font-weight: bold;">RUT</th>
             <th style="background: lightblue; font-weight: bold;">NOMBRE</th>
             <th style="background: lightblue; font-weight: bold;">GENERO</th>
+            <th style="background: lightblue; font-weight: bold;">CORREO</th>
+            <th style="background: lightblue; font-weight: bold;">N° CONTACTO</th>
+            <th style="background: lightblue; font-weight: bold;">CIUDAD RESIDENCIA</th>
+            <th style="background: lightblue; font-weight: bold;">DIRECCIÓN</th>
             <th style="background: lightblue; font-weight: bold;">PLANTA</th>
             <th style="background: lightblue; font-weight: bold;">ETAPA</th>
             <th style="background: lightblue; font-weight: bold;">SITUACION ACTUAL</th>
@@ -40,6 +44,10 @@
                 <td>{{ $profesional['rut_completo'] }}</td>
                 <td>{{ $profesional['nombre_completo'] }}</td>
                 <td>{{ $profesional['genero'] }}</td>
+                <td>{{ $profesional['email'] }}</td>
+                <td>{{ $profesional['n_contacto'] }}</td>
+                <td>{{ $profesional['ciudad'] }}</td>
+                <td>{{ $profesional['direccion_residencia'] }}</td>
                 <td>{{ $profesional['planta'] }}</td>
                 <td>{{ $profesional['etapa']}}</td>
                 <td>{{ $profesional['situacionActual'] }}</td>
