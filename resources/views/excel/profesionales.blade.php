@@ -12,6 +12,7 @@
             <th style="background: lightblue; font-weight: bold;">ETAPA</th>
             <th style="background: lightblue; font-weight: bold;">SITUACION ACTUAL</th>
             <th style="background: lightblue; font-weight: bold;">ESTABLECIMIENTOS</th>
+            <th style="background: lightblue; font-weight: bold;">COMUNA</th>
             @for ($i = 0; $i < $total_especialidades; $i++)
             <th style="background: mediumseagreen;   font-weight: bold;">CENTRO FORMACION</th>
             <th style="background: mediumseagreen; font-weight: bold;">TIPO FORMACION</th>
@@ -52,6 +53,7 @@
                 <td>{{ $profesional['etapa']}}</td>
                 <td>{{ $profesional['situacionActual'] }}</td>
                 <td>{{ $profesional['establecimientos']}}</td>
+                <td>{{ $profesional['comunas']}}</td>
                 @if (count($profesional['especialidades']) > 0)
                     @php
                     $totalE = 0

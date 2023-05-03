@@ -82,6 +82,11 @@ class Profesional extends Model
         return $this->belongsToMany(Establecimiento::class);
     }
 
+    public function comunas()
+    {
+        return $this->belongsToMany(Comuna::class);
+    }
+
     public function userAdd()
     {
         return $this->hasOne(User::class, 'id', 'usuario_add_id');
@@ -126,6 +131,22 @@ class Profesional extends Model
         if ($search)
             $query->whereHas('especialidades', function ($query) use ($search) {
                 $query->whereIn('perfeccionamiento_id', $search);
+            });
+    }
+
+    public function scopeEstablecimientoProfesional($query, $search)
+    {
+        if ($search)
+            $query->whereHas('establecimientos', function ($query) use ($search) {
+                $query->whereIn('establecimiento_profesional.establecimiento_id', $search);
+            });
+    }
+
+    public function scopeComunaProfesional($query, $search)
+    {
+        if ($search)
+            $query->whereHas('comunas', function ($query) use ($search) {
+                $query->whereIn('comuna_profesional.comuna_id', $search);
             });
     }
 

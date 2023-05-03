@@ -124,6 +124,7 @@ class ProfesionalesExportResource extends JsonResource
             'etapa'                                 => $this->etapa != null ? $this->etapa->nombre : '',
             'situacionActual'                       => $this->situacionActual != null ? $this->situacionActual->nombre : '',
             'establecimientos'                      => $this->establecimientos != null ? $this->establecimientos->pluck('nombre')->implode(' - ') : '',
+            'comunas'                               => $this->comunas != null ? $this->comunas->pluck('nombre')->implode(' - ') : '',
             'especialidades'                        => $this->especialidades,
             'devoluciones'                          => $this->devoluciones,
             'destinaciones'                         => $this->destinaciones,

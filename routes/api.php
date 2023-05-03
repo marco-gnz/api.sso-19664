@@ -119,6 +119,7 @@ Route::put('/usuarios/usuario/edit-usuario/{id}', [App\Http\Controllers\Usuarios
     Route::get('/mantenedores/anios', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getAnios']);
     Route::get('/mantenedores/plantas', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getPlantas']);
     Route::get('/mantenedores/unidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getUnidades']);
+    Route::get('/mantenedores/comunas', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getComunas']);
     Route::get('/mantenedores/calidades', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCalidades']);
     Route::get('/mantenedores/causales', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getCausales']);
     Route::get('/mantenedores/generos', [App\Http\Controllers\Mantenedores\MantenedoresList::class, 'getGeneros']);

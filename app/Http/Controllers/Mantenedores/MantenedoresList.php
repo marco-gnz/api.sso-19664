@@ -25,6 +25,7 @@ use App\Models\CalidadJuridica;
 use App\Models\CampoClinico;
 use App\Models\Causal;
 use App\Models\CentroFormador;
+use App\Models\Comuna;
 use App\Models\Establecimiento;
 use App\Models\Etapa;
 use App\Models\Genero;
@@ -95,6 +96,16 @@ class MantenedoresList extends Controller
         try {
             $calidades = CalidadJuridica::orderBy('nombre', 'asc')->get();
             return response()->json($calidades, 200);
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
+    public function getComunas()
+    {
+        try {
+            $comunas = Comuna::orderBy('nombre', 'asc')->get();
+            return response()->json($comunas, 200);
         } catch (\Exception $error) {
             return response()->json($error->getMessage());
         }

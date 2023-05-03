@@ -42,8 +42,8 @@ class ProfesionalController extends Controller
     {
         try {
             $paos_count = 0;
-            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos'];
-            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos')->where('uuid', $uuid)->first();
+            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos', 'comunas'];
+            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos', 'comunas')->where('uuid', $uuid)->first();
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){
@@ -87,6 +87,9 @@ class ProfesionalController extends Controller
 
         $todas              = ($request->exist_perfeccionamiento === 'true') ? true : false;
 
+        $establecimientos_profesional   = ($request->establecimientos != '') ? $request->establecimientos : [];
+        $comunas_profesional            = ($request->comunas != '') ? $request->comunas : [];
+
         $profesionales = Profesional::general($input)
             ->etapaProfesional($etapas)
             ->perfeccionamiento($perfecion)
@@ -97,7 +100,9 @@ class ProfesionalController extends Controller
             ->estado($estados)
             ->situacionProfesional($situaciones)
             ->establecimi($establecimiento)
-            ->with('etapa', 'calidad', 'situacionActual')
+            ->establecimientoProfesional($establecimientos_profesional)
+            ->comunaProfesional($comunas_profesional)
+            ->with('etapa', 'calidad', 'situacionActual', 'establecimientos', 'comunas')
             ->orderBy('apellidos', 'asc')
             ->paginate(50);
 
@@ -130,6 +135,10 @@ class ProfesionalController extends Controller
                 $profesional->establecimientos()->attach($request->establecimientos);
             }
 
+            if($request->comunas){
+                $profesional->comunas()->attach($request->comunas);
+            }
+
             if ($profesional) {
                 return response()->json(array(true, $profesional));
             } else {
@@ -145,14 +154,15 @@ class ProfesionalController extends Controller
         try {
             $paos_count = 0;
 
-            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos'];
-            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos')->find($id);
+            $with = ['especialidades', 'destinaciones', 'etapa', 'establecimiento', 'establecimientos', 'comunas'];
+            $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos', 'comunas')->find($id);
 
             $update = $profesional->update($request->all());
 
 
 
             $profesional->establecimientos()->sync($request->establecimientos);
+            $profesional->comunas()->sync($request->comunas);
 
             foreach ($profesional->especialidades as $especialidad) {
                 if($especialidad->paos){
@@ -183,7 +193,7 @@ class ProfesionalController extends Controller
                 $update = $profesional->update([
                     'estado' => !$profesional->estado
                 ]);
-                $with = ['etapa', 'calidad', 'situacionActual'];
+                $with = ['etapa', 'calidad', 'situacionActual', 'establecimientos', 'comunas'];
 
                 $profesional = $profesional->fresh($with);
 

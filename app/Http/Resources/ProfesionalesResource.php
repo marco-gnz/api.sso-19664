@@ -33,6 +33,8 @@ class ProfesionalesResource extends JsonResource
             'situacion_actual'  => ($this->situacionActual != null) ? $this->situacionActual->nombre : '--',
             'estado'            => $this->estado,
             'especialidades'    => (count($especialidades) > 0) ? $especialidades : [],
+            'establecimientos'  => $this->establecimientos ? $this->establecimientos->pluck('sigla')->implode(' - ') : null,
+            'comunas'           => $this->comunas ? $this->comunas->pluck('nombre')->implode(' - ') : null,
             'count_pao'         => $count_pao,
             'count_ed'          => $this->destinaciones()->count(),
             'count_ef'          => $this->especialidades()->where('origen', 'EDF')->count()

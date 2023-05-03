@@ -41,6 +41,8 @@ class ExportExcelController extends Controller
         $situaciones        = ($request->situaciones != '') ? $request->situaciones : [];
 
         $todas              = ($request->exist_perfeccionamiento === 'true') ? true : false;
+        $establecimientos_profesional   = ($request->establecimientos != '') ? $request->establecimientos : [];
+        $comunas_profesional            = ($request->comunas != '') ? $request->comunas : [];
 
         $etapasIds          = Etapa::whereIn('id', $etapas)->pluck('id');
 
@@ -53,6 +55,8 @@ class ExportExcelController extends Controller
             ->establecimi($establecimiento)
             ->estado($estados)
             ->situacionProfesional($situaciones)
+            ->establecimientoProfesional($establecimientos_profesional)
+            ->comunaProfesional($comunas_profesional)
             ->orderBy('apellidos', 'asc')
             ->get();
 
@@ -96,6 +100,8 @@ class ExportExcelController extends Controller
                 'devoluciones.tipoContrato',
                 'devoluciones.establecimiento',
                 'devoluciones.escritura',
+                'comunas',
+                'establecimientos'
             ];
 
             $profesionalesQuery  = Profesional::with($with)->whereIn('id', $profesionalesArrayId)->whereIn('etapas_id', $profesionalesArrayEtapa)->get();
