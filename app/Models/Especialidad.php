@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -72,5 +73,39 @@ class Especialidad extends Model
         static::creating(function ($especialidad) {
             $especialidad->uuid = Str::uuid();
         });
+    }
+
+    public function totalDevolver()
+    {
+        $fecha_inicio   = Carbon::parse($this->inicio_formacion);
+        $fecha_termino  = Carbon::parse($this->termino_formacion)->addDays(1);
+
+        $diferencia = $fecha_inicio->diff($fecha_termino);
+
+        // Duplicar la diferencia
+        $doble_anios = $diferencia->y * 2;
+        $doble_meses = $diferencia->m * 2;
+        $doble_dias = $diferencia->d * 2;
+
+        // Ajustar días y meses si es necesario
+        while ($doble_dias >= 30) {
+            $doble_meses++;
+            $doble_dias -= 30;
+        }
+
+        while ($doble_meses >= 12) {
+            $doble_anios++;
+            $doble_meses -= 12;
+        }
+
+        // Formatear la salida
+        $resultado = sprintf(
+            '%d años, %d meses y %d días',
+            $doble_anios,
+            $doble_meses,
+            $doble_dias
+        );
+
+        return $resultado;
     }
 }

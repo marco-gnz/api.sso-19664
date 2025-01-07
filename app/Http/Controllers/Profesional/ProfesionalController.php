@@ -38,6 +38,74 @@ class ProfesionalController extends Controller
         }
     }
 
+    public function cartolaPdf($uuid)
+    {
+        try {
+            $profesional = Profesional::where('uuid', $uuid)->first();
+
+            $timeLine = $profesional->especialidades->flatMap(function ($especialidad) {
+                return $especialidad->paos->flatMap(function ($pao) {
+                    // Procesar devoluciones
+                    $devoluciones = collect($pao->devoluciones ?? [])
+                        ->map(function ($devolucion) {
+                            return [
+                                'color'             => 'rgb(13, 105, 179, 0.2)',
+                                'dev_inte_value'    => "D",
+                                'dev_inte'          => 'Devolución',
+                                'tipo'              => $devolucion->pao->especialidad->perfeccionamiento->tipo->nombre,
+                                'perfeccionamiento' => $devolucion->pao->especialidad->perfeccionamiento->nombre,
+                                'fecha_inicio_not_format'      => $devolucion->inicio_devolucion,
+                                'fecha_inicio'      => Carbon::parse($devolucion->inicio_devolucion)->format('d/m/Y'),
+                                'fecha_termino'     => Carbon::parse($devolucion->termino_devolucion)->format('d/m/Y'),
+                                'hor_mot'           => $devolucion->tipoContrato->horas,
+                                'total'             => $devolucion->totalDevuelto()
+                            ];
+                        });
+
+                    // Procesar interrupciones
+                    $interrupciones = collect($pao->interrupciones ?? [])
+                        ->map(function ($interrupcion) {
+                            return [
+                                'color'             => 'rgb(238, 58, 68, 0.2)',
+                                'dev_inte_value'    => "I",
+                                'dev_inte'          => 'Interrupción',
+                                'tipo'              => $interrupcion->pao->especialidad->perfeccionamiento->tipo->nombre,
+                                'perfeccionamiento' => $interrupcion->pao->especialidad->perfeccionamiento->nombre,
+                                'fecha_inicio_not_format'      => $interrupcion->inicio_interrupcion,
+                                'fecha_inicio'      => Carbon::parse($interrupcion->inicio_interrupcion)->format('d/m/Y'),
+                                'fecha_termino'     => Carbon::parse($interrupcion->termino_interrupcion)->format('d/m/Y'),
+                                'hor_mot'           => $interrupcion->causal->nombre,
+                                'total'             => $interrupcion->totalInterrupciones()
+                            ];
+                        });
+
+                    // Combinar ambos arrays
+                    return $devoluciones->merge($interrupciones);
+                });
+            })->sortBy('fecha_inicio_not_format')
+                ->values()
+                ->all();
+
+            $pdf = \PDF::loadView(
+                'pdf.profesional.cartola',
+                [
+                    'profesional' => $profesional,
+                    'timeLine'      => $timeLine
+                ]
+            );
+            $pdf->setPaper('a4', 'landscape');
+            $pdf->output();
+            $domPdf = $pdf->getDomPDF();
+
+            $canvas = $domPdf->get_canvas();
+            $canvas->page_text(500, 800, "Pagina {PAGE_NUM} de {PAGE_COUNT}", null, 8, [0, 0, 0]);
+
+            return $pdf->stream("S19 - PRUEBA_CARTOLA_MEDICO.pdf");
+        } catch (\Exception $error) {
+            return response()->json($error->getMessage());
+        }
+    }
+
     public function getProfesional(Request $request, $uuid)
     {
         try {
@@ -46,20 +114,18 @@ class ProfesionalController extends Controller
             $profesional = Profesional::with($with)->withCount('destinaciones', 'especialidades', 'establecimientos', 'comunas')->where('uuid', $uuid)->first();
 
             foreach ($profesional->especialidades as $especialidad) {
-                if($especialidad->paos){
+                if ($especialidad->paos) {
                     $paos_count += $especialidad->paos->count();
                 }
             }
 
             $profesional['paos_count'] = $paos_count;
 
-            if($profesional){
+            if ($profesional) {
                 return response()->json($profesional);
-            }else{
+            } else {
                 return false;
             }
-
-
         } catch (\Exception $error) {
             return response()->json($error->getMessage());
         }
@@ -131,11 +197,11 @@ class ProfesionalController extends Controller
                 'fecha_add'       => Carbon::now()->toDateTimeString()
             ]);
 
-            if($request->establecimientos){
+            if ($request->establecimientos) {
                 $profesional->establecimientos()->attach($request->establecimientos);
             }
 
-            if($request->comunas){
+            if ($request->comunas) {
                 $profesional->comunas()->attach($request->comunas);
             }
 
@@ -165,7 +231,7 @@ class ProfesionalController extends Controller
             $profesional->comunas()->sync($request->comunas);
 
             foreach ($profesional->especialidades as $especialidad) {
-                if($especialidad->paos){
+                if ($especialidad->paos) {
                     $paos_count += $especialidad->paos->count();
                 }
             }
