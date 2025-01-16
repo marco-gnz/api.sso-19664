@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/profesionales/profesional/{uuid}/cartola', [App\Http\Controllers\Profesional\ProfesionalController::class, 'cartolaPdf']);
+Route::get('/profesionales/profesional/{uuid}/cartola/{horas}', [App\Http\Controllers\Profesional\ProfesionalController::class, 'cartolaPdf']);

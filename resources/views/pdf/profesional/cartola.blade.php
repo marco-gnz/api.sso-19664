@@ -198,23 +198,19 @@
             <div class="section-position">
                 <h3 class="title">PAO</h3>
                 <table class="table-datos-contractuales">
+                    <thead>
+                        <th>A devolver</th>
+                        <th>Lleva</th>
+                        <th>Horas</th>
+                        <th>Le faltan</th>
+                        <th>Finaliza el</th>
+                    </thead>
                     <tbody>
-                        <tr>
-                            <th>A devolver</th>
-                            <td>{{$profesional->statusdestino()->total_a_realizar}}</td>
-                        </tr>
-                        <tr>
-                            <th>Lleva</th>
-                            <td>{{$profesional->statusdestino()->total_devolucion}}</td>
-                        </tr>
-                        <tr>
-                            <th>Le faltan</th>
-                             <td>{{$profesional->statusdestino()->le_faltan}}</td>
-                        </tr>
-                        <tr>
-                            <th>Finaliza el</th>
-                            <td>{{$profesional->statusdestino()->termina}}</td>
-                        </tr>
+                        <td>{{$profesional->statusdestino()->total_a_realizar}}</td>
+                        <td>{{$profesional->statusdestino()->total_devolucion}}</td>
+                        <td>{{$horas}}</td>
+                        <td>{{$profesional->statusdestino($horas)->le_faltan}}</td>
+                        <td>{{$profesional->statusdestino($horas)->termina}}</td>
                     </tbody>
                 </table>
                 <h3 class="title">Devoluciones e interrupciones</h3>

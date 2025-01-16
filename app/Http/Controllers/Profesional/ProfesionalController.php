@@ -8,6 +8,7 @@ use App\Http\Requests\Profesional\UpdateProfesionalRequest;
 use App\Http\Resources\ProfesionalesResource;
 use App\Models\Profesional;
 use App\Models\ProfesionalEstablecimiento;
+use App\Models\TipoContratos;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -38,10 +39,11 @@ class ProfesionalController extends Controller
         }
     }
 
-    public function cartolaPdf($uuid)
+    public function cartolaPdf($uuid, $horas)
     {
         try {
             $profesional = Profesional::where('uuid', $uuid)->first();
+            $horas       = TipoContratos::where('nombre', $horas)->firstOrFail();
 
             $timeLine = $profesional->especialidades->flatMap(function ($especialidad) {
                 return $especialidad->paos->flatMap(function ($pao) {
@@ -90,7 +92,8 @@ class ProfesionalController extends Controller
                 'pdf.profesional.cartola',
                 [
                     'profesional' => $profesional,
-                    'timeLine'      => $timeLine
+                    'timeLine'      => $timeLine,
+                    'horas'         => $horas->horas
                 ]
             );
             $pdf->setPaper('a4', 'landscape');

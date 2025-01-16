@@ -203,7 +203,7 @@ class Profesional extends Model
             return $query->whereIn('estado', $search);
     }
 
-    public function statusdestino()
+    public function statusdestino($horas = 0)
     {
         $total_especialidad = 0;
         $total_pao = 0;
@@ -291,14 +291,17 @@ class Profesional extends Model
 
         //le_faltan
         $total_falta = $sum_especialidad - $sum_devoluciones;
-        $years_falta = floor($total_falta / $dias_en_anio);
-        $months_falta = floor(($total_falta - ($years_falta * $dias_en_anio)) / $mes_calcular);
-        $days_falta = round(($total_falta - ($years_falta * $dias_en_anio) - ($months_falta * $mes_calcular)), 1);
+        $hora_real = $horas != 0 ? (44 / $horas) : 0;
+        $total_falta_ok = $total_falta * $hora_real;
+
+        $years_falta = floor($total_falta_ok / $dias_en_anio);
+        $months_falta = floor(($total_falta_ok - ($years_falta * $dias_en_anio)) / $mes_calcular);
+        $days_falta = round(($total_falta_ok - ($years_falta * $dias_en_anio) - ($months_falta * $mes_calcular)), 1);
 
         if (count($fechas_termino_pao) > 0) {
             $last_date = max($fechas_termino_pao);
             $last_date_format = Carbon::parse($last_date);
-            $fecha_termino_pao = $last_date_format->addDay($total_falta);
+            $fecha_termino_pao = $last_date_format->addDay($total_falta_ok);
         }
 
         return (object)[
